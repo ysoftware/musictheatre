@@ -1,33 +1,20 @@
 from telegram.ext import Updater, CommandHandler
 import sched, time, random, logging, pickle
 
-# watb chat id "-1001049406492"
-
 watb = "-1001049406492"
 
 # access
 
 def checkAccess(update):
-    return update.message.from_user.username == "ysoftware" or update.message.from_user.username == "frederik81" or update.message.from_user.username == "tbshfmn" or update.message.from_user.username == "sexy_nutella_69" or update.message.from_user.username == "amobishoproden"
-
-# edit
-#
-#def editartist(bot, update):
-#
-#def editalbum(bot, update):
-
-# /join, /ready, /stav
-
-
+    names = ["ysoftware", "frederik81", "tbshfmn",  "sexy_nutella_69", "amobishoproden"]
+    return update.message.from_user.username in names
 
 # session
-
-# suggested by ??
 
 def over(bot, update):
     if not checkAccess(update):
         return
-    config = load()
+    config = loadConfig()
     if config[0] == True:
         bot.sendMessage(watb, "#musictheatre it's OVER.")
         endSession()
@@ -35,7 +22,7 @@ def over(bot, update):
 def abort(bot, update):
     if not checkAccess(update):
         return
-    config = load()
+    config = loadConfig()
     if config[0] == True:
         bot.sendMessage(watb, "#musictheatre it's ABORTED.")
         endSession()
@@ -43,9 +30,9 @@ def abort(bot, update):
 def newAlbum(bot, update):
     if not checkAccess(update):
         return
-    config = load()
+    config = loadConfig()
     if config[0] == False:
-        message = update.message.text.split(" ", 1)[1].encode('utf-8').strip()
+        message = update.message.text.split(" ", 1)[1].strip()
         artistName = message.split(" - ", 1)[0].strip()
         albumName = message.split(" - ", 1)[1].strip()
 
@@ -54,58 +41,88 @@ def newAlbum(bot, update):
             config[1] = artistName
             config[2] = albumName
             config[3] = ""
-            text = "#musictheatre New Album: {0} - {1}".format(config[1], config[2]).encode('utf-8')
-            bot.sendMessage(watb, text)
-            save(config)
+            text = "#musictheatre New Album: {0} - {1}".format(config[1], config[2])
+            bot.sendMessage(watb, text.encode('utf-8'))
+            saveConfig(config)
 
 def nextSong(bot, update):
     if not checkAccess(update):
         return
-    config = load()
+    config = loadConfig()
     if config[0] == True:
-        trackName = update.message.text.split(" ", 1)[1].strip().encode('utf-8')
+        trackName = update.message.text.split(" ", 1)[1].strip()
         if len(trackName) > 2 and len(config[1]) > 2:
             config[3] = trackName
-            text = "#musictheatre {0} - {1}".format(config[1], config[3]).encode('utf-8')
-            bot.sendMessage(watb, text)
-            save(config)
+            text = "#musictheatre {0} - {1}".format(config[1], config[3])
+            bot.sendMessage(watb, text.encode('utf-8'))
+            saveConfig(config)
 
 def endSession():
-    save([False, "", "", ""])
+    saveConfig([False, "", "", ""])
+
+# edit
+
+#def editArtist(bot, update):
+#    if not checkAccess(update):
+#        return
+#    config = loadConfig()
+#        if config[1] == True:
+#
+#
+#def editSong(bot, update):
+#    if not checkAccess(update):
+#        return
+#    config = loadConfig()
+#        if config[3] == True:
+#
+#
+#def editAlbum(bot, update):
+#    if not checkAccess(update):
+#        return
+#    config = loadConfig()
+#        if config[2] == True:
+
 
 # current
 
+def currentAlbum(bot, update):
+    config = loadConfig()
+    if config[0] == True:
+        if len(config[1]) > 2 and len(config[2]) > 2:
+            text = "{0} by {1}".format(config[2], config[1])
+            bot(sendMessage.watb, text.encode('utf-8'))
+
 def currentTrack(bot, update):
-    config = load()
+    config = loadConfig()
     if config[0] == True:
         if len(config[1]) > 2 and len(config[2]) > 2 and len(config[3]) > 2:
-            text = "Now playing: {0} - {1} (from {2})".format(config[1], config[3], config[2]).encode('utf-8')
-            update.message.reply_text(text)
+            text = "Now playing: {0} - {1} (from {2})".format(config[1], config[3], config[2])
+            update.message.reply_text(text.encode('utf-8'))
 
-# persistence
+# session persistence
 
-def save(config):
+def saveConfig(config):
     file = "session.pk"
     with open(file, "wb") as fi:
         pickle.dump(config, fi)
         print("- {}".format(config))
 
-def load():
+def loadConfig():
     try:
         file = "session.pk"
         with open(file, "rb") as fi:
             config = pickle.load(fi)
             return config
     except:
-        print("config not found")
-        save()
+        print("config file is not found")
+        saveConfig()
         return [False, "", "", ""]
 
 # countdown
 
 def cunt(bot, update):
     if checkAccess(update):
-        bot.sendMessage(watb, "Turn off your fucking shuffle, I'ma cunt!")
+        bot.sendMessage(watb, randomCunt().encode('utf-8'))
         count = 5
         while count:
             bot.sendMessage(watb, "{}".format(count))
@@ -118,7 +135,7 @@ def cunt(bot, update):
 def roll(bot, update):
     if not checkAccess(update):
         return
-    config = load()
+    config = loadConfig()
     if config[0] == False:
         limit = int(update.message.text.split(" ")[1])
         if limit and limit >= 4:
@@ -130,26 +147,83 @@ def roll(bot, update):
 def suggest(bot, update):
     if not checkAccess(update):
         return
-    config = load()
+    config = loadConfig()
     if config[0] == False:
         bot.sendMessage(watb, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", parse_mode="HTML")
 
 # bad timing
 
 def badTiming(bot, update):
-    config = load()
+    config = loadConfig()
     if config[0] == True and config[3] != "":
-        text = "This is the <b>WORST TIME EVER!!!</b>".encode('utf-8')
-        bot.sendMessage(watb, text, parse_mode="HTML")
+        text = randomWorstTime()
+        bot.sendMessage(watb, text.encode('utf-8'), parse_mode="HTML")
 
 # mango
 
 def mango(bot, update):
-    config = load()
+    config = loadConfig()
     if config[0] == True:
         name = "{0} {1}".format(update.message.from_user.first_name, update.message.from_user.last_name).strip()
-        text = "{} <b>HATES IT!</b>".format(name).encode('utf-8')
-        bot.sendMessage(watb, text, parse_mode="HTML")
+        text = randomMango(name)
+        bot.sendMessage(watb, text.encode('utf-8'), parse_mode="HTML")
+
+# quotes
+
+def rfa():
+    return random.choice(["SHITTY", "GOD DAMN", "FUCKING", "RETARDED", "CUNTY", "STUPID", "FAGGY", "MOTHERFUCKING"])
+
+def rfn():
+    return random.choice(["SHIT", "FUCK", "BITCH", "ASS", "ANALCONDA", "CRAP", "DIRT", "VAGINA", "DOGSHIT", "ASSCAKE", "FAIRY TITS", "CUMSTAIN", "HOMUNCULUS", "BABY ARM", "CUNT", "MEATFLAP"])
+
+def randomWorstTime():
+    return random.choice(["This is the <b>WORST TIME EVER!!!</b>",
+                          "<b>REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</b>",
+                          "UHLFKUEGHDSNIUFBSR:AWNFPCOAWIFMVNALIKESBHUNFGUKVSHJBNVGH <b>: < </b>",
+                          "{0} The Universe hasn't seen such <b>WORST TIME</b> in its whole <b>{1} HISTORY</b> of time! <b>EVER</b>".format(rfn(), rfa()),
+                          "LITERALLY THE WORST TIMING POSSIBLE",
+                          "NO NO NO NO STOP THAT NOT NOW",
+                          "NOOO {} NOT NOW, WE'RE BUSY!!!!".format(rfn()),
+                          "FUCK YOU WITH YOUR {0} LINKS YOU {1}".format(rfa(), rfn())
+                         ])
+
+def randomCunt():
+    return random.choice(["Turn off your fucking shuffle, I'ma cunt!",
+                          "Are you bitches ready? Starting the coundoooown!",
+                          "Ready Lets Go",
+                          "Everybody SHUT UP and listen!"])
+
+def randomMango(name):
+    return random.choice(["{} <b>HATES IT!</b>".format(name),
+                          "This reminds {} of <b>Moderat</b>!".format(name),
+                          "This is the <b>WORST {0}</b> that {1} has <b>EVER</b> heard!".format(rfn(), name),
+                          "{} is gay for memes.".format(name),
+                          "{0} thinks, <b>THIS SONG IS {1}!</b>".format(name, rfn()),
+                          "{0} thinks, <b>THIS SONG IS {1} {2}!</b>".format(name, rfa(), rfn()),
+                          "Did you even listen to it? God, {}...".format(name),
+                          "<i>{} would rather have a buffalo take a <b>diarrhea dump</b> in his ear.</i>".format(name),
+                          
+                          "Pitchfork would rate this <b>{0}</b> out of <b>{1}!</b>".format(rfn(), rfn()),
+                          "Bitchfork would rate this <b>{0}</b> out of <b>{1}!</b>".format(rfn(), rfn()),
+
+                          "This sounds like that awesome song but all the good bits replaced with <b>{0} {1}</b>!".format(rfa(), rfn()),
+                          "<i>{} MANGO RIP OFF</i>".format(rfa()),
+                          "<i>*shitty emmanuel tv i'm in hell sticker*</i>",
+                          "This crap should <b>BURN in HELL.</b>",
+                          "<b>{} MANGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</b>".format(rfa()),
+                          "<b>MANGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</b>",
+                          "<b>WHALE'S VAGINA!</b>",
+                          "What a stupid song! If only this shit artist knew his gear.",
+
+                          "The only positive thing about this, is the artist's HIV-status.",
+                          "This sounds like a <b>DOG</b> pissing straight up INTO MY {}HOLES!".format(rfn()),
+                          "It is with great disappointment, that I, {0}, musteth announce, that this is indeed <b>{1} {2} TRASH</b>." .format(name, rfa(), rfn()),
+                          "This is now banned in China and soon this {} will be banned <b>EVERYWHERE!</b>".format(rfn()),
+                          "{0} thinks this is great music for on the road because it sounds like a fucking car crash WITH {1} EVERYWHERE.".format(name, rfn()),
+                          "NORMIE MUSIC <b>REEEEEEEEEEEEEEEEEEEEEEEEEE!!</b>",
+                          "If {0} were to smash his/her face against a piano WITH {1} ALL OVER HIS/HER FACE, it would still sound better than <b>THIS {2} {3}</b>.".format(name, rfn(), rfa(), rfn()),
+                          "<i>{} is jealous of the fucking deaf</i>.".format(name)
+                          ])
 
 # say something
 
@@ -158,26 +232,23 @@ def say(bot, update):
         return
     if update.message.chat_id == watb:
         return
-    message = update.message.text.split(" ", 1)[1].strip().encode('utf-8')
-    bot.sendMessage(watb, message)
+    message = update.message.text.split(" ", 1)[1].strip()
+    bot.sendMessage(watb, message.encode('utf-8'), parse_mode="HTML")
 
 # work
 
 logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
 updater = Updater('337143431:AAHK2PvoU6-HV5EJb6ydlCGzlvnqj8YFFVs')
 
 # general commands
 
 updater.dispatcher.add_handler(CommandHandler('roll', roll))
 updater.dispatcher.add_handler(CommandHandler('mango', mango))
-updater.dispatcher.add_handler(CommandHandler('song', currentTrack))
 updater.dispatcher.add_handler(CommandHandler('time', badTiming))
+updater.dispatcher.add_handler(CommandHandler('song', currentTrack))
+updater.dispatcher.add_handler(CommandHandler('album', currentAlbum))
 
 # session control
-
-#updater.dispatcher.add_handler(CommandHandler('edit_artist', editartist))
-#updater.dispatcher.add_handler(CommandHandler('edit_album', editalbum))
 
 updater.dispatcher.add_handler(CommandHandler('suggest', suggest))
 updater.dispatcher.add_handler(CommandHandler('cunt', cunt))
