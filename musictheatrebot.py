@@ -90,7 +90,7 @@ def currentAlbum(bot, update):
     if config[0] == True:
         if len(config[1]) > 2 and len(config[2]) > 2:
             text = "{0} by {1}".format(config[2], config[1])
-            bot(sendMessage.watb, text.encode('utf-8'))
+            update.message.reply_text(text.encode('utf-8'))
 
 def currentTrack(bot, update):
     config = loadConfig()
