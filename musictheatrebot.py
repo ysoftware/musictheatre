@@ -168,23 +168,6 @@ def mango(bot, update):
 
 # quotes
 
-def rfa():
-    return random.choice(["SHITTY", "CRAPPY", "GOD DAMN", "FUCKING", "RETARDED", "STUPID", "FAGGY", "MOTHERFUCKING", "CANCEROUS"])
-
-def rfn():
-    return random.choice(["SHIT", "FUCK", "TRASH", "BITCH", "ASS", "ANALCONDA", "CRAP", "DIRT", "VAGINA", "DOGSHIT", "ASSCAKE", "FAIRY TITS", "CUMSTAIN", "HOMUNCULUS", "BABY ARM", "CUNT", "MEATFLAP"])
-
-def randomWorstTime():
-    return random.choice(["This is the <b>WORST TIME EVER!!!</b>",
-                          "<b>REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</b>",
-                          "UHLFKUEGHDSNIUFBSR:AWNFPCOAWIFMVNALIKESBHUNFGUKVSHJBNVGH <b>: < </b>",
-                          "{0} The Universe hasn't seen such <b>WORST TIME</b> in its whole <b>{1} HISTORY</b> of time! <b>EVER</b>".format(rfn(), rfa()),
-                          "LITERALLY THE WORST TIMING POSSIBLE",
-                          "NO NO NO NO STOP THAT NOT NOW",
-                          "NOOO FOR {}'S SAKE, NOT NOW, WE'RE BUSY!!!!".format(rfn()),
-                          "FUCK YOU WITH YOUR {0} LINKS YOU {1}".format(rfa(), rfn())
-                         ])
-
 def randomCunt():
     return random.choice(["Turn off your fucking shuffle, I'ma cunt!",
                           "OK! Shut the fuck up, I'm the boss in here!",
@@ -193,42 +176,11 @@ def randomCunt():
                           "Ready Lets Go",
                           "Everybody SHUT UP and listen!"])
 
-def randomMango(name):
-    return random.choice(["{} is gay for memes.".format(name),
-
-                          "{} <b>HATES IT!</b>".format(name),
-                          "This reminds {} of <b>Moderat</b>!".format(name),
-                          "This is the <b>WORST {0}</b> that {1} has <b>EVER</b> heard!".format(rfn(), name),
-                          "{0} thinks, <b>THIS SONG IS {1}!</b>".format(name, rfn()),
-                          "{0} thinks, <b>THIS SONG IS {1} {2}!</b>".format(name, rfa(), rfn()),
-                          "Did you even listen to it? God, {}...".format(name),
-                          "<i>{} would rather have a buffalo take a </i><b>diarrhea dump</b><i> in his ear.</i>".format(name),
-                          
-                          "Pitchfork would rate this <b>{0}</b> out of <b>{1}!</b>".format(rfn(), rfn()),
-                          "Bitchfork would rate this <b>SHIT</b> out of <b>SHIT!</b>",
-
-                          "This sounds like that awesome song but all the good bits replaced with <b>{0} {1}</b>!".format(rfa(), rfn()),
-                          "<i>{} MANGO RIP OFF</i>".format(rfa()),
-                          "<b>{} MANGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</b>".format(rfa()),
-                          "<b>MANGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</b>",
-                          "<b>WHALE'S VAGINA!</b>",
-                          "This crap should <b>BURN in HELL.</b>",
-                          "What a stupid song! If only this shit artist knew his gear.",
-
-                          "The only positive thing about this, is the artist's HIV-status.",
-                          "This sounds like a <b>DOG</b> pissing straight up INTO MY {0}HOLES!".format(rfn()),
-                          "It is with great disappointment, that I, {0}, musteth announce, that this is indeed <b>{1} {2} TRASH</b>." .format(name, rfa(), rfn()),
-                          "This is now banned in China and soon this {0} will be banned <b>EVERYWHERE!</b>".format(rfn()),
-                          "{0} thinks this is great music for on the road because it sounds like a fucking car crash WITH {1} EVERYWHERE.".format(name, rfn()),
-                          "NORMIE MUSIC <b>REEEEEEEEEEEEEEEEEEEEEEEEEE!!</b>",
-                          "If {0} were to smash his/her face against a piano WITH {1} ALL OVER HIS/HER FACE, it would still sound better than <b>THIS {2} {3}</b>.".format(name, rfn(), rfa(), rfn()),
-                          "<i>{} is jealous of the fucking deaf</i>.".format(name)
-                          ])
 
 # help
 
 def help(bot, update):
-    update.message.reply_text("Here's the list of available commands:\n<b>/spreadshit</b> gives you the link to our spreadshit\n<b>/suggest</b> bot will ask if anyone wants to start a session\n<b>/admins</b> for the list of people who can control this bot\n\nUse these while in session:\n<b>/song</b> or <b>/album</b> to find out what's playing\n<b>/time</b> in case of like the worst time ever\n<b>/mango</b> to express your feelings about the current song".encode('utf-8'), parse_mode="HTML")
+    update.message.reply_text("Here's the list of available commands:\n<b>/spreadshit</b> gives you the link to our spreadshit\n<b>/suggest</b> bot will ask if anyone wants to start a session\n<b>/admins</b> for the list of people who can control this bot\n\nUse these while in session:\n<b>/song</b> or <b>/album</b> to find out what's playing".encode('utf-8'), parse_mode="HTML")
 
 # say something
 
@@ -270,8 +222,6 @@ updater.dispatcher.add_handler(CommandHandler('spreadshit', shit))
 updater.dispatcher.add_handler(CommandHandler('spreadsheet', shit))
 
 updater.dispatcher.add_handler(CommandHandler('suggest', suggest))
-updater.dispatcher.add_handler(CommandHandler('mango', mango))
-updater.dispatcher.add_handler(CommandHandler('time', badTiming))
 updater.dispatcher.add_handler(CommandHandler('song', currentTrack))
 updater.dispatcher.add_handler(CommandHandler('album', currentAlbum))
 
