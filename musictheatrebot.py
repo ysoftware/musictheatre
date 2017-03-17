@@ -2,7 +2,7 @@ from telegram.ext import Updater, CommandHandler
 import sched, time, random, logging, pickle
 
 watb = "-1001049406492"
-admins = ["ysoftware", "frederik81", "tbshfmn",  "sexy_nutella_69", "amobishoproden"]
+admins = ["ysoftware", "frederik81", "tbshfmn",  "sexy_nutella_69", "amobishoproden", "Doomgoat"]
 
 # access
 
@@ -32,7 +32,7 @@ def newAlbum(bot, update):
         return
     config = loadConfig()
     if config[0] == False:
-        message = update.message.text.split(" ", 1)[1].encode('utf-8').strip()
+        message = update.message.text.split(" ", 1)[1].strip()
         artistName = message.split(" - ", 1)[0].strip()
         albumName = message.split(" - ", 1)[1].strip()
 
@@ -50,7 +50,7 @@ def nextSong(bot, update):
         return
     config = loadConfig()
     if config[0] == True:
-        trackName = update.message.text.split(" ", 1)[1].encode('utf-8').strip()
+        trackName = update.message.text.split(" ", 1)[1].strip()
         if len(trackName) > 2 and len(config[1]) > 2 and trackName != config[3]:
             config[3] = trackName
             text = "#musictheatre {0} - {1}".format(config[1], config[3])
@@ -140,7 +140,7 @@ def roll(bot, update):
         limit = int(update.message.text.split(" ")[1])
         if limit and limit >= 4:
             result = random.randint(4, limit)
-            bot.sendMessage(update.message.chat_id, "Rolled <b>{}</b>.".format(result), parse_mode="HTML")
+            bot.sendMessage(watb, "Rolled <b>{}</b>.".format(result), parse_mode="HTML")
 
 # suggest
 
