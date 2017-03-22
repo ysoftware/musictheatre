@@ -36,7 +36,7 @@ def newAlbum(bot, update):
         artistName = message.split(" - ", 1)[0].strip()
         albumName = message.split(" - ", 1)[1].strip()
 
-        if len(albumName) > 2 and len(artistName) > 2:
+        if len(albumName) > 0 and len(artistName) > 0:
             config[0] = True
             config[1] = artistName
             config[2] = albumName
@@ -51,7 +51,7 @@ def nextSong(bot, update):
     config = loadConfig()
     if config[0] == True:
         trackName = update.message.text.split(" ", 1)[1].strip()
-        if len(trackName) > 2 and len(config[1]) > 2 and trackName != config[3]:
+        if len(trackName) > 0 and len(config[1]) > 0 and trackName != config[3]:
             config[3] = trackName
             text = "#musictheatre {0} - {1}".format(config[1], config[3])
             bot.sendMessage(watb, text.encode('utf-8'))
@@ -88,14 +88,14 @@ def endSession():
 def currentAlbum(bot, update):
     config = loadConfig()
     if config[0] == True:
-        if len(config[1]) > 2 and len(config[2]) > 2:
+        if len(config[1]) > 0 and len(config[2]) > 0:
             text = "{0} by {1}".format(config[2], config[1])
             update.message.reply_text(text.encode('utf-8'))
 
 def currentTrack(bot, update):
     config = loadConfig()
     if config[0] == True:
-        if len(config[1]) > 2 and len(config[2]) > 2 and len(config[3]) > 2:
+        if len(config[1]) > 0 and len(config[2]) > 0 and len(config[3]) > 0:
             text = "Now playing: {0} - {1} (from {2})".format(config[1], config[3], config[2])
             update.message.reply_text(text.encode('utf-8'))
 
