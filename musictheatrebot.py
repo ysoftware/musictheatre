@@ -2,7 +2,15 @@ from telegram.ext import Updater, CommandHandler
 import sched, time, random, logging, pickle
 
 watb = "-1001049406492"
-admins = ["ysoftware", "frederik81", "tbshfmn",  "sexy_nutella_69", "amobishoproden", "Doomgoat"]
+admins = [
+          "ysoftware",
+          "frederik81",
+          "tbshfmn",
+          "sexy_nutella_69",
+          "amobishoproden",
+          "Doomgoat",
+          "ruderubikscube"
+          ]
 
 # access
 
@@ -60,29 +68,6 @@ def nextSong(bot, update):
 def endSession():
     saveConfig([False, "", "", ""])
 
-# edit
-
-#def editArtist(bot, update):
-#    if not checkAccess(update):
-#        return
-#    config = loadConfig()
-#        if config[1] == True:
-#
-#
-#def editSong(bot, update):
-#    if not checkAccess(update):
-#        return
-#    config = loadConfig()
-#        if config[3] == True:
-#
-#
-#def editAlbum(bot, update):
-#    if not checkAccess(update):
-#        return
-#    config = loadConfig()
-#        if config[2] == True:
-
-
 # current
 
 def currentAlbum(bot, update):
@@ -91,6 +76,9 @@ def currentAlbum(bot, update):
         if len(config[1]) > 0 and len(config[2]) > 0:
             text = "{0} by {1}".format(config[2], config[1])
             update.message.reply_text(text.encode('utf-8'))
+    else:
+        update.message.reply_text("Nothing is playing.".encode('utf-8'))
+
 
 def currentTrack(bot, update):
     config = loadConfig()
@@ -140,6 +128,8 @@ def roll(bot, update):
         limit = int(update.message.text.split(" ")[1])
         if limit and limit >= 4:
             result = random.randint(4, limit)
+#            bot.sendMessage(watb, "Rolled <b>19</b>.", parse_mode="HTML")
+#            return
             bot.sendMessage(watb, "Rolled <b>{}</b>.".format(result), parse_mode="HTML")
 
 # suggest
@@ -148,23 +138,6 @@ def suggest(bot, update):
     config = loadConfig()
     if config[0] == False:
         bot.sendMessage(watb, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", parse_mode="HTML")
-
-# bad timing
-
-def badTiming(bot, update):
-    config = loadConfig()
-    if config[0] == True and config[3] != "":
-        text = randomWorstTime()
-        bot.sendMessage(watb, text.encode('utf-8'), parse_mode="HTML")
-
-# mango
-
-def mango(bot, update):
-    config = loadConfig()
-    if config[0] == True:
-        name = "{0} {1}".format(update.message.from_user.first_name, update.message.from_user.last_name).strip()
-        text = randomMango(name)
-        bot.sendMessage(watb, text.encode('utf-8'), parse_mode="HTML")
 
 # quotes
 
@@ -206,6 +179,15 @@ def adminList(bot, update):
 def shit(bot, update):
     update.message.reply_text("Here's the link to our spreadshit: http://bit.ly/watb-spreadshit")
 
+# tag
+
+def tagPeople(bot, update):
+    if not checkAccess(update):
+        return
+    config = loadConfig()
+    if config[0] == False:
+        bot.sendMessage(watb, "#musictheatre @jntn7 @ruderubikscube @ysoftware @sexy_nutella_69 @Tom_veldhuis @Doomgoat @amobishoproden @tbshfmn", parse_mode="HTML")
+
 # work
 
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -224,6 +206,7 @@ updater.dispatcher.add_handler(CommandHandler('spreadsheet', shit))
 updater.dispatcher.add_handler(CommandHandler('suggest', suggest))
 updater.dispatcher.add_handler(CommandHandler('song', currentTrack))
 updater.dispatcher.add_handler(CommandHandler('album', currentAlbum))
+updater.dispatcher.add_handler(CommandHandler('tag', tagPeople))
 
 # admin commands
 
