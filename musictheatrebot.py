@@ -2,14 +2,16 @@ from telegram.ext import Updater, CommandHandler
 import sched, time, random, logging, pickle
 
 watb = "-1001049406492"
+newseeds = "-1001138132564"
+
 admins = [
           "ysoftware",
-          "frederik81",
           "tbshfmn",
           "sexy_nutella_69",
           "amobishoproden",
           "Doomgoat",
-          "ruderubikscube"
+          "ruderubikscube",
+          "Tom_veldhuis"
           ]
 
 # access
@@ -24,7 +26,7 @@ def over(bot, update):
         return
     config = loadConfig()
     if config[0] == True:
-        bot.sendMessage(watb, "#musictheatre it's OVER.")
+        bot.sendMessage(newseeds, "#musictheatre it's OVER.")
         endSession()
 
 def abort(bot, update):
@@ -32,7 +34,7 @@ def abort(bot, update):
         return
     config = loadConfig()
     if config[0] == True:
-        bot.sendMessage(watb, "#musictheatre it's ABORTED.")
+        bot.sendMessage(newseeds, "#musictheatre it's ABORTED.")
         endSession()
 
 def newAlbum(bot, update):
@@ -50,7 +52,7 @@ def newAlbum(bot, update):
             config[2] = albumName
             config[3] = ""
             text = "#musictheatre New Album: {0} - {1}".format(config[1], config[2])
-            bot.sendMessage(watb, text.encode('utf-8'))
+            bot.sendMessage(newseeds, text.encode('utf-8'))
             saveConfig(config)
 
 def nextSong(bot, update):
@@ -62,7 +64,7 @@ def nextSong(bot, update):
         if len(trackName) > 0 and len(config[1]) > 0 and trackName != config[3]:
             config[3] = trackName
             text = "#musictheatre {0} - {1}".format(config[1], config[3])
-            bot.sendMessage(watb, text.encode('utf-8'))
+            bot.sendMessage(newseeds, text.encode('utf-8'))
             saveConfig(config)
 
 def endSession():
@@ -110,13 +112,13 @@ def loadConfig():
 
 def cunt(bot, update):
     if checkAccess(update):
-        bot.sendMessage(watb, randomCunt().encode('utf-8'))
+        bot.sendMessage(newseeds, randomCunt().encode('utf-8'))
         count = 5
         while count:
-            bot.sendMessage(watb, "{}".format(count))
+            bot.sendMessage(newseeds, "{}".format(count))
             time.sleep(1)
             count -= 1
-        bot.sendMessage(watb, "PLAY!")
+        bot.sendMessage(newseeds, "PLAY!")
 
 # roll
 
@@ -128,26 +130,21 @@ def roll(bot, update):
         limit = int(update.message.text.split(" ")[1])
         if limit and limit >= 4:
             result = random.randint(4, limit)
-#            bot.sendMessage(watb, "Rolled <b>19</b>.", parse_mode="HTML")
+#            bot.sendMessage(newseeds, "Rolled <b>19</b>.", parse_mode="HTML")
 #            return
-            bot.sendMessage(watb, "Rolled <b>{}</b>.".format(result), parse_mode="HTML")
+            bot.sendMessage(newseeds, "Rolled <b>{}</b>.".format(result), parse_mode="HTML")
 
 # suggest
 
 def suggest(bot, update):
     config = loadConfig()
     if config[0] == False:
-        bot.sendMessage(watb, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", parse_mode="HTML")
+        bot.sendMessage(newseeds, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", parse_mode="HTML")
 
 # quotes
 
 def randomCunt():
-    return random.choice(["Turn off your fucking shuffle, I'ma cunt!",
-                          "OK! Shut the fuck up, I'm the boss in here!",
-                          "Shut up and Dance! In...",
-                          "Are you bitches ready? Starting the coundoooown!",
-                          "Ready Lets Go",
-                          "Everybody SHUT UP and listen!"])
+    return random.choice(["Ready Lets Go"])
 
 
 # help
@@ -160,10 +157,10 @@ def help(bot, update):
 def say(bot, update):
     if not checkAccess(update):
         return
-    if update.message.chat_id == watb:
+    if update.message.chat_id == newseeds:
         return
     message = update.message.text.split(" ", 1)[1].strip()
-    bot.sendMessage(watb, message.encode('utf-8'), parse_mode="HTML")
+    bot.sendMessage(newseeds, message.encode('utf-8'), parse_mode="HTML")
 
 # admins
 
@@ -177,7 +174,7 @@ def adminList(bot, update):
 # spreadshit link
 
 def shit(bot, update):
-    update.message.reply_text("Here's the link to our spreadshit: http://bit.ly/watb-spreadshit")
+    update.message.reply_text("Here's the link to our spreadshit: http://bit.ly/mtheatre")
 
 # tag
 
@@ -185,10 +182,13 @@ def tagPeople(bot, update):
     if not checkAccess(update):
         return
     config = loadConfig()
-    if config[0] == False:
-        bot.sendMessage(watb, "#musictheatre @jntn7 @ruderubikscube @ysoftware @sexy_nutella_69 @Tom_veldhuis @Doomgoat @amobishoproden @tbshfmn", parse_mode="HTML")
+    bot.sendMessage(newseeds, "#musictheatre @jntn7 @ruderubikscube @danitkoy @greinchrt @jokullmusic @GalaxyDrache @ysoftware @sexy_nutella_69 @Tom_veldhuis @Doomgoat @amobishoproden @tbshfmn", parse_mode="HTML")
 
 # work
+
+def test(bot, update):
+    if update.message.from_user.username == "ysoftware":
+        bot.sendMessage(newseeds, "1", parse_mode="HTML")
 
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 updater = Updater('337143431:AAHK2PvoU6-HV5EJb6ydlCGzlvnqj8YFFVs')
@@ -218,6 +218,7 @@ updater.dispatcher.add_handler(CommandHandler('abort', abort))
 updater.dispatcher.add_handler(CommandHandler('over', over))
 
 updater.dispatcher.add_handler(CommandHandler('b', say))
+updater.dispatcher.add_handler(CommandHandler('test', test))
 
 updater.start_polling()
 updater.idle()
