@@ -1,6 +1,8 @@
 from telegram.ext import Updater, CommandHandler
 import sched, time, random, logging, pickle
 
+configFile = "session.pk"
+
 watb = "-1001049406492"
 newseeds = "-1001138132564"
 
@@ -13,8 +15,6 @@ admins = [
           "ruderubikscube",
           "Tom_veldhuis"
           ]
-
-# access
 
 def checkAccess(update):
     return update.message.from_user.username in admins
@@ -51,8 +51,8 @@ def newAlbum(bot, update):
             config[1] = artistName
             config[2] = albumName
             config[3] = ""
-            text = "#musictheatre New Album: {0} - {1}".format(config[1], config[2])
-            bot.sendMessage(newseeds, text.encode('utf-8'))
+            text = "#musictheatre New Album: {0} - {1}".format(config[1].encode('utf-8'), config[2].encode('utf-8'))
+            bot.sendMessage(newseeds, text)
             saveConfig(config)
 
 def nextSong(bot, update):
@@ -63,8 +63,8 @@ def nextSong(bot, update):
         trackName = update.message.text.split(" ", 1)[1].strip()
         if len(trackName) > 0 and len(config[1]) > 0 and trackName != config[3]:
             config[3] = trackName
-            text = "#musictheatre {0} - {1}".format(config[1], config[3])
-            bot.sendMessage(newseeds, text.encode('utf-8'))
+            text = "#musictheatre {0} - {1}".format(config[1].encode('utf-8'), config[3].encode('utf-8'))
+            bot.sendMessage(newseeds, text)
             saveConfig(config)
 
 def endSession():
@@ -76,36 +76,34 @@ def currentAlbum(bot, update):
     config = loadConfig()
     if config[0] == True:
         if len(config[1]) > 0 and len(config[2]) > 0:
-            text = "{0} by {1}".format(config[2], config[1])
-            update.message.reply_text(text.encode('utf-8'))
+            text = "{0} by {1}".format(config[2].encode('utf-8'), config[1].encode('utf-8'))
+            update.message.reply_text(text)
     else:
-        update.message.reply_text("Nothing is playing.".encode('utf-8'))
+        update.message.reply_text("Nothing is playing.")
 
 
 def currentTrack(bot, update):
     config = loadConfig()
     if config[0] == True:
         if len(config[1]) > 0 and len(config[2]) > 0 and len(config[3]) > 0:
-            text = "Now playing: {0} - {1} (from {2})".format(config[1], config[3], config[2])
-            update.message.reply_text(text.encode('utf-8'))
+            text = "Now playing: {0} - {1} (from {2})".format(config[1].encode('utf-8'), config[3].encode('utf-8'), config[2].encode('utf-8'))
+            update.message.reply_text(text)
 
 # session persistence
 
 def saveConfig(config):
-    file = "session.pk"
-    with open(file, "wb") as fi:
+    with open(configFile, "wb") as fi:
         pickle.dump(config, fi)
         print("- {}".format(config))
 
 def loadConfig():
     try:
-        file = "session.pk"
-        with open(file, "rb") as fi:
+        with open(configFile, "rb") as fi:
             config = pickle.load(fi)
             return config
     except:
         print("config file is not found")
-        saveConfig()
+        saveConfig("")
         return [False, "", "", ""]
 
 # countdown
@@ -130,9 +128,9 @@ def roll(bot, update):
         limit = int(update.message.text.split(" ")[1])
         if limit and limit >= 4:
             result = random.randint(4, limit)
-#            bot.sendMessage(newseeds, "Rolled <b>19</b>.", parse_mode="HTML")
-#            return
             bot.sendMessage(newseeds, "Rolled <b>{}</b>.".format(result), parse_mode="HTML")
+    else:
+    	update.message.reply_text("I'm sorry. I'm afraid I can't do that.")
 
 # suggest
 
@@ -144,13 +142,12 @@ def suggest(bot, update):
 # quotes
 
 def randomCunt():
-    return random.choice(["Ready Lets Go"])
-
+    return random.choice(["Ready Lets Go", "Here we go...", "Come to Daddy"])
 
 # help
 
 def help(bot, update):
-    update.message.reply_text("Here's the list of available commands:\n<b>/spreadshit</b> gives you the link to our spreadshit\n<b>/suggest</b> bot will ask if anyone wants to start a session\n<b>/admins</b> for the list of people who can control this bot\n\nUse these while in session:\n<b>/song</b> or <b>/album</b> to find out what's playing".encode('utf-8'), parse_mode="HTML")
+    update.message.reply_text("Here's the list of available commands:\n<b>/spreadsheet</b> gives you the link to our spreadsheet\n<b>/suggest</b> will ask if anyone wants to start a session\n<b>/admins</b> for the list of people who have admin access\n\nUse these while in session:\n<b>/song</b> or <b>/album</b> to find out what's playing".encode('utf-8'), parse_mode="HTML")
 
 # say something
 
@@ -182,13 +179,13 @@ def tagPeople(bot, update):
     if not checkAccess(update):
         return
     config = loadConfig()
-    bot.sendMessage(newseeds, "#musictheatre @jntn7 @ruderubikscube @danitkoy @greinchrt @jokullmusic @GalaxyDrache @ysoftware @sexy_nutella_69 @Tom_veldhuis @Doomgoat @amobishoproden @tbshfmn", parse_mode="HTML")
+    bot.sendMessage(newseeds, "#musictheatre @jntn7 @poisonparty @ruderubikscube @zhmaky @Xanes @Tova96 @danitkoy @greinchrt @jokullmusic @GalaxyDrache @ysoftware @sexy_nutella_69 @Tom_veldhuis @Doomgoat @ilya_mordvinkin @amobishoproden @tbshfmn", parse_mode="HTML")
 
 # work
 
 def test(bot, update):
     if update.message.from_user.username == "ysoftware":
-        bot.sendMessage(newseeds, "1", parse_mode="HTML")
+        update.message.reply_text("4");
 
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 updater = Updater('337143431:AAHK2PvoU6-HV5EJb6ydlCGzlvnqj8YFFVs')
