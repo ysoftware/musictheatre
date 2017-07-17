@@ -161,6 +161,14 @@ def say(bot, update):
     message = update.message.text.split(" ", 1)[1].strip()
     bot.sendMessage(newseeds, message.encode('utf-8'), parse_mode="HTML")
 
+def sticker(bot, update):
+    if not checkAccess(update):
+        return
+    if update.message.chat_id == newseeds:
+        return
+    message = update.message.text.split(" ", 1)[1].strip()
+    bot.sendSticker(newseeds, message)
+
 # admins
 
 def adminList(bot, update):
@@ -186,13 +194,13 @@ def tagPeople(bot, update):
 # retarded
 
 def slow(bot, update):
-	bot.sendSticker(newseeds, retardStickerId);
+	bot.sendSticker(newseeds, retardStickerId)
 
 # work
 
 def test(bot, update):
     if update.message.from_user.username == "ysoftware":
-       update.message.reply_text("6");
+       update.message.reply_text("7")
 
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 updater = Updater('337143431:AAH1TZLyqBTuHEKIIZ7OvEnmNL03I-EcHRM')
@@ -222,6 +230,7 @@ updater.dispatcher.add_handler(CommandHandler('abort', abort))
 updater.dispatcher.add_handler(CommandHandler('over', over))
 
 updater.dispatcher.add_handler(CommandHandler('b', say))
+updater.dispatcher.add_handler(CommandHandler('s', sticker))
 updater.dispatcher.add_handler(CommandHandler('test', test))
 updater.dispatcher.add_handler(CommandHandler('slow', slow))
 
