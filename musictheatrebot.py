@@ -5,6 +5,8 @@ configFile = "session.pk"
 
 watb = "-1001049406492"
 newseeds = "-1001138132564"
+retardStickerId = "CAADBAAD2wADeyqRC60Pvd---1a5Ag";
+tagMsg = "#musictheatre @jntn7 @poisonparty @ruderubikscube @zhmaky @Xanes @Tova96 @danitkoy @greinchrt @jokullmusic @GalaxyDrache @ysoftware @sexy_nutella_69 @Tom_veldhuis @Doomgoat @ilya_mordvinkin @amobishoproden @tbshfmn";
 
 admins = [
           "ysoftware",
@@ -179,16 +181,21 @@ def tagPeople(bot, update):
     if not checkAccess(update):
         return
     config = loadConfig()
-    bot.sendMessage(newseeds, "#musictheatre @jntn7 @poisonparty @ruderubikscube @zhmaky @Xanes @Tova96 @danitkoy @greinchrt @jokullmusic @GalaxyDrache @ysoftware @sexy_nutella_69 @Tom_veldhuis @Doomgoat @ilya_mordvinkin @amobishoproden @tbshfmn", parse_mode="HTML")
+    bot.sendMessage(newseeds, tagMsg, parse_mode="HTML")
+
+# retarded
+
+def slow(bot, update):
+	bot.sendSticker(newseeds, retardStickerId);
 
 # work
 
 def test(bot, update):
     if update.message.from_user.username == "ysoftware":
-        update.message.reply_text("4");
+       update.message.reply_text("6");
 
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-updater = Updater('337143431:AAHK2PvoU6-HV5EJb6ydlCGzlvnqj8YFFVs')
+updater = Updater('337143431:AAH1TZLyqBTuHEKIIZ7OvEnmNL03I-EcHRM')
 
 # general commands
 
@@ -216,6 +223,7 @@ updater.dispatcher.add_handler(CommandHandler('over', over))
 
 updater.dispatcher.add_handler(CommandHandler('b', say))
 updater.dispatcher.add_handler(CommandHandler('test', test))
+updater.dispatcher.add_handler(CommandHandler('slow', slow))
 
 updater.start_polling()
 updater.idle()
