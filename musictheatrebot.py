@@ -1,7 +1,7 @@
 from telegram.ext import Updater, CommandHandler
-import sched, time, random, logging, pickle
+import sched, time, random, logging, pickle, datetime, calendar
 
-configFile = "session.pk"
+configFile = "./session.pk"
 
 watb = "-1001049406492"
 newseeds = "-1001138132564"
@@ -18,8 +18,50 @@ admins = [
           "Tom_veldhuis"
           ]
 
+# - utilities
+
+# time
+
+epoch = datetime.datetime.utcfromtimestamp(0)
+
+def unix_time_millis(dt): # datetime.datetime.now()
+    return (dt - epoch).total_seconds() * 1000.0
+
 def checkAccess(update):
     return update.message.from_user.username in admins
+
+def isNewCommand(update):
+    timenow = unix_time_millis(datetime.datetime.now())
+    messageTime = unix_time_millis(update.message.date)
+    dt = timenow - messageTime
+    print(dt)
+    
+    return dt < 12345
+
+# quotes
+
+def randomCunt():
+    return random.choice(["Ready Lets Go", "Here we go...", "Come to Daddy"])
+
+# session persistence
+
+def saveConfig(config):
+    with open(configFile, "wb") as fi:
+        pickle.dump(config, fi)
+        print("- {}".format(config))
+
+def loadConfig():
+    try:
+        with open(configFile, "rb") as fi:
+            config = pickle.load(fi)
+            return config
+    except:
+        print("config file is not found")
+        config = [False, "", "", ""]
+        saveConfig(config)
+        return config
+
+# - commands
 
 # session
 
@@ -28,7 +70,8 @@ def over(bot, update):
         return
     config = loadConfig()
     if config[0] == True:
-        bot.sendMessage(newseeds, "#musictheatre it's OVER.")
+        if isNewCommand(update):
+            bot.sendMessage(newseeds, "#musictheatre it's OVER.")
         endSession()
 
 def abort(bot, update):
@@ -36,10 +79,13 @@ def abort(bot, update):
         return
     config = loadConfig()
     if config[0] == True:
-        bot.sendMessage(newseeds, "#musictheatre it's ABORTED.")
+        if isNewCommand(update):
+            bot.sendMessage(newseeds, "#musictheatre it's ABORTED.")
         endSession()
 
 def newAlbum(bot, update):
+    if not isNewCommand(update):
+        return
     if not checkAccess(update):
         return
     config = loadConfig()
@@ -58,6 +104,8 @@ def newAlbum(bot, update):
             saveConfig(config)
 
 def nextSong(bot, update):
+    if not isNewCommand(update):
+        return
     if not checkAccess(update):
         return
     config = loadConfig()
@@ -75,6 +123,8 @@ def endSession():
 # current
 
 def currentAlbum(bot, update):
+    if not isNewCommand(update):
+        return
     config = loadConfig()
     if config[0] == True:
         if len(config[1]) > 0 and len(config[2]) > 0:
@@ -85,32 +135,19 @@ def currentAlbum(bot, update):
 
 
 def currentTrack(bot, update):
+    if not isNewCommand(update):
+        return
     config = loadConfig()
     if config[0] == True:
         if len(config[1]) > 0 and len(config[2]) > 0 and len(config[3]) > 0:
             text = "Now playing: {0} - {1} (from {2})".format(config[1].encode('utf-8'), config[3].encode('utf-8'), config[2].encode('utf-8'))
             update.message.reply_text(text)
 
-# session persistence
-
-def saveConfig(config):
-    with open(configFile, "wb") as fi:
-        pickle.dump(config, fi)
-        print("- {}".format(config))
-
-def loadConfig():
-    try:
-        with open(configFile, "rb") as fi:
-            config = pickle.load(fi)
-            return config
-    except:
-        print("config file is not found")
-        saveConfig("")
-        return [False, "", "", ""]
-
 # countdown
 
 def cunt(bot, update):
+    if not isNewCommand(update):
+        return
     if checkAccess(update):
         bot.sendMessage(newseeds, randomCunt().encode('utf-8'))
         count = 5
@@ -123,9 +160,12 @@ def cunt(bot, update):
 # roll
 
 def roll(bot, update):
+    if not isNewCommand(update):
+        return
     if not checkAccess(update):
         return
     config = loadConfig()
+    print(config)
     if config[0] == False:
         limit = int(update.message.text.split(" ")[1])
         if limit and limit >= 4:
@@ -137,23 +177,24 @@ def roll(bot, update):
 # suggest
 
 def suggest(bot, update):
+    if not isNewCommand(update):
+        return
     config = loadConfig()
     if config[0] == False:
         bot.sendMessage(newseeds, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", parse_mode="HTML")
 
-# quotes
-
-def randomCunt():
-    return random.choice(["Ready Lets Go", "Here we go...", "Come to Daddy"])
-
 # help
 
 def help(bot, update):
+    if not isNewCommand(update):
+        return
     update.message.reply_text("Here's the list of available commands:\n<b>/spreadsheet</b> gives you the link to our spreadsheet\n<b>/suggest</b> will ask if anyone wants to start a session\n<b>/admins</b> for the list of people who have admin access\n\nUse these while in session:\n<b>/song</b> or <b>/album</b> to find out what's playing".encode('utf-8'), parse_mode="HTML")
 
 # say something
 
 def say(bot, update):
+    if not isNewCommand(update):
+        return
     if not checkAccess(update):
         return
     if update.message.chat_id == newseeds:
@@ -162,6 +203,8 @@ def say(bot, update):
     bot.sendMessage(newseeds, message.encode('utf-8'), parse_mode="HTML")
 
 def sticker(bot, update):
+    if not isNewCommand(update):
+        return
     if not checkAccess(update):
         return
     if update.message.chat_id == newseeds:
@@ -172,6 +215,8 @@ def sticker(bot, update):
 # admins
 
 def adminList(bot, update):
+    if not isNewCommand(update):
+        return
     text = "These <i>(%username%)</i>s have access to the bot's #musictheatre session commands:\n"
     for name in admins:
         text += "- " + name + "\n"
@@ -181,12 +226,19 @@ def adminList(bot, update):
 # spreadshit link
 
 def shit(bot, update):
-    update.message.reply_text("Here's the link to our spreadshit: http://bit.ly/mtheatre")
+    if not isNewCommand(update):
+        bot.sendMessage(newseeds, "Hey folks, our spreadshit is here: http://bit.ly/mtheatre", parse_mode="HTML")
+    else:
+        update.message.reply_text("Here's the link to our spreadshit: http://bit.ly/mtheatre")
 
 # tag
 
 def tagPeople(bot, update):
+    if not isNewCommand(update):
+        return
     if not checkAccess(update):
+        return
+    if not isNewCommand(update):
         return
     config = loadConfig()
     bot.sendMessage(newseeds, tagMsg, parse_mode="HTML")
@@ -194,13 +246,17 @@ def tagPeople(bot, update):
 # retarded
 
 def slow(bot, update):
+    if not isNewCommand(update):
+        return
 	bot.sendSticker(newseeds, retardStickerId)
 
 # work
 
 def test(bot, update):
+    if not isNewCommand(update):
+        return
     if update.message.from_user.username == "ysoftware":
-       update.message.reply_text("7")
+        update.message.reply_text("9")
 
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 updater = Updater('337143431:AAH1TZLyqBTuHEKIIZ7OvEnmNL03I-EcHRM')
