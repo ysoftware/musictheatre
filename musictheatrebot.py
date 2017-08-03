@@ -34,8 +34,6 @@ def isNewCommand(update):
     timenow = unix_time_millis(datetime.datetime.now())
     messageTime = unix_time_millis(update.message.date)
     dt = timenow - messageTime
-    print(dt)
-    
     return dt < 12345
 
 # quotes
@@ -73,6 +71,8 @@ def over(bot, update):
         if isNewCommand(update):
             bot.sendMessage(newseeds, "#musictheatre it's OVER.")
         endSession()
+    else:
+        update.message.reply_text("You betcha it is.")
 
 def abort(bot, update):
     if not checkAccess(update):
@@ -82,6 +82,8 @@ def abort(bot, update):
         if isNewCommand(update):
             bot.sendMessage(newseeds, "#musictheatre it's ABORTED.")
         endSession()
+    else:
+        update.message.reply_text("I'll abort you, you fucking bitch.")
 
 def newAlbum(bot, update):
     if not isNewCommand(update):
@@ -102,6 +104,8 @@ def newAlbum(bot, update):
             text = "#musictheatre New Album: {0} - {1}".format(config[1].encode('utf-8'), config[2].encode('utf-8'))
             bot.sendMessage(newseeds, text)
             saveConfig(config)
+    else:
+        bot.sendMessage(newseeds, "Fuck no, not this shitty album.")
 
 def nextSong(bot, update):
     if not isNewCommand(update):
@@ -116,6 +120,8 @@ def nextSong(bot, update):
             text = "#musictheatre {0} - {1}".format(config[1].encode('utf-8'), config[3].encode('utf-8'))
             bot.sendMessage(newseeds, text)
             saveConfig(config)
+    else:
+        bot.sendMessage(newseeds, "What album was that again?")
 
 def endSession():
     saveConfig([False, "", "", ""])
@@ -142,6 +148,8 @@ def currentTrack(bot, update):
         if len(config[1]) > 0 and len(config[2]) > 0 and len(config[3]) > 0:
             text = "Now playing: {0} - {1} (from {2})".format(config[1].encode('utf-8'), config[3].encode('utf-8'), config[2].encode('utf-8'))
             update.message.reply_text(text)
+    else:
+        update.message.reply_text("Nothing is playing.")
 
 # countdown
 
@@ -155,7 +163,7 @@ def cunt(bot, update):
             bot.sendMessage(newseeds, "{}".format(count))
             time.sleep(1)
             count -= 1
-        bot.sendMessage(newseeds, "PLAY!")
+        bot.sendMessage(newseeds, "p  l  a  y")
 
 # roll
 
@@ -182,6 +190,9 @@ def suggest(bot, update):
     config = loadConfig()
     if config[0] == False:
         bot.sendMessage(newseeds, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", parse_mode="HTML")
+    else:
+        bot.sendMessage(newseeds, "The session is still on, isn't it? ISN'T IT?")
+
 
 # help
 
@@ -240,7 +251,6 @@ def tagPeople(bot, update):
         return
     if not isNewCommand(update):
         return
-    config = loadConfig()
     bot.sendMessage(newseeds, tagMsg, parse_mode="HTML")
 
 # retarded
