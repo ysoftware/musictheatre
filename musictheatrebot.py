@@ -34,7 +34,8 @@ def isNewCommand(update):
     timenow = unix_time_millis(datetime.datetime.now())
     messageTime = unix_time_millis(update.message.date)
     dt = timenow - messageTime
-    return dt < 12345
+    print(update.message.text + " from " + update.message.from_user.username + " delayed by {}".format(dt))
+    return dt < 23456
 
 # quotes
 
@@ -163,7 +164,7 @@ def cunt(bot, update):
             bot.sendMessage(newseeds, "{}".format(count))
             time.sleep(1)
             count -= 1
-        bot.sendMessage(newseeds, "p  l  a  y")
+        bot.sendMessage(newseeds, "PLAY!")
 
 # roll
 
