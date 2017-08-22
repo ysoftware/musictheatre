@@ -158,8 +158,11 @@ def cunt(bot, update):
     if not isNewCommand(update):
         return
     if checkAccess(update):
-        message = update.message.text.split(" ", 1)[1].strip()
-        if not message:
+        message = [1]
+        if len(update.message.text.split(" ", 1)) > 1:
+            message = update.message.text.split(" ", 1)[1].strip()
+            print(message)
+        else:
             message = randomCunt()
         bot.sendMessage(newseeds, message.encode('utf-8'))
         count = 5
