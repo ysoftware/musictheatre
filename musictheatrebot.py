@@ -35,7 +35,7 @@ def isNewCommand(update):
     messageTime = unix_time_millis(update.message.date)
     dt = timenow - messageTime
     print(update.message.text + " from " + update.message.from_user.username + " delayed by {}".format(dt))
-    return dt < 23456
+    return dt < (20000)
 
 # quotes
 
@@ -158,7 +158,10 @@ def cunt(bot, update):
     if not isNewCommand(update):
         return
     if checkAccess(update):
-        bot.sendMessage(newseeds, randomCunt().encode('utf-8'))
+        message = update.message.text.split(" ")[1]
+        if not message:
+            message = randomCunt()
+        bot.sendMessage(newseeds, message.encode('utf-8'))
         count = 5
         while count:
             bot.sendMessage(newseeds, "{}".format(count))
@@ -257,8 +260,6 @@ def tagPeople(bot, update):
 # retarded
 
 def slow(bot, update):
-    if not isNewCommand(update):
-        return
 	bot.sendSticker(newseeds, retardStickerId)
 
 # work
