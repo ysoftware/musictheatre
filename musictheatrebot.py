@@ -158,7 +158,7 @@ def cunt(bot, update):
     if not isNewCommand(update):
         return
     if checkAccess(update):
-        message = update.message.text.split(" ")[1]
+        message = update.message.text.split(" ", 1)[1].strip()
         if not message:
             message = randomCunt()
         bot.sendMessage(newseeds, message.encode('utf-8'))
