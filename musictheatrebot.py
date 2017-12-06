@@ -1,5 +1,7 @@
 from telegram.ext import Updater, CommandHandler
 import sched, time, random, logging, pickle, datetime, calendar
+from telegram.error import (TelegramError, Unauthorized, BadRequest, 
+                            TimedOut, ChatMigrated, NetworkError)
 
 configFile = "./session.pk"
 
@@ -22,9 +24,8 @@ admins = [
 
 # time
 
-epoch = datetime.datetime.utcfromtimestamp(0)
-
 def unix_time_millis(dt): # datetime.datetime.now()
+    epoch = datetime.datetime.utcfromtimestamp(0)
     return (dt - epoch).total_seconds() * 1000.0
 
 def checkAccess(update):
@@ -271,7 +272,7 @@ def test(bot, update):
     if not isNewCommand(update):
         return
     if update.message.from_user.username == "ysoftware":
-        update.message.reply_text("9")
+        update.message.reply_text("10")
 
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 updater = Updater('337143431:AAH1TZLyqBTuHEKIIZ7OvEnmNL03I-EcHRM')
@@ -307,3 +308,13 @@ updater.dispatcher.add_handler(CommandHandler('slow', slow))
 
 updater.start_polling()
 updater.idle()
+
+def error_callback(bot, update, error):
+    try:
+        raise error
+    except TelegramError as e:
+        # handle all other telegram related errors
+        print("error:")
+        print(e)
+
+updater.dispatcher.add_error_handler(error_callback)
