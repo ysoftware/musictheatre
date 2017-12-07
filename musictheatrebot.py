@@ -274,6 +274,10 @@ def test(bot, update):
     if update.message.from_user.username == "ysoftware":
         update.message.reply_text("10")
 
+def error_callback(bot, update, error):
+    print(error)
+
+
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 updater = Updater('337143431:AAH1TZLyqBTuHEKIIZ7OvEnmNL03I-EcHRM')
 
@@ -306,15 +310,7 @@ updater.dispatcher.add_handler(CommandHandler('s', sticker))
 updater.dispatcher.add_handler(CommandHandler('test', test))
 updater.dispatcher.add_handler(CommandHandler('slow', slow))
 
+updater.dispatcher.add_error_handler(error_callback)
+
 updater.start_polling()
 updater.idle()
-
-def error_callback(bot, update, error):
-    try:
-        raise error
-    except TelegramError as e:
-        # handle all other telegram related errors
-        print("error:")
-        print(e)
-
-updater.dispatcher.add_error_handler(error_callback)
