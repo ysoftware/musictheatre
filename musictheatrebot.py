@@ -2,9 +2,18 @@ from telegram.ext import Updater, CommandHandler
 import sched, time, random, logging, pickle, datetime, calendar
 from telegram.error import (TelegramError, Unauthorized, BadRequest, 
                             TimedOut, ChatMigrated, NetworkError)
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+# spreadsheet 
+
+scope = ['https://spreadsheets.google.com/feeds',
+         'https://www.googleapis.com/auth/drive']
+credentials = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
+gc = gspread.authorize(credentials)
+wks = gc.open_by_key("1ExwdtbLUBpWZ12fg2faURtZLf7T8VZa0tndEX4SYkck").get_worksheet(0)
 
 configFile = "./session.pk"
-
 watb = "-1001049406492"
 newseeds = "-1001138132564"
 retardStickerId = "CAADBAAD2wADeyqRC60Pvd---1a5Ag";
@@ -188,7 +197,7 @@ def roll(bot, update):
             result = random.randint(4, limit)
             bot.sendMessage(newseeds, "Rolled <b>{}</b>.".format(result), parse_mode="HTML")
     else:
-    	update.message.reply_text("I'm sorry. I'm afraid I can't do that.")
+    	update.message.reply_text("Another session is still on. I'm afraid I can't do that.")
 
 # suggest
 
