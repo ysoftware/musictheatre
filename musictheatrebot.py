@@ -8,15 +8,15 @@ configFile = "./session.pk"
 watb = "-1001049406492"
 newseeds = "-1001138132564"
 retardStickerId = "CAADBAAD2wADeyqRC60Pvd---1a5Ag";
-tagMsg = "#musictheatre @jntn7 @poisonparty @ruderubikscube @zhmaky @Xanes @Tova96 @danitkoy @greinchrt @jokullmusic @GalaxyDrache @ysoftware @sexy_nutella_69 @Tom_veldhuis @Doomgoat @ilya_mordvinkin @amobishoproden @tbshfmn";
+tagMsg = "#musictheatre @jntn7 @poisonparty @zhmaky @Xanes @Tova96 @danitkoy @greinchrt @jokullmusic @GalaxyDrache @ysoftware @sexy_nutella_69 @Tom_veldhuis @Doomgoat @ilya_mordvinkin @amobishoproden @tbshfmn @FkinTag @HexagonSun";
 
 admins = [
+          "Xanes",
           "ysoftware",
           "tbshfmn",
           "sexy_nutella_69",
           "amobishoproden",
           "Doomgoat",
-          "ruderubikscube",
           "Tom_veldhuis"
           ]
 
@@ -41,7 +41,7 @@ def isNewCommand(update):
 # quotes
 
 def randomCunt():
-    return random.choice(["Ready Lets Go", "Here we go...", "Come to Daddy"])
+    return random.choice(["Ready Lets Go", "Here we go...", "Come to Daddy", "Oh boy, here I go killin' again!"])
 
 # session persistence
 
