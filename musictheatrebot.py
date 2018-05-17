@@ -2,6 +2,7 @@ from telegram.ext import Updater, CommandHandler
 import sched, time, random, logging, pickle, datetime, calendar
 from telegram.error import (TelegramError, Unauthorized, BadRequest, 
                             TimedOut, ChatMigrated, NetworkError)
+import datetime
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -12,6 +13,8 @@ scope = ['https://spreadsheets.google.com/feeds',
 credentials = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
 gc = gspread.authorize(credentials)
 wks = gc.open_by_key("1ExwdtbLUBpWZ12fg2faURtZLf7T8VZa0tndEX4SYkck").get_worksheet(0)
+columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
+
 
 configFile = "./session.pk"
 watb = "-1001049406492"
@@ -30,6 +33,9 @@ admins = [
           ]
 
 # - utilities
+
+fValue = lambda cell: cell.value
+fNonEmpty = lambda value: value
 
 # time
 
@@ -191,13 +197,57 @@ def roll(bot, update):
         return
     config = loadConfig()
     print(config)
+
     if config[0] == False:
-        limit = int(update.message.text.split(" ")[1])
-        if limit and limit >= 4:
-            result = random.randint(4, limit)
-            bot.sendMessage(newseeds, "Rolled <b>{}</b>.".format(result), parse_mode="HTML")
+        suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
+        archiveNames = filter(fNonEmpty, map(fValue, wks.range('G4:G1000')))
+        suggestionsCount = len(suggestionNames)
+        if suggestionsCount > 0:
+            result = random.randint(0, suggestionsCount-1)
+            spreadsheetNumber = result + 4
+            print("rolled {}".format(spreadsheetNumber))
+            rolled = map(fValue, wks.range('A'+str(spreadsheetNumber)+':E'+ str(spreadsheetNumber)))
+            update.message.reply_text(
+                "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(spreadsheetNumber, rolled[2], rolled[4], rolled[3], rolled[1]).encode('utf-8'), parse_mode="HTML")
     else:
     	update.message.reply_text("Another session is still on. I'm afraid I can't do that.")
+
+# archive 
+
+def archive(bot, update):
+    if not isNewCommand(update):
+        return
+    if not checkAccess(update):
+        return
+    position = int(update.message.text.split(" ")[1])
+    now = datetime.datetime.now()
+
+    suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
+    lastSuggestion = len(suggestionNames) + 4
+
+    archiveNames = filter(fNonEmpty, map(fValue, wks.range('G4:G1000')))
+    archiveNew = len(archiveNames) + 4
+
+    # add to archive
+
+    rolled = map(fValue, wks.range('A'+str(position)+':E'+ str(position)))
+    wks.update_acell('F'+str(archiveNew), now.strftime("%d %B %y"))
+    wks.update_acell('G'+str(archiveNew), rolled[1])
+    wks.update_acell('H'+str(archiveNew), rolled[2])
+    wks.update_acell('I'+str(archiveNew), rolled[3])
+    wks.update_acell('J'+str(archiveNew), rolled[4])
+
+    wks.update_acell('B'+str(position), "")
+    wks.update_acell('C'+str(position), "")
+    wks.update_acell('D'+str(position), "")
+    wks.update_acell('E'+str(position), "")
+
+    # delete cells
+
+    suggestionCells = wks.range('B'+str(position+1)+':E'+str(lastSuggestion))
+    for cell in suggestionCells:
+        wks.update_acell(columns[cell.col-1]+str(cell.row-1), cell.value)
+
 
 # suggest
 
@@ -308,6 +358,7 @@ updater.dispatcher.add_handler(CommandHandler('tag', tagPeople))
 # admin commands
 
 updater.dispatcher.add_handler(CommandHandler('roll', roll))
+updater.dispatcher.add_handler(CommandHandler('archive', archive))
 updater.dispatcher.add_handler(CommandHandler('cunt', cunt))
 updater.dispatcher.add_handler(CommandHandler('new', newAlbum))
 updater.dispatcher.add_handler(CommandHandler('n', nextSong))
