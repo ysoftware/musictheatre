@@ -208,7 +208,7 @@ def roll(bot, update):
             print("rolled {}".format(spreadsheetNumber))
             rolled = map(fValue, wks.range('A'+str(spreadsheetNumber)+':E'+ str(spreadsheetNumber)))
             update.message.reply_text(
-                "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(spreadsheetNumber, rolled[2], rolled[4], rolled[3], rolled[1]).encode('utf-8'), parse_mode="HTML")
+                "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(spreadsheetNumber, rolled[2].encode('utf-8'), rolled[4].encode('utf-8'), rolled[3].encode('utf-8'), rolled[1].encode('utf-8')), parse_mode="HTML")
     else:
     	update.message.reply_text("Another session is still on. I'm afraid I can't do that.")
 
