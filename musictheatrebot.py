@@ -36,6 +36,7 @@ admins = [
 
 fValue = lambda cell: cell.value
 fNonEmpty = lambda value: value
+fLower = lambda value: value.lower()
 
 # time
 
@@ -200,19 +201,26 @@ def roll(bot, update):
 
     if config[0] == False:
         suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
-        archiveNames = filter(fNonEmpty, map(fValue, wks.range('G4:G1000')))
+        illegalNames = map(fLower, filter(fNonEmpty, map(fValue, wks.range('G4:G1000')))[-5:])
         suggestionsCount = len(suggestionNames)
+        print(illegalNames)
         if suggestionsCount > 0:
-            result = random.randint(0, suggestionsCount-1)
-            spreadsheetNumber = result + 4
-            print("rolled {}".format(spreadsheetNumber))
-            rolled = map(fValue, wks.range('A'+str(spreadsheetNumber)+':E'+ str(spreadsheetNumber)))
-            update.message.reply_text(
-                "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(spreadsheetNumber, rolled[2].encode('utf-8'), rolled[4].encode('utf-8'), rolled[3].encode('utf-8'), rolled[1].encode('utf-8')), parse_mode="HTML")
+            for _ in range(5):
+                result = random.randint(0, suggestionsCount-1)
+                spreadsheetNumber = result + 4
+                rolled = map(fValue, wks.range('A'+str(spreadsheetNumber)+':E'+ str(spreadsheetNumber)))
+                if not rolled[1].lower() in illegalNames:
+                    bot.sendMessage(newseeds,
+                        "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(spreadsheetNumber, rolled[2].encode('utf-8'), rolled[4].encode('utf-8'), rolled[3].encode('utf-8'), rolled[1].encode('utf-8')), parse_mode="HTML")
+                    return
+                else:
+                    bot.sendMessage(newseeds, "Rolled {}. {} - illegal.".format(spreadsheetNumber, rolled[1].encode('utf-8')))
+        else:
+            update.message.reply_text("No suggestions found.")
     else:
     	update.message.reply_text("Another session is still on. I'm afraid I can't do that.")
 
-# archive 
+# archive
 
 def archive(bot, update):
     if not isNewCommand(update):
