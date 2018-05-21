@@ -6,15 +6,16 @@ import datetime
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-# spreadsheet 
-
-scope = ['https://spreadsheets.google.com/feeds',
-         'https://www.googleapis.com/auth/drive']
-credentials = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
-gc = gspread.authorize(credentials)
-wks = gc.open_by_key("1ExwdtbLUBpWZ12fg2faURtZLf7T8VZa0tndEX4SYkck").get_worksheet(0)
+# spreadsheet
 columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
-
+wks = None
+def auth():
+    global wks
+    scope = ['https://spreadsheets.google.com/feeds',
+             'https://www.googleapis.com/auth/drive']
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
+    gc = gspread.authorize(credentials)
+    wks = gc.open_by_key("1ExwdtbLUBpWZ12fg2faURtZLf7T8VZa0tndEX4SYkck").get_worksheet(0)
 
 configFile = "./session.pk"
 watb = "-1001049406492"
@@ -200,6 +201,7 @@ def roll(bot, update):
     print(config)
 
     if config[0] == False:
+        auth()
         suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
         illegalNames = map(fLower, filter(fNonEmpty, map(fValue, wks.range('G4:G1000')))[-5:])
         suggestionsCount = len(suggestionNames)
@@ -227,6 +229,7 @@ def archive(bot, update):
         return
     if not checkAccess(update):
         return
+    auth()
     position = int(update.message.text.split(" ")[1])
     now = datetime.datetime.now()
 
