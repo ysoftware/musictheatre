@@ -255,30 +255,38 @@ def archiveDo(bot, position):
     lastSuggestion = len(suggestionNames) + 4
 
     archiveNames = filter(fNonEmpty, map(fValue, wks.range('G4:G1000')))
-    archiveNew = len(archiveNames) + 4
+    archiveNewPosition = len(archiveNames) + 4
 
     # add to archive
 
-    rolled = map(fValue, wks.range('A'+str(position)+':E'+ str(position)))
-    wks.update_acell('F'+str(archiveNew), now.strftime("%d %b %y"))
-    wks.update_acell('G'+str(archiveNew), rolled[1])
-    wks.update_acell('H'+str(archiveNew), rolled[2])
-    wks.update_acell('I'+str(archiveNew), rolled[3])
-    wks.update_acell('J'+str(archiveNew), rolled[4])
+    rolledCells = wks.range('B'+str(position)+':E'+ str(position))
+    rolled = map(fValue, rolledCells)
 
-    wks.update_acell('B'+str(position), "")
-    wks.update_acell('C'+str(position), "")
-    wks.update_acell('D'+str(position), "")
-    wks.update_acell('E'+str(position), "")
+    # add to archive
+    archiveCells = wks.range('F'+str(archiveNewPosition)+':J'+str(archiveNewPosition))
+    archiveCells[0].value = now.strftime("%d %b %y")
+    archiveCells[1].value = rolled[0]
+    archiveCells[2].value = rolled[1]
+    archiveCells[3].value = rolled[2]
+    archiveCells[4].value = rolled[3]
 
-    bot.sendMessage(newseeds, "Suggestion moved to the archive. Please delete the empty row.")
+    wks.update_cells(archiveCells)
 
-    # delete cells
+    # remove cells
+    for cell in rolledCells:
+        cell.value = ""
 
-    # suggestionCells = wks.range('B'+str(position+1)+':E'+str(lastSuggestion))
-    # for cell in suggestionCells:
-    #     wks.update_acell(columns[cell.col-1]+str(cell.row-1), cell.value)
+    # move cells up
+    suggestionCells = wks.range('B'+str(position)+':E'+str(lastSuggestion))
+    for i in range(len(suggestionCells)):
+        if len(suggestionCells) > i + 4:
+            suggestionCells[i].value = suggestionCells[i+4].value
+        else:
+            suggestionCells[i].value = ""
 
+    wks.update_cells(rolledCells + suggestionCells)
+
+    bot.sendMessage(newseeds, "Suggestion moved to the archive.")
 
 # suggest
 
