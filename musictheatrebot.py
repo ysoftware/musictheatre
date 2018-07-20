@@ -63,6 +63,11 @@ def randomCunt():
 
 # session persistence
 
+def emptyConfig():
+    obj = dict()
+    obj['isPlaying'] = False
+    return obj
+
 def saveConfig(config):
     with open(configFile, "wb") as fi:
         pickle.dump(config, fi)
@@ -75,7 +80,7 @@ def loadConfig():
             return config
     except:
         print("config file is not found")
-        config = [False, "", "", ""]
+        config = emptyConfig()
         saveConfig(config)
         return config
 
@@ -87,7 +92,7 @@ def over(bot, update):
     if not checkAccess(update):
         return
     config = loadConfig()
-    if config[0] == True:
+    if config['isPlaying'] == True:
         if isNewCommand(update):
             bot.sendMessage(newseeds, "#musictheatre it's OVER.")
         endSession()
@@ -98,7 +103,7 @@ def abort(bot, update):
     if not checkAccess(update):
         return
     config = loadConfig()
-    if config[0] == True:
+    if config['isPlaying'] == True:
         if isNewCommand(update):
             bot.sendMessage(newseeds, "#musictheatre it's ABORTED.")
         endSession()
@@ -113,7 +118,7 @@ def newAlbum(bot, update):
     config = loadConfig()
     message = update.message.text.split(" ", 1)[1].strip()
 
-    if config[0] == False:
+    if config['isPlaying'] == False:
 
         # new artist - album
         if " - " in message:
@@ -125,19 +130,28 @@ def newAlbum(bot, update):
         elif int(message) >= 4:
             auth()
             info = map(fValue, wks.range("B{0}:E{0}".format(message, message)))
-            newAlbumSet(bot, config, info[1], info[3])
+            newAlbumSet(bot, config, info[1], info[3], info[2], info[0])
             
             # archive as well
             archiveDo(bot, message)
     else:
         bot.sendMessage(newseeds, "We're still in session.")
 
-def newAlbumSet(bot, config, artistName, albumName):
-    config[0] = True
-    config[1] = artistName
-    config[2] = albumName
-    config[3] = ""
-    text = "#musictheatre New Album: {0} - {1}".format(config[1].encode('utf-8'), config[2].encode('utf-8'))
+def newAlbumSet(bot, config, artistName, albumName, year, suggested):
+    config['isPlaying'] = True
+    config['artist'] = artistName.encode('utf-8')
+    config['album'] = albumName.encode('utf-8')
+    config['track'] = ""
+
+    text = ""
+    if year is not None and suggested is not None:
+        config['year'] = year.encode('utf-8')
+        config['suggested'] = suggested.encode('utf-8')
+
+        text = "#musictheatre New Album: {0} - {1} ({2}) [Suggested by: {3}]".format(config['artist'], config['album'], config['year'], config['suggested'])
+    else:
+        text = "#musictheatre New Album: {0} - {1}".format(config['artist'], config['album'])
+
     bot.sendMessage(newseeds, text)
     saveConfig(config)
 
@@ -147,11 +161,11 @@ def nextSong(bot, update):
     if not checkAccess(update):
         return
     config = loadConfig()
-    if config[0] == True:
+    if config['isPlaying'] == True:
         trackName = update.message.text.split(" ", 1)[1].strip()
-        if len(trackName) > 0 and len(config[1]) > 0 and trackName != config[3]:
-            config[3] = trackName
-            text = "#musictheatre {0} - {1}".format(config[1].encode('utf-8'), config[3].encode('utf-8'))
+        if len(trackName) > 0 and len(config['artist']) > 0 and trackName != config['track']:
+            config['track'] = trackName
+            text = "#musictheatre {0} - {1}".format(config['artist'].encode('utf-8'), config['track'].encode('utf-8'))
             bot.sendMessage(newseeds, text)
             saveConfig(config)
     else:
@@ -166,9 +180,9 @@ def currentAlbum(bot, update):
     if not isNewCommand(update):
         return
     config = loadConfig()
-    if config[0] == True:
-        if len(config[1]) > 0 and len(config[2]) > 0:
-            text = "{0} by {1}".format(config[2].encode('utf-8'), config[1].encode('utf-8'))
+    if config['isPlaying'] == True:
+        if len(config['artist']) > 0 and len(config['album']) > 0:
+            text = "{0} by {1}".format(config['album'].encode('utf-8'), config['artist'].encode('utf-8'))
             update.message.reply_text(text)
     else:
         update.message.reply_text("Nothing is playing.")
@@ -178,9 +192,9 @@ def currentTrack(bot, update):
     if not isNewCommand(update):
         return
     config = loadConfig()
-    if config[0] == True:
-        if len(config[1]) > 0 and len(config[2]) > 0 and len(config[3]) > 0:
-            text = "Now playing: {0} - {1} (from {2})".format(config[1].encode('utf-8'), config[3].encode('utf-8'), config[2].encode('utf-8'))
+    if config['isPlaying'] == True:
+        if len(config['artist']) > 0 and len(config['album']) > 0 and len(config['track']) > 0:
+            text = "Now playing: {0} - {1} (from {2})".format(config['artist'].encode('utf-8'), config['track'].encode('utf-8'), config['album'].encode('utf-8'))
             update.message.reply_text(text)
     else:
         update.message.reply_text("Nothing is playing.")
@@ -215,7 +229,7 @@ def roll(bot, update):
     config = loadConfig()
     print(config)
 
-    if config[0] == False:
+    if config['isPlaying'] == False:
         auth()
         suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
         illegalNames = map(fLower, filter(fNonEmpty, map(fValue, wks.range('G4:G1000')))[-5:])
@@ -294,7 +308,7 @@ def suggest(bot, update):
     if not isNewCommand(update):
         return
     config = loadConfig()
-    if config[0] == False:
+    if config['isPlaying'] == False:
         bot.sendMessage(newseeds, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", parse_mode="HTML")
     else:
         bot.sendMessage(newseeds, "The session is still on, isn't it? ISN'T IT?")
