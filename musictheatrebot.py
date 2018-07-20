@@ -3,6 +3,7 @@ import sched, time, random, logging, pickle, datetime, calendar
 from telegram.error import (TelegramError, Unauthorized, BadRequest, 
                             TimedOut, ChatMigrated, NetworkError)
 import datetime
+import numbers
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -110,21 +111,35 @@ def newAlbum(bot, update):
     if not checkAccess(update):
         return
     config = loadConfig()
-    if config[0] == False:
-        message = update.message.text.split(" ", 1)[1].strip()
-        artistName = message.split(" - ", 1)[0].strip()
-        albumName = message.split(" - ", 1)[1].strip()
+    message = update.message.text.split(" ", 1)[1].strip()
 
-        if len(albumName) > 0 and len(artistName) > 0:
-            config[0] = True
-            config[1] = artistName
-            config[2] = albumName
-            config[3] = ""
-            text = "#musictheatre New Album: {0} - {1}".format(config[1].encode('utf-8'), config[2].encode('utf-8'))
-            bot.sendMessage(newseeds, text)
-            saveConfig(config)
+    if config[0] == False:
+
+        # new artist - album
+        if " - " in message:
+            artistName = message.split(" - ", 1)[0].strip()
+            albumName = message.split(" - ", 1)[1].strip()
+            newAlbumSet(bot, config, artistName, albumName)
+
+        # new 34
+        elif int(message) >= 4:
+            auth()
+            info = map(fValue, wks.range("B{0}:E{0}".format(message, message)))
+            newAlbumSet(bot, config, info[1], info[3])
+            
+            # archive as well
+            archiveDo(bot, message)
     else:
-        bot.sendMessage(newseeds, "Fuck no, not this shitty album.")
+        bot.sendMessage(newseeds, "We're still in session.")
+
+def newAlbumSet(bot, config, artistName, albumName):
+    config[0] = True
+    config[1] = artistName
+    config[2] = albumName
+    config[3] = ""
+    text = "#musictheatre New Album: {0} - {1}".format(config[1].encode('utf-8'), config[2].encode('utf-8'))
+    bot.sendMessage(newseeds, text)
+    saveConfig(config)
 
 def nextSong(bot, update):
     if not isNewCommand(update):
@@ -231,6 +246,9 @@ def archive(bot, update):
         return
     auth()
     position = int(update.message.text.split(" ")[1])
+    archiveDo(bot, position)
+    
+def archiveDo(bot, position):
     now = datetime.datetime.now()
 
     suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
@@ -242,7 +260,7 @@ def archive(bot, update):
     # add to archive
 
     rolled = map(fValue, wks.range('A'+str(position)+':E'+ str(position)))
-    wks.update_acell('F'+str(archiveNew), now.strftime("%d %B %y"))
+    wks.update_acell('F'+str(archiveNew), now.strftime("%d %b %y"))
     wks.update_acell('G'+str(archiveNew), rolled[1])
     wks.update_acell('H'+str(archiveNew), rolled[2])
     wks.update_acell('I'+str(archiveNew), rolled[3])
@@ -253,11 +271,13 @@ def archive(bot, update):
     wks.update_acell('D'+str(position), "")
     wks.update_acell('E'+str(position), "")
 
+    bot.sendMessage(newseeds, "Suggestion moved to the archive. Please delete the empty row.")
+
     # delete cells
 
-    suggestionCells = wks.range('B'+str(position+1)+':E'+str(lastSuggestion))
-    for cell in suggestionCells:
-        wks.update_acell(columns[cell.col-1]+str(cell.row-1), cell.value)
+    # suggestionCells = wks.range('B'+str(position+1)+':E'+str(lastSuggestion))
+    # for cell in suggestionCells:
+    #     wks.update_acell(columns[cell.col-1]+str(cell.row-1), cell.value)
 
 
 # suggest
