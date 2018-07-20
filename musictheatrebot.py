@@ -92,6 +92,7 @@ def over(bot, update):
     if not checkAccess(update):
         return
     config = loadConfig()
+    print(config)
     if config['isPlaying'] == True:
         if isNewCommand(update):
             bot.sendMessage(newseeds, "#musictheatre it's OVER.")
@@ -172,7 +173,7 @@ def nextSong(bot, update):
         bot.sendMessage(newseeds, "What album was that again?")
 
 def endSession():
-    saveConfig([False, "", "", ""])
+    saveConfig(emptyConfig())
 
 # current
 
