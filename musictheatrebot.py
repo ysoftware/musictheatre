@@ -183,6 +183,10 @@ def currentAlbum(bot, update):
     if config['isPlaying'] == True:
         if len(config['artist']) > 0 and len(config['album']) > 0:
             text = "{0} by {1}".format(config['album'].encode('utf-8'), config['artist'].encode('utf-8'))
+            if config['year'] is not None:
+                text += " ({})".format(config['year'].encode('utf-8'))
+            if config['suggested'] is not None:
+                text += " [Suggested by: {}]".format(config['suggested'].encode('utf-8'))
             update.message.reply_text(text)
     else:
         update.message.reply_text("Nothing is playing.")
