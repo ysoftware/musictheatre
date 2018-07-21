@@ -22,7 +22,11 @@ configFile = "./session.pk"
 watb = "-1001049406492"
 newseeds = "-1001138132564"
 retardStickerId = "CAADBAAD2wADeyqRC60Pvd---1a5Ag";
-tagMsg = "#musictheatre @jntn7 @poisonparty @zhmaky @Xanes @Tova96 @danitkoy @greinchrt @jokullmusic @GalaxyDrache @ysoftware @sexy_nutella_69 @Tom_veldhuis @Doomgoat @ilya_mordvinkin @amobishoproden @tbshfmn @FkinTag @HexagonSun";
+
+# used to tag
+# @jntn7 @poisonparty @zhmaky @Xanes @Tova96 @danitkoy @greinchrt 
+# @jokullmusic @GalaxyDrache @ysoftware @sexy_nutella_69 @Tom_veldhuis @Doomgoat 
+# @ilya_mordvinkin @amobishoproden @tbshfmn @FkinTag @HexagonSun
 
 admins = [
           "Xanes",
@@ -34,7 +38,7 @@ admins = [
           "Tom_veldhuis"
           ]
 
-# - utilities
+# utilities
 
 fValue = lambda cell: cell.value
 fNonEmpty = lambda value: value
@@ -42,7 +46,7 @@ fLower = lambda value: value.lower()
 
 # time
 
-def unix_time_millis(dt): # datetime.datetime.now()
+def unix_time_millis(dt):
     epoch = datetime.datetime.utcfromtimestamp(0)
     return (dt - epoch).total_seconds() * 1000.0
 
@@ -376,7 +380,36 @@ def tagPeople(bot, update):
         return
     if not isNewCommand(update):
         return
-    bot.sendMessage(newseeds, tagMsg, parse_mode="HTML")
+    config = loadConfig()
+    if 'tagList' in config and len(config['tagList']) > 0:
+        bot.sendMessage(newseeds, "Notifying {} people...".format(len(config['tagList'])))
+        for id in config['tagList']:
+            bot.sendMessage(id, "#musictheatre How about some music?")
+    else:
+        bot.sendMessage(newseeds, "No one is subscribed for /tag updates.")
+
+def tagMe(bot, update):
+    id = update.effective_user.id
+    config = loadConfig()
+    if 'tagList' not in config:
+        config['tagList'] = []
+    if id not in config['tagList']:
+        config['tagList'].append(id)
+        bot.sendMessage(id, "You are now subscribed to /tag updates.")
+    else:
+        bot.sendMessage(id, "You are already subscribed to /tag updates.")
+    saveConfig(config)
+
+def dontTagMe(bot, update):
+    id = update.effective_user.id
+    config = loadConfig()
+    if 'tagList' not in config and id not in config['tagList']:
+        config['tagList'] = []
+        bot.sendMessage(id, "You are not subscribed to /tag updates.")
+    else:
+        config['tagList'].remove(id)
+        bot.sendMessage(id, "You are now unsubscribed from /tag updates.")
+    saveConfig(config)
 
 # retarded
 
@@ -412,6 +445,12 @@ updater.dispatcher.add_handler(CommandHandler('suggest', suggest))
 updater.dispatcher.add_handler(CommandHandler('song', currentTrack))
 updater.dispatcher.add_handler(CommandHandler('album', currentAlbum))
 updater.dispatcher.add_handler(CommandHandler('tag', tagPeople))
+updater.dispatcher.add_handler(CommandHandler('tagme', tagMe))
+updater.dispatcher.add_handler(CommandHandler('stop', dontTagMe))
+updater.dispatcher.add_handler(CommandHandler('shutup', dontTagMe))
+updater.dispatcher.add_handler(CommandHandler('fuckoff', dontTagMe))
+updater.dispatcher.add_handler(CommandHandler('goaway', dontTagMe))
+updater.dispatcher.add_handler(CommandHandler('unsub', dontTagMe))
 
 # admin commands
 
