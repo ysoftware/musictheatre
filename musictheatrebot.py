@@ -425,7 +425,7 @@ def test(bot, update):
     if not isNewCommand(update):
         return
     if update.message.from_user.username == "ysoftware":
-        update.message.reply_text("10")
+        bot.sendMessage(101193334, loadConfig())
 
 def error_callback(bot, update, error):
     print(error)
@@ -448,11 +448,10 @@ updater.dispatcher.add_handler(CommandHandler('suggest', suggest))
 updater.dispatcher.add_handler(CommandHandler('song', currentTrack))
 updater.dispatcher.add_handler(CommandHandler('album', currentAlbum))
 updater.dispatcher.add_handler(CommandHandler('tag', tagPeople))
+
 updater.dispatcher.add_handler(CommandHandler('tagme', tagMe))
 updater.dispatcher.add_handler(CommandHandler('stop', dontTagMe))
-updater.dispatcher.add_handler(CommandHandler('shutup', dontTagMe))
 updater.dispatcher.add_handler(CommandHandler('fuckoff', dontTagMe))
-updater.dispatcher.add_handler(CommandHandler('goaway', dontTagMe))
 updater.dispatcher.add_handler(CommandHandler('unsub', dontTagMe))
 updater.dispatcher.add_handler(CommandHandler('taginfo', taginfo))
 
