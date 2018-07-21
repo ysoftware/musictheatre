@@ -19,14 +19,9 @@ def auth():
     wks = gc.open_by_key("1ExwdtbLUBpWZ12fg2faURtZLf7T8VZa0tndEX4SYkck").get_worksheet(0)
 
 configFile = "./session.pk"
-watb = "-1001049406492"
-newseeds = "-1001138132564"
+watb = -1001049406492
+newseeds = -1001138132564
 retardStickerId = "CAADBAAD2wADeyqRC60Pvd---1a5Ag";
-
-# used to tag
-# @jntn7 @poisonparty @zhmaky @Xanes @Tova96 @danitkoy @greinchrt 
-# @jokullmusic @GalaxyDrache @ysoftware @sexy_nutella_69 @Tom_veldhuis @Doomgoat 
-# @ilya_mordvinkin @amobishoproden @tbshfmn @FkinTag @HexagonSun
 
 admins = [
           "Xanes",
@@ -59,6 +54,11 @@ def isNewCommand(update):
     dt = timenow - messageTime
     print(update.message.text + " from " + update.message.from_user.username + " delayed by {}".format(dt))
     return dt < (20000)
+
+def isNewSeeds(update):
+    print(update.message.chat_id == newseeds)
+    print(update.message.chat_id)
+    return update.message.chat_id == newseeds
 
 # quotes
 
@@ -322,13 +322,23 @@ def suggest(bot, update):
     else:
         bot.sendMessage(newseeds, "The session is still on, isn't it? ISN'T IT?")
 
-
 # help
+
+def start(bot, update):
+    update.message.reply_text("<b>Welcome to Music Theatre!</b>\nThis bot is designed to assist newseeds to discover music.\n", parse_mode="HTML")
+    help(bot, update)
 
 def help(bot, update):
     if not isNewCommand(update):
         return
-    update.message.reply_text("Here's the list of available commands:\n<b>/spreadsheet</b> gives you the link to our spreadsheet\n<b>/suggest</b> will ask if anyone wants to start a session\n<b>/admins</b> for the list of people who have admin access\n\nUse these while in session:\n<b>/song</b> or <b>/album</b> to find out what's playing".encode('utf-8'), parse_mode="HTML")
+    if not checkAccess(update):
+        return
+    update.message.reply_text("Here's the list of commands:\n<b>/sheet</b> gives you the link to our spreadsheet\n<b>/tagme</b> to subscribe to session notifications [private message only]\n<b>/suggest</b> will ask if anyone wants to start a session\n<b>/admins</b> for the list of people who have admin access\n\nUse these while in session:\n<b>/song</b> or <b>/album</b> to find out what's playing".encode('utf-8'), parse_mode="HTML")
+
+def adminHelp(bot, update):
+    if not isNewCommand(update):
+        return
+    update.message.reply_text("Here's the list of admin commands:\n<b>/roll</b> to randomly pick a suggestion\n<b>/cunt</b> to initiate the countdown\n<b>/archive [roll]</b> to archive a suggestion\n<b>/new [roll]</b> will set current album playing and archive the suggestion\n\nUse these while in session:\n<b>/n</b> to set current song playing\n<b>/over or /abort</b> to end the session".encode('utf-8'), parse_mode="HTML")
 
 # say something
 
@@ -347,7 +357,7 @@ def sticker(bot, update):
         return
     if not checkAccess(update):
         return
-    if update.message.chat_id == newseeds:
+    if isNewSeeds(update):
         return
     message = update.message.text.split(" ", 1)[1].strip()
     bot.sendSticker(newseeds, message)
@@ -382,23 +392,26 @@ def tagPeople(bot, update):
         return
     config = loadConfig()
     if 'tagList' in config and len(config['tagList']) > 0:
-        bot.sendMessage(newseeds, "Notifying {} people...".format(len(config['tagList'])))
+        bot.sendMessage(newseeds, "Notifying {} people... (/taginfo for learn).".format(len(config['tagList'])))
         for id in config['tagList']:
             bot.sendMessage(id, "#musictheatre How about some music?")
     else:
         bot.sendMessage(newseeds, "No one is subscribed for /tag updates.")
 
 def tagMe(bot, update):
-    id = update.effective_user.id
-    config = loadConfig()
-    if 'tagList' not in config:
-        config['tagList'] = []
-    if id not in config['tagList']:
-        config['tagList'].append(id)
-        bot.sendMessage(id, "You are now subscribed to /tag updates. Use /stop to unsubscribe.")
+    if isNewSeeds(update):
+        update.message.reply_text("You have to private message me this command, because I am forbidden to initiate a chat with you.")
     else:
-        bot.sendMessage(id, "You are already subscribed to /tag updates.")
-    saveConfig(config)
+        id = update.effective_user.id
+        config = loadConfig()
+        if 'tagList' not in config:
+            config['tagList'] = []
+        if id not in config['tagList']:
+            config['tagList'].append(id)
+            bot.sendMessage(id, "You are now subscribed to /tag updates. Use /stop to unsubscribe.")
+        else:
+            bot.sendMessage(id, "You are already subscribed to /tag updates.")
+        saveConfig(config)
 
 def dontTagMe(bot, update):
     id = update.effective_user.id
@@ -412,7 +425,7 @@ def dontTagMe(bot, update):
     saveConfig(config)
 
 def taginfo(bot, update):
-    bot.sendMessage(newseeds, "Say /tagme to subscribe to the new #musictheatre updates.")
+    bot.sendMessage(newseeds, "PM /tagme to the bot to subscribe to #musictheatre updates.")
 
 # retarded
 
@@ -430,33 +443,36 @@ def test(bot, update):
 def error_callback(bot, update, error):
     print(error)
 
+# commands
 
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 updater = Updater('337143431:AAH1TZLyqBTuHEKIIZ7OvEnmNL03I-EcHRM')
 
-# general commands
-
-updater.dispatcher.add_handler(CommandHandler('help', help))
-updater.dispatcher.add_handler(CommandHandler('admins', adminList))
-
+# sheet
 updater.dispatcher.add_handler(CommandHandler('shit', shit))
 updater.dispatcher.add_handler(CommandHandler('sheet', shit))
 updater.dispatcher.add_handler(CommandHandler('spreadshit', shit))
 updater.dispatcher.add_handler(CommandHandler('spreadsheet', shit))
 
+# user session
 updater.dispatcher.add_handler(CommandHandler('suggest', suggest))
 updater.dispatcher.add_handler(CommandHandler('song', currentTrack))
 updater.dispatcher.add_handler(CommandHandler('album', currentAlbum))
 updater.dispatcher.add_handler(CommandHandler('tag', tagPeople))
 
+# session notifications
 updater.dispatcher.add_handler(CommandHandler('tagme', tagMe))
 updater.dispatcher.add_handler(CommandHandler('stop', dontTagMe))
 updater.dispatcher.add_handler(CommandHandler('fuckoff', dontTagMe))
 updater.dispatcher.add_handler(CommandHandler('unsub', dontTagMe))
 updater.dispatcher.add_handler(CommandHandler('taginfo', taginfo))
 
-# admin commands
+# admin 
+updater.dispatcher.add_handler(CommandHandler('test', test))
+updater.dispatcher.add_handler(CommandHandler('s', sticker))
+updater.dispatcher.add_handler(CommandHandler('b', say))
 
+# admin session 
 updater.dispatcher.add_handler(CommandHandler('roll', roll))
 updater.dispatcher.add_handler(CommandHandler('archive', archive))
 updater.dispatcher.add_handler(CommandHandler('cunt', cunt))
@@ -465,10 +481,13 @@ updater.dispatcher.add_handler(CommandHandler('n', nextSong))
 updater.dispatcher.add_handler(CommandHandler('abort', abort))
 updater.dispatcher.add_handler(CommandHandler('over', over))
 
-updater.dispatcher.add_handler(CommandHandler('b', say))
-updater.dispatcher.add_handler(CommandHandler('s', sticker))
-updater.dispatcher.add_handler(CommandHandler('test', test))
+# other 
 updater.dispatcher.add_handler(CommandHandler('slow', slow))
+updater.dispatcher.add_handler(CommandHandler('start', start))
+updater.dispatcher.add_handler(CommandHandler('help', help))
+updater.dispatcher.add_handler(CommandHandler('adminHelp', adminHelp))
+updater.dispatcher.add_handler(CommandHandler('admins', adminList))
+
 
 updater.dispatcher.add_error_handler(error_callback)
 
