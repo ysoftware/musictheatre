@@ -395,7 +395,7 @@ def tagMe(bot, update):
         config['tagList'] = []
     if id not in config['tagList']:
         config['tagList'].append(id)
-        bot.sendMessage(id, "You are now subscribed to /tag updates.")
+        bot.sendMessage(id, "You are now subscribed to /tag updates. Use /stop to unsubscribe.")
     else:
         bot.sendMessage(id, "You are already subscribed to /tag updates.")
     saveConfig(config)
@@ -410,6 +410,9 @@ def dontTagMe(bot, update):
         config['tagList'].remove(id)
         bot.sendMessage(id, "You are now unsubscribed from /tag updates.")
     saveConfig(config)
+
+def taginfo(bot, update):
+    bot.sendMessage(newseeds, "Say /tagme to subscribe to the new #musictheatre updates.")
 
 # retarded
 
@@ -451,6 +454,7 @@ updater.dispatcher.add_handler(CommandHandler('shutup', dontTagMe))
 updater.dispatcher.add_handler(CommandHandler('fuckoff', dontTagMe))
 updater.dispatcher.add_handler(CommandHandler('goaway', dontTagMe))
 updater.dispatcher.add_handler(CommandHandler('unsub', dontTagMe))
+updater.dispatcher.add_handler(CommandHandler('taginfo', taginfo))
 
 # admin commands
 
