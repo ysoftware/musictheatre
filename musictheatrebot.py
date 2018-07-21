@@ -210,6 +210,13 @@ def currentTrack(bot, update):
 
 # countdown
 
+def processor_heavy_sleep(ms):  
+    start = time.clock()
+    end = start + ms /1000.
+    while time.clock() < end:
+        continue
+    return start, time.clock()
+
 def cunt(bot, update):
     if not isNewCommand(update):
         return
@@ -224,7 +231,7 @@ def cunt(bot, update):
         count = 5
         while count:
             bot.sendMessage(newseeds, "{}".format(count))
-            time.sleep(1)
+            processor_heavy_sleep(999)
             count -= 1
         bot.sendMessage(newseeds, "PLAY!")
 
