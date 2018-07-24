@@ -129,7 +129,7 @@ def newAlbum(bot, update):
         if " - " in message:
             artistName = message.split(" - ", 1)[0].strip()
             albumName = message.split(" - ", 1)[1].strip()
-            newAlbumSet(bot, config, artistName, albumName)
+            newAlbumSet(bot, config, artistName, albumName, None, None)
 
         # new 34
         elif int(message) >= 4:
@@ -177,7 +177,14 @@ def nextSong(bot, update):
         bot.sendMessage(newseeds, "What album was that again?")
 
 def endSession():
-    saveConfig(emptyConfig())
+    config = loadConfig()
+    del config['artist']
+    del config['track']
+    del config['album']
+    del config['suggested']
+    del config['year']
+    config['isPlaying'] = False
+    saveConfig(config)
 
 # current
 
@@ -399,7 +406,7 @@ def tagPeople(bot, update):
         return
     config = loadConfig()
     if 'tagList' in config and len(config['tagList']) > 0:
-        bot.sendMessage(newseeds, "Notifying {} people... (/taginfo for learn).".format(len(config['tagList'])))
+        bot.sendMessage(newseeds, "Notifying {} people... (/taginfo to learn).".format(len(config['tagList'])))
         for id in config['tagList']:
             bot.sendMessage(id, "#musictheatre How about some music?")
     else:
