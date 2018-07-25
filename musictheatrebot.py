@@ -413,6 +413,8 @@ def tagPeople(bot, update):
         bot.sendMessage(newseeds, "No one is subscribed for /tag updates.")
 
 def tagMe(bot, update):
+    if not isNewCommand(update):
+        return
     if isNewSeeds(update):
         update.message.reply_text("You have to private message me this command, because I am forbidden to initiate a chat with you.")
     else:
@@ -439,7 +441,7 @@ def dontTagMe(bot, update):
     saveConfig(config)
 
 def taginfo(bot, update):
-    bot.sendMessage(newseeds, "PM /tagme to the bot to subscribe to #musictheatre updates.")
+    update.message.reply_text("PM /tagme to the bot to subscribe to #musictheatre updates.")
 
 # retarded
 
