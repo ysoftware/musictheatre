@@ -462,7 +462,17 @@ def error_callback(bot, update, error):
 # commands
 
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-updater = Updater('337143431:AAH1TZLyqBTuHEKIIZ7OvEnmNL03I-EcHRM')
+
+TOKEN = "337143431:AAH1TZLyqBTuHEKIIZ7OvEnmNL03I-EcHRM"
+REQUEST_KWARGS={
+    "proxy_url": "socks5://deimos.public.opennetwork.cc:1090",
+    "urllib3_proxy_kwargs": {
+        "username": "101193334",
+        "password": "q08N7BhM"
+    }
+}
+
+updater = Updater(TOKEN, request_kwargs=REQUEST_KWARGS)
 
 # sheet
 updater.dispatcher.add_handler(CommandHandler('shit', shit))
