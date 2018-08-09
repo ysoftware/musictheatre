@@ -411,7 +411,10 @@ def tagPeople(bot, update):
         bot.sendMessage(newseeds, "Notifying {} people... (/taginfo to learn).".format(len(config['tagList'])))
         for id in config['tagList']:
             if id != update.effective_user.id:
-                bot.sendMessage(id, "#musictheatre How about some music?")
+                try:
+                    bot.sendMessage(id, "#musictheatre How about some music?")
+                except:
+                    print("{} blocked the bot.".format(update.effective_user.username))
     else:
         bot.sendMessage(newseeds, "No one is subscribed for /tag updates.")
 
