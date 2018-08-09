@@ -29,8 +29,10 @@ admins = [
           "tbshfmn",
           "sexy_nutella_69",
           "amobishoproden",
+          "jntn7",
           "Doomgoat",
-          "Tom_veldhuis"
+          "Tom_veldhuis",
+          "FkinTag"
           ]
 
 # utilities
