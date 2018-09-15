@@ -51,11 +51,12 @@ def checkAccess(update):
     return update.message.from_user.username in admins
 
 def isNewCommand(update):
-    timenow = unix_time_millis(datetime.datetime.now())
-    messageTime = unix_time_millis(update.message.date)
-    dt = timenow - messageTime
-    print(update.message.text + " from " + update.message.from_user.username + " delayed by {}".format(dt))
-    return dt < (20000)
+	print(update)
+	timenow = unix_time_millis(datetime.datetime.now())
+	messageTime = unix_time_millis(update.message.date)
+	dt = timenow - messageTime
+	print(update.message.text + " from " + update.message.from_user.username + " delayed by {}".format(dt))
+	return dt < (20000)
 
 def isNewSeeds(update):
     print(update.message.chat_id == newseeds)
@@ -180,11 +181,11 @@ def nextSong(bot, update):
 
 def endSession():
     config = loadConfig()
-    del config['artist']
-    del config['track']
-    del config['album']
-    del config['suggested']
-    del config['year']
+    config.pop('artist', None)
+    config.pop('track', None)
+    config.pop('album', None)
+    config.pop('suggested', None)
+    config.pop('year', None)
     config['isPlaying'] = False
     saveConfig(config)
 
