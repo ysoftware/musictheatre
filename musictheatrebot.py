@@ -6,6 +6,7 @@ import datetime
 import numbers
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import numpy
 
 # spreadsheet
 columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
@@ -247,6 +248,13 @@ def cunt(bot, update):
 
 # roll
 
+def getRandom(count):
+    values = list(range(0, count))
+    weights = list(map(lambda x: count - x/1.5, values))
+    weights = numpy.array(weights)
+    weights /= weights.sum()
+    return numpy.random.choice(values, p=weights)
+
 def roll(bot, update):
     if not isNewCommand(update):
         return
@@ -263,7 +271,10 @@ def roll(bot, update):
         print(illegalNames)
         if suggestionsCount > 0:
             for _ in range(5):
-                result = random.randint(0, suggestionsCount-1)
+
+                # get random (favor older suggestions)
+                result = getRandom(suggestionsCount-1)
+
                 spreadsheetNumber = result + 4
                 rolled = map(fValue, wks.range('A'+str(spreadsheetNumber)+':E'+ str(spreadsheetNumber)))
                 if not rolled[1].lower() in illegalNames:
@@ -271,7 +282,8 @@ def roll(bot, update):
                         "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(spreadsheetNumber, rolled[2].encode('utf-8'), rolled[4].encode('utf-8'), rolled[3].encode('utf-8'), rolled[1].encode('utf-8')), parse_mode="HTML")
                     return
                 else:
-                    bot.sendMessage(newseeds, "Rolled {}. {} - illegal.".format(spreadsheetNumber, rolled[1].encode('utf-8')))
+                    bot.sendMessage(newseeds,
+                        "Rolled {}. {} - illegal.".format(spreadsheetNumber, rolled[1].encode('utf-8')))
         else:
             update.message.reply_text("No suggestions found.")
     else:
@@ -337,7 +349,7 @@ def suggest(bot, update):
     if config['isPlaying'] == False:
         bot.sendMessage(newseeds, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", parse_mode="HTML")
     else:
-        bot.sendMessage(newseeds, "The session is still on, isn't it? ISN'T IT?")
+        bot.sendMessage(newseeds, "Another session is still in place.")
 
 # help
 
@@ -415,7 +427,7 @@ def tagPeople(bot, update):
                 try:
                     bot.sendMessage(id, "#musictheatre How about some music?")
                 except:
-                    print("{} blocked the bot.".format(update.effective_user.username))
+                    print("{} blocked the bot.".format(id))
     else:
         bot.sendMessage(newseeds, "No one is subscribed for /tag updates.")
 
