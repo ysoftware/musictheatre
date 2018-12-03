@@ -250,7 +250,7 @@ def cunt(bot, update):
 
 def getRandom(count):
     values = list(range(0, count))
-    weights = list(map(lambda x: count - x/1.3, values))
+    weights = list(map(lambda x: count - x, values))
     weights = numpy.array(weights)
     weights /= weights.sum()
     return numpy.random.choice(values, p=weights)
