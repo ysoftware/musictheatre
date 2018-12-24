@@ -7,6 +7,7 @@ import numbers
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import numpy
+import re
 
 # spreadsheet
 columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
@@ -527,10 +528,55 @@ def countSuggestions(bot, update):
 def addSuggestion(bot, update):
     if not isNewCommand(update):
         return
+    if not checkAccess(update):
+        return
 
-    if len(array) < 2:
-        update.message.reply_text("")
+    array = re.split("[;\n]", update.message.text)
 
+    print(array)
+    if len(array) != 4:
+        update.message.reply_text("Enter suggester name, artist, year and title of release (use semicolon or new line to divide input)\nLike this: \"Yaro; Pink Floyd; The Dark Side of the Moon; 1973\"")
+        return
+
+    auth()
+    
+    # name artist year album
+    name = array[0].strip()[5:]
+    artist = array[1].strip()
+    album = array[2].strip()
+    year = int(array[3].strip())
+
+    if year > 2019:
+        update.message.reply_text("What kind of future bullshit is that?")
+        return
+        
+    if year < 999:
+        update.message.reply_text("Music of the generation before smartphones? Nah!")
+        return
+
+    if year < 1900:
+        update.message.reply_text("Let's hear the cavemen music...")
+
+    suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
+    foundRows = filter(lambda value: value.lower() == name.lower(), suggestionNames)
+
+    if len(foundRows) >= 3:
+        update.message.reply_text("This one already has enough 3 suggestions.")
+        return
+
+    newSuggestion = len(suggestionNames) + 4
+
+    # add suggestion
+    newCells = wks.range('B'+str(newSuggestion)+':E'+str(newSuggestion))
+    newCells[0].value = name
+    newCells[1].value = artist
+    newCells[2].value = year
+    newCells[3].value = album
+
+    wks.update_cells(newCells)
+
+    update.message.reply_text("{} by {} ({}) is now suggested by {}.".format(
+        album, artist, year, name))
 
 # work
 
