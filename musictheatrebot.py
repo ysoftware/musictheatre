@@ -275,7 +275,7 @@ def roll(bot, update):
     if config['isPlaying'] == False:
         auth()
         suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
-        illegalNames = map(fLower, filter(fNonEmpty, map(fValue, wks.range('G4:G1000')))[-5:])
+        illegalNames = map(fLower, filter(fNonEmpty, map(fValue, wks.range('G4:G9'))))
         suggestionsCount = len(suggestionNames)
         print(illegalNames)
         if suggestionsCount > 0:
@@ -488,6 +488,50 @@ def taginfo(bot, update):
 def slow(bot, update):
 	bot.sendSticker(newseeds, retardStickerId)
 
+
+# manage suggestions
+
+def countSuggestions(bot, update):
+    if not isNewCommand(update):
+        return
+
+    array = update.message.text.split(" ")
+    if len(array) < 2:
+        update.message.reply_text("Enter the name to see how many albums he has suggested.")
+        return
+
+    name = update.message.text.split(" ")[1]
+    auth()
+
+    originalRows = map(fValue, wks.range('B4:B100'))
+    foundRows = filter(lambda value: value.lower() == name.lower(), originalRows)
+    suggestionsCount = len(foundRows)
+
+    originalArchive = map(fValue, wks.range('G4:G1000'))
+    foundArchive = filter(lambda value: value.lower() == name.lower(), originalArchive)
+    archiveCount = len(foundArchive)
+
+    if suggestionsCount > 0:
+        if archiveCount > 0:
+            update.message.reply_text("{} current suggestions by {}. Also {} in archive.".format(
+                suggestionsCount, foundRows[0], archiveCount))
+        else :
+            update.message.reply_text("{} current suggestions by {}.".format(
+                suggestionsCount, foundRows[0]))
+    elif archiveCount > 0:
+        update.message.reply_text("No current suggestion by {} but there are {} in archive.".format(
+            foundArchive[0]))
+    else:
+        update.message.reply_text("No such thing.")
+
+def addSuggestion(bot, update):
+    if not isNewCommand(update):
+        return
+
+    if len(array) < 2:
+        update.message.reply_text("")
+
+
 # work
 
 def test(bot, update):
@@ -554,6 +598,9 @@ updater.dispatcher.add_handler(CommandHandler('help', help))
 updater.dispatcher.add_handler(CommandHandler('adminHelp', adminHelp))
 updater.dispatcher.add_handler(CommandHandler('admins', adminList))
 
+# manage suggestions
+updater.dispatcher.add_handler(CommandHandler('count', countSuggestions))
+updater.dispatcher.add_handler(CommandHandler('add', addSuggestion))
 
 updater.dispatcher.add_error_handler(error_callback)
 
