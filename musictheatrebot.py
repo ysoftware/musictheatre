@@ -597,9 +597,19 @@ def rollInfo(bot, update):
         return
 
     values = getWeights(count)
+
+    array = update.message.text.split(" ")
+    if len(array) > 1:
+        try: 
+            position = int(array[1])
+            prob = values[position - 4] * 100
+            update.message.reply_text("Probability of rolling {0} is {1:.1f}%".format(position, prob))
+            return
+        except Exception as e: print(e)
+
     first = values[0] * 100
     last = values[-1] * 100
-    update.message.reply_text("Roll probability (linear distribution):\Oldest: {0:.1f}%\Newest: {1:.1f}%".format(first, last))
+    update.message.reply_text("Roll probability (linear distribution):\nOldest: {0:.1f}%\nNewest: {1:.1f}%".format(first, last))
 
 # work
 
