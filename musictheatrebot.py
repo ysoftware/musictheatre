@@ -258,11 +258,16 @@ def cunt(bot, update):
 
 # roll
 
-def getRandom(count):
+def getWeights(count):
     values = list(range(0, count))
     weights = list(map(lambda x: count - x/1.05, values))
     weights = numpy.array(weights)
     weights /= weights.sum()
+    return weights
+
+def getRandom(count):
+    values = list(range(0, count))
+    weights = getWeights(count)
     return numpy.random.choice(values, p=weights)
 
 def roll(bot, update):
@@ -578,6 +583,24 @@ def addSuggestion(bot, update):
     update.message.reply_text("{} by {} ({}) is now suggested by {}.".format(
         album, artist, year, name))
 
+
+def rollInfo(bot, update):
+    if not isNewCommand(update):
+        return
+
+    auth()
+
+    suggestions = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
+    count = len(suggestions)
+
+    if count < 2:
+        return
+
+    values = getWeights(count)
+    first = values[0] * 100
+    last = values[-1] * 100
+    update.message.reply_text("Roll probability (linear distribution):\Oldest: {0:.1f}%\Newest: {1:.1f}%".format(first, last))
+
 # work
 
 def test(bot, update):
@@ -645,6 +668,7 @@ updater.dispatcher.add_handler(CommandHandler('adminHelp', adminHelp))
 updater.dispatcher.add_handler(CommandHandler('admins', adminList))
 
 # manage suggestions
+updater.dispatcher.add_handler(CommandHandler('rollinfo', rollInfo))
 updater.dispatcher.add_handler(CommandHandler('count', countSuggestions))
 updater.dispatcher.add_handler(CommandHandler('add', addSuggestion))
 
