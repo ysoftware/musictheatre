@@ -56,7 +56,8 @@ def isNewCommand(update):
 	timenow = unix_time_millis(datetime.datetime.now())
 	messageTime = unix_time_millis(update.message.date)
 	dt = timenow - messageTime
-	print(update.message.text + " from " + update.message.from_user.username + " delayed by {}".format(dt))
+	print(update.message.text + " from " + update.message.from_user.username 
+        + " delayed by {}".format(dt))
 	return dt < (20000)
 
 def isNewSeeds(update):
@@ -67,7 +68,8 @@ def isNewSeeds(update):
 # quotes
 
 def randomCunt():
-    return random.choice(["Ready Lets Go", "Here we go...", "Come to Daddy", "Oh boy, here I go killin' again!"])
+    return random.choice(["Ready Lets Go", "Here we go...", 
+        "Come to Daddy", "Oh boy, here I go killin' again!"])
 
 # session persistence
 
@@ -157,9 +159,11 @@ def newAlbumSet(bot, config, artistName, albumName, year, suggested):
         config['year'] = year.encode('utf-8')
         config['suggested'] = suggested.encode('utf-8')
 
-        text = "#musictheatre New Album: {0} - {1} ({2}) [Suggested by: {3}]".format(config['artist'], config['album'], config['year'], config['suggested'])
+        text = "#musictheatre New Album: {0} - {1} ({2}) [Suggested by: {3}]".format(
+            config['artist'], config['album'], config['year'], config['suggested'])
     else:
-        text = "#musictheatre New Album: {0} - {1}".format(config['artist'], config['album'])
+        text = "#musictheatre New Album: {0} - {1}".format(
+            config['artist'], config['album'])
 
     bot.sendMessage(newseeds, text)
     saveConfig(config)
@@ -174,7 +178,8 @@ def nextSong(bot, update):
         trackName = update.message.text.split(" ", 1)[1].strip()
         if len(trackName) > 0 and len(config['artist']) > 0 and trackName != config['track']:
             config['track'] = trackName
-            text = "#musictheatre {0} - {1}".format(config['artist'].encode('utf-8'), config['track'].encode('utf-8'))
+            text = "#musictheatre {0} - {1}".format(
+                config['artist'].encode('utf-8'), config['track'].encode('utf-8'))
             bot.sendMessage(newseeds, text)
             saveConfig(config)
     else:
@@ -198,11 +203,13 @@ def currentAlbum(bot, update):
     config = loadConfig()
     if config['isPlaying'] == True:
         if len(config['artist']) > 0 and len(config['album']) > 0:
-            text = "{0} by {1}".format(config['album'].encode('utf-8'), config['artist'].encode('utf-8'))
+            text = "{0} by {1}".format(
+                config['album'].encode('utf-8'), config['artist'].encode('utf-8'))
             if config['year'] is not None:
                 text += " ({})".format(config['year'].encode('utf-8'))
             if config['suggested'] is not None:
-                text += " [Suggested by: {}]".format(config['suggested'].encode('utf-8'))
+                text += " [Suggested by: {}]".format(
+                    config['suggested'].encode('utf-8'))
             update.message.reply_text(text)
     else:
         update.message.reply_text("Nothing is playing.")
@@ -214,7 +221,9 @@ def currentTrack(bot, update):
     config = loadConfig()
     if config['isPlaying'] == True:
         if len(config['artist']) > 0 and len(config['album']) > 0 and len(config['track']) > 0:
-            text = "Now playing: {0} - {1} (from {2})".format(config['artist'].encode('utf-8'), config['track'].encode('utf-8'), config['album'].encode('utf-8'))
+            text = "Now playing: {0} - {1} (from {2})".format(
+                config['artist'].encode('utf-8'), config['track'].encode('utf-8'), 
+                config['album'].encode('utf-8'))
             update.message.reply_text(text)
     else:
         update.message.reply_text("Nothing is playing.")
@@ -276,14 +285,19 @@ def roll(bot, update):
                 result = getRandom(suggestionsCount-1)
 
                 spreadsheetNumber = result + 4
-                rolled = map(fValue, wks.range('A'+str(spreadsheetNumber)+':E'+ str(spreadsheetNumber)))
+                rolled = map(fValue, wks.range('A'+str(spreadsheetNumber)
+                    +':E'+ str(spreadsheetNumber)))
                 if not rolled[1].lower() in illegalNames:
                     bot.sendMessage(newseeds,
-                        "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(spreadsheetNumber, rolled[2].encode('utf-8'), rolled[4].encode('utf-8'), rolled[3].encode('utf-8'), rolled[1].encode('utf-8')), parse_mode="HTML")
+                        "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(
+                            spreadsheetNumber, rolled[2].encode('utf-8'), 
+                            rolled[4].encode('utf-8'), rolled[3].encode('utf-8'), 
+                            rolled[1].encode('utf-8')), parse_mode="HTML")
                     return
                 else:
                     bot.sendMessage(newseeds,
-                        "Rolled {}. {} - illegal.".format(spreadsheetNumber, rolled[1].encode('utf-8')))
+                        "Rolled {}. {} - illegal.".format(
+                            spreadsheetNumber, rolled[1].encode('utf-8')))
         else:
             update.message.reply_text("No suggestions found.")
     else:
@@ -347,14 +361,17 @@ def suggest(bot, update):
         return
     config = loadConfig()
     if config['isPlaying'] == False:
-        bot.sendMessage(newseeds, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", parse_mode="HTML")
+        bot.sendMessage(newseeds, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", 
+            parse_mode="HTML")
     else:
         bot.sendMessage(newseeds, "Another session is still in place.")
 
 # help
 
 def start(bot, update):
-    update.message.reply_text("<b>Welcome to Music Theatre!</b>\nThis bot is designed to assist newseeds to discover music.\n", parse_mode="HTML")
+    update.message.reply_text(
+        "<b>Welcome to Music Theatre!</b>\nThis bot is designed to assist newseeds to discover music.\n", 
+        parse_mode="HTML")
     help(bot, update)
 
 def help(bot, update):
@@ -362,12 +379,14 @@ def help(bot, update):
         return
     if not checkAccess(update):
         return
-    update.message.reply_text("Here's the list of commands:\n<b>/sheet</b> gives you the link to our spreadsheet\n<b>/tagme</b> to subscribe to session notifications [private message only]\n<b>/suggest</b> will ask if anyone wants to start a session\n<b>/admins</b> for the list of people who have admin access\n\nUse these while in session:\n<b>/song</b> or <b>/album</b> to find out what's playing".encode('utf-8'), parse_mode="HTML")
+    update.message.reply_text("Here's the list of commands:\n<b>/sheet</b> gives you the link to our spreadsheet\n<b>/tagme</b> to subscribe to session notifications [private message only]\n<b>/suggest</b> will ask if anyone wants to start a session\n<b>/admins</b> for the list of people who have admin access\n\nUse these while in session:\n<b>/song</b> or <b>/album</b> to find out what's playing".encode('utf-8'), 
+        parse_mode="HTML")
 
 def adminHelp(bot, update):
     if not isNewCommand(update):
         return
-    update.message.reply_text("Here's the list of admin commands:\n<b>/roll</b> to randomly pick a suggestion\n<b>/cunt</b> to initiate the countdown\n<b>/archive [roll]</b> to archive a suggestion\n<b>/new [roll]</b> will set current album playing and archive the suggestion\n\nUse these while in session:\n<b>/n</b> to set current song playing\n<b>/over or /abort</b> to end the session".encode('utf-8'), parse_mode="HTML")
+    update.message.reply_text("Here's the list of admin commands:\n<b>/roll</b> to randomly pick a suggestion\n<b>/cunt</b> to initiate the countdown\n<b>/archive [roll]</b> to archive a suggestion\n<b>/new [roll]</b> will set current album playing and archive the suggestion\n\nUse these while in session:\n<b>/n</b> to set current song playing\n<b>/over or /abort</b> to end the session".encode('utf-8'), 
+        parse_mode="HTML")
 
 # say something
 
@@ -406,7 +425,8 @@ def adminList(bot, update):
 
 def shit(bot, update):
     if not isNewCommand(update):
-        bot.sendMessage(newseeds, "Hey folks, our spreadshit is here: http://bit.ly/mtheatre", parse_mode="HTML")
+        bot.sendMessage(newseeds, "Hey folks, our spreadshit is here: http://bit.ly/mtheatre", 
+            parse_mode="HTML")
     else:
         update.message.reply_text("Here's the link to our spreadshit: http://bit.ly/mtheatre")
 
@@ -421,7 +441,8 @@ def tagPeople(bot, update):
         return
     config = loadConfig()
     if 'tagList' in config and len(config['tagList']) > 0:
-        bot.sendMessage(newseeds, "Notifying {} people... (/taginfo to learn).".format(len(config['tagList'])))
+        bot.sendMessage(newseeds, "Notifying {} people... (/taginfo to learn).".format(
+            len(config['tagList'])))
         for id in config['tagList']:
             if id != update.effective_user.id:
                 try:
@@ -435,7 +456,8 @@ def tagMe(bot, update):
     if not isNewCommand(update):
         return
     if isNewSeeds(update):
-        update.message.reply_text("You have to private message me this command, because I am forbidden to initiate a chat with you.")
+        update.message.reply_text(
+            "You have to private message me this command, because I am forbidden to initiate a chat with you.")
     else:
         id = update.effective_user.id
         config = loadConfig()
