@@ -317,19 +317,22 @@ def archive(bot, update):
 def archiveDo(bot, position):
     now = datetime.datetime.now()
 
+    archiveNames = filter(fNonEmpty, map(fValue, wks.range('G4:G1000')))
     suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
     lastSuggestion = len(suggestionNames) + 4
-
-    archiveNames = filter(fNonEmpty, map(fValue, wks.range('G4:G1000')))
-    archiveNewPosition = len(archiveNames) + 4
-
-    # add to archive
+    archiveLastPosition = len(archiveNames) + 4
 
     rolledCells = wks.range('B'+str(position)+':E'+ str(position))
     rolled = map(fValue, rolledCells)
 
-    # add to archive
-    archiveCells = wks.range('F'+str(archiveNewPosition)+':J'+str(archiveNewPosition))
+    # move archive cells down 1 row
+    suggestionCells = wks.range('F4:K'+str(archiveLastPosition))
+    for i in range(len(suggestionCells)):
+        if len(suggestionCells) > i + 4:
+            suggestionCells[i].value = suggestionCells[i+4].value
+
+    # move suggestion to F4
+    archiveCells = wks.range('F4:K4')
     archiveCells[0].value = now.strftime("%d %b %y")
     archiveCells[1].value = rolled[0]
     archiveCells[2].value = rolled[1]
@@ -338,21 +341,15 @@ def archiveDo(bot, position):
 
     wks.update_cells(archiveCells)
 
-    # remove cells
-    for cell in rolledCells:
-        cell.value = ""
-
-    # move cells up
+    # remove from suggestions
     suggestionCells = wks.range('B'+str(position)+':E'+str(lastSuggestion))
     for i in range(len(suggestionCells)):
         if len(suggestionCells) > i + 4:
             suggestionCells[i].value = suggestionCells[i+4].value
-        else:
-            suggestionCells[i].value = ""
 
     wks.update_cells(rolledCells + suggestionCells)
-
     bot.sendMessage(newseeds, "Suggestion moved to the archive.")
+
 
 # suggest
 
@@ -443,6 +440,8 @@ def tagPeople(bot, update):
     if 'tagList' in config and len(config['tagList']) > 0:
         bot.sendMessage(newseeds, "Notifying {} people... (/taginfo to learn).".format(
             len(config['tagList'])))
+        bot.sendMessage(newseeds, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", 
+            parse_mode="HTML")
         for id in config['tagList']:
             if id != update.effective_user.id:
                 try:
