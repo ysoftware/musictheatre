@@ -57,8 +57,7 @@ def isNewCommand(update):
 	timenow = unix_time_millis(datetime.datetime.now())
 	messageTime = unix_time_millis(update.message.date)
 	dt = timenow - messageTime
-	print(update.message.text + " from " + update.message.from_user.username 
-        + " delayed by {}".format(dt))
+	print(update.message.text + " from " + update.message.from_user.username)
 	return dt < (20000)
 
 def isNewSeeds(update):
@@ -116,36 +115,47 @@ def abort(bot, update):
         return
     config = loadConfig()
     if config['isPlaying'] == True:
-        endSession()
+        # endSession()
 
         if isNewCommand(update):
-            bot.sendMessage(newseeds, "#musictheatre it's ABORTED.")
+            # bot.sendMessage(newseeds, "#musictheatre it's ABORTED.")
 
             # add 'aborted'
             auth()
             archiveCells = wks.range('F4:L4')
-            if archiveCells[2].value  == config['album']:
+            if archiveCells[4].value.encode('utf-8') == config['album']:
                 archiveCells[6].value = "aborted"
                 wks.update_cells(archiveCells)
-    else:
-        update.message.reply_text("I'll abort you, you fucking bitch.")
+    # else:
+        # update.message.reply_text("I'll abort you, you fucking bitch.")
 
 def newAlbum(bot, update):
     if not isNewCommand(update):
         return
     if not checkAccess(update):
         return
-    config = loadConfig()
+
     message = update.message.text.split(" ", 1)[1].strip()
 
+    # new artist - album
+    if " - " in position:
+        artistName = position.split(" - ", 1)[0].strip()
+        albumName = position.split(" - ", 1)[1].strip()
+        newAlbumSet(bot, config, artistName, albumName, None, None)
+    # new {number}
+    else:
+        newAlbumSetPosition(bot, message)
+
+def newAlbumSetPosition(bot, position):
+    config = loadConfig()
     if config['isPlaying'] == False:
-        if int(message) >= 4:
+       if int(position) >= 4:
             auth()
-            info = map(fValue, wks.range("B{0}:E{0}".format(message, message)))
+            info = map(fValue, wks.range("B{0}:E{0}".format(position, position)))
             newAlbumSet(bot, config, info[1], info[3], info[2], info[0])
             
             # archive as well
-            archiveDo(bot, message)
+            archiveDo(bot, position)
     else:
         bot.sendMessage(newseeds, "We're still in session.")
 
@@ -233,7 +243,7 @@ def currentTrack(bot, update):
 
 def processor_heavy_sleep(ms):  
     start = time.clock()
-    end = start + ms /1000.
+    end = start + ms / 1000.
     while time.clock() < end:
         continue
     return start, time.clock()
@@ -255,6 +265,11 @@ def cunt(bot, update):
             processor_heavy_sleep(999)
             count -= 1
         bot.sendMessage(newseeds, "PLAY!")
+
+        # also call /new
+        config = loadConfig()
+        if config['lastRoll'] is not None:
+            newAlbumSetPosition(bot, config['lastRoll'])
 
 # roll
 
@@ -294,6 +309,9 @@ def roll(bot, update):
                 rolled = map(fValue, wks.range('A'+str(spreadsheetNumber)
                     +':E'+ str(spreadsheetNumber)))
                 if not rolled[1].lower() in illegalNames:
+                    config['lastRoll'] = spreadsheetNumber
+                    saveConfig(config)
+
                     bot.sendMessage(newseeds,
                         "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(
                             spreadsheetNumber, rolled[2].encode('utf-8'), 
@@ -360,7 +378,7 @@ def archiveDo(bot, position):
             suggestionCells[i].value = suggestionCells[i+4].value
 
     wks.update_cells(suggestionCells)
-    # bot.sendMessage(newseeds, "Suggestion moved to the archive.")
+    bot.sendMessage(newseeds, "Suggestion moved to the archive.")
 
 # suggest
 
