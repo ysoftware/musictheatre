@@ -115,10 +115,10 @@ def abort(bot, update):
         return
     config = loadConfig()
     if config['isPlaying'] == True:
-        # endSession()
+        endSession()
 
         if isNewCommand(update):
-            # bot.sendMessage(newseeds, "#musictheatre it's ABORTED.")
+            bot.sendMessage(newseeds, "#musictheatre it's ABORTED.")
 
             # add 'aborted'
             auth()
@@ -126,8 +126,8 @@ def abort(bot, update):
             if archiveCells[4].value.encode('utf-8') == config['album']:
                 archiveCells[6].value = "aborted"
                 wks.update_cells(archiveCells)
-    # else:
-        # update.message.reply_text("I'll abort you, you fucking bitch.")
+    else:
+        update.message.reply_text("I'll abort you, you fucking bitch.")
 
 def newAlbum(bot, update):
     if not isNewCommand(update):
