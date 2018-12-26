@@ -312,6 +312,8 @@ def roll(bot, update):
 # archive
 
 def archive(bot, update):
+    slow(bot, update)
+
     if not isNewCommand(update):
         return
     if not checkAccess(update):
@@ -321,6 +323,8 @@ def archive(bot, update):
     archiveDo(bot, position)
     
 def archiveDo(bot, position):
+    return
+    
     now = datetime.datetime.now()
 
     archiveNames = filter(fNonEmpty, map(fValue, wks.range('G4:G1000')))
@@ -332,10 +336,13 @@ def archiveDo(bot, position):
     rolled = map(fValue, rolledCells)
 
     # move archive cells down 1 row
-    suggestionCells = wks.range('F4:K'+str(archiveLastPosition))
-    for i in range(len(suggestionCells)):
-        if len(suggestionCells) > i + 4:
-            suggestionCells[i].value = suggestionCells[i+4].value
+    archiveOldCells = wks.range('F4:K'+str(archiveLastPosition))
+    lenArchiveOld = len(archiveOldCells)
+    for i in range(len(archiveOldCells)):
+        if lenArchiveOld > i - 6:
+            archiveOldCells[i-6].value = archiveOldCells[i].value
+
+    wks.update_cells(archiveOldCells)
 
     # move suggestion to F4
     archiveCells = wks.range('F4:K4')
@@ -349,11 +356,12 @@ def archiveDo(bot, position):
 
     # remove from suggestions
     suggestionCells = wks.range('B'+str(position)+':E'+str(lastSuggestion))
+    lenSuggestionCells = len(suggestionCells)
     for i in range(len(suggestionCells)):
-        if len(suggestionCells) > i + 4:
+        if lenSuggestionCells > i + 4:
             suggestionCells[i].value = suggestionCells[i+4].value
 
-    wks.update_cells(rolledCells + suggestionCells)
+    wks.update_cells(suggestionCells)
     bot.sendMessage(newseeds, "Suggestion moved to the archive.")
 
 
@@ -581,7 +589,7 @@ def addSuggestion(bot, update):
     wks.update_cells(newCells)
 
     update.message.reply_text("{} by {} ({}) is now suggested by {}.".format(
-        album, artist, year, name))
+        album.encode('utf-8'), artist.encode('utf-8'), year, name.encode('utf-8')))
 
 
 def rollInfo(bot, update):
