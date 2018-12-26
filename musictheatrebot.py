@@ -116,9 +116,17 @@ def abort(bot, update):
         return
     config = loadConfig()
     if config['isPlaying'] == True:
+        endSession()
+
         if isNewCommand(update):
             bot.sendMessage(newseeds, "#musictheatre it's ABORTED.")
-        endSession()
+
+            # add 'aborted'
+            auth()
+            archiveCells = wks.range('F4:L4')
+            if archiveCells[2].value  == config['album']:
+                archiveCells[6].value = "aborted"
+                wks.update_cells(archiveCells)
     else:
         update.message.reply_text("I'll abort you, you fucking bitch.")
 
@@ -131,15 +139,7 @@ def newAlbum(bot, update):
     message = update.message.text.split(" ", 1)[1].strip()
 
     if config['isPlaying'] == False:
-
-        # new artist - album
-        if " - " in message:
-            artistName = message.split(" - ", 1)[0].strip()
-            albumName = message.split(" - ", 1)[1].strip()
-            newAlbumSet(bot, config, artistName, albumName, None, None)
-
-        # new 34
-        elif int(message) >= 4:
+        if int(message) >= 4:
             auth()
             info = map(fValue, wks.range("B{0}:E{0}".format(message, message)))
             newAlbumSet(bot, config, info[1], info[3], info[2], info[0])
@@ -312,8 +312,6 @@ def roll(bot, update):
 # archive
 
 def archive(bot, update):
-    slow(bot, update)
-
     if not isNewCommand(update):
         return
     if not checkAccess(update):
@@ -323,8 +321,6 @@ def archive(bot, update):
     archiveDo(bot, position)
     
 def archiveDo(bot, position):
-    return
-    
     now = datetime.datetime.now()
 
     archiveNames = filter(fNonEmpty, map(fValue, wks.range('G4:G1000')))
@@ -336,25 +332,27 @@ def archiveDo(bot, position):
     rolled = map(fValue, rolledCells)
 
     # move archive cells down 1 row
-    archiveOldCells = wks.range('F4:K'+str(archiveLastPosition))
+    archiveOldCells = wks.range('F4:L'+str(archiveLastPosition+1))
     lenArchiveOld = len(archiveOldCells)
-    for i in range(len(archiveOldCells)):
-        if lenArchiveOld > i - 6:
-            archiveOldCells[i-6].value = archiveOldCells[i].value
+    for i in reversed(range(len(archiveOldCells))):
+        if lenArchiveOld > i + 7:
+            archiveOldCells[i+7].value = archiveOldCells[i].value
 
     wks.update_cells(archiveOldCells)
 
     # move suggestion to F4
-    archiveCells = wks.range('F4:K4')
+    archiveCells = wks.range('F4:L4')
     archiveCells[0].value = now.strftime("%d %b %y")
     archiveCells[1].value = rolled[0]
     archiveCells[2].value = rolled[1]
     archiveCells[3].value = rolled[2]
     archiveCells[4].value = rolled[3]
+    archiveCells[5].value = ""
+    archiveCells[6].value = ""
 
     wks.update_cells(archiveCells)
 
-    # remove from suggestions
+    # move suggestions up 1 row
     suggestionCells = wks.range('B'+str(position)+':E'+str(lastSuggestion))
     lenSuggestionCells = len(suggestionCells)
     for i in range(len(suggestionCells)):
@@ -362,8 +360,7 @@ def archiveDo(bot, position):
             suggestionCells[i].value = suggestionCells[i+4].value
 
     wks.update_cells(suggestionCells)
-    bot.sendMessage(newseeds, "Suggestion moved to the archive.")
-
+    # bot.sendMessage(newseeds, "Suggestion moved to the archive.")
 
 # suggest
 
