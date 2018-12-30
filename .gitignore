@@ -1,3 +1,4 @@
 
 session.pk
 credentials.json
+*.pyc
