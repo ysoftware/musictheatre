@@ -3,6 +3,7 @@ from session import saveConfig, loadConfig, send, reply, auth
 from utility import fValue, fNonEmpty, fLower
 
 from session_commands import newAlbumSetPosition
+from core import getWeights
 import numpy, random, time
 
 # countdown
@@ -39,13 +40,6 @@ def cunt(bot, update):
             saveConfig(config)
 
 # roll
-
-def getWeights(count):
-    values = list(range(0, count))
-    weights = list(map(lambda x: count - x/1.05, values))
-    weights = numpy.array(weights)
-    weights /= weights.sum()
-    return weights
 
 def getRandom(count):
     values = list(range(0, count))
