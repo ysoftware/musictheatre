@@ -1,4 +1,5 @@
 import datetime
+import numpy
 
 watb = -1001049406492
 newseeds = -1001138132564
