@@ -14,6 +14,7 @@ def archive(bot, update):
         return
     position = int(update.message.text.split(" ")[1])
     archiveDo(bot, position)
+    send(bot, "Suggestion moved to the archive.")
     
 def archiveDo(bot, position):
     wks = auth()
@@ -56,7 +57,6 @@ def archiveDo(bot, position):
             suggestionCells[i].value = suggestionCells[i+4].value
 
     wks.update_cells(suggestionCells)
-    send(bot, "Suggestion moved to the archive.")
 
 # manage suggestions
 
