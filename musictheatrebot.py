@@ -22,7 +22,7 @@ REQUEST_KWARGS={
     }
 }
 
-updater = Updater(TOKEN, request_kwargs=REQUEST_KWARGS)
+updater = Updater(token='337143431:AAH1TZLyqBTuHEKIIZ7OvEnmNL03I-EcHRM')
 
 # sheet
 updater.dispatcher.add_handler(CommandHandler('shit', other_commands.shit))
@@ -69,6 +69,10 @@ updater.dispatcher.add_handler(CommandHandler('admins', other_commands.adminList
 updater.dispatcher.add_handler(CommandHandler('rollinfo', sheet_commands.rollInfo))
 updater.dispatcher.add_handler(CommandHandler('count', sheet_commands.countSuggestions))
 updater.dispatcher.add_handler(CommandHandler('add', sheet_commands.addSuggestion))
+
+# Alex mods
+updater.dispatcher.add_handler(CommandHandler('russian', other_commands.russian))
+updater.dispatcher.add_handler(CommandHandler('ball', other_commands.ball))
 
 updater.dispatcher.add_error_handler(other_commands.error_callback)
 

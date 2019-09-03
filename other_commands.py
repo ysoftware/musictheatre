@@ -2,8 +2,11 @@ from core import isNewCommand, checkAccess, isNewSeeds, getTime
 from session import saveConfig, loadConfig, send, reply, auth
 from utility import fValue, fNonEmpty, fLower
 import numpy
+import random
 
 from core import admins
+from core import newseeds
+
 retardStickerId = "CAADBAAD2wADeyqRC60Pvd---1a5Ag";
 
 # help
@@ -69,6 +72,28 @@ def shit(bot, update):
             parse_mode="HTML")
     else:
         reply(update, "Here's the link to our spreadshit: http://bit.ly/mtheatre")
+
+# russian
+
+def russian(bot, update):
+    if not isNewCommand(update):
+        send(bot, "Putin Hates Us All",
+            parse_mode="HTML")
+    else:
+        reply(update, "Putin Hates Us All")
+
+# ball
+
+def randomBall():
+#       return random.choice(["It is certain", "It is decidedly so", "Without a doubt"])
+        return random.choice(["It is certain", "It is decidedly so", "Without a doubt", "Yes - definitely", "You may rely on it", "As I see it, yes", "Most li$
+def ball(bot, update):
+        if not isNewCommand(update):
+                message = randomBall()
+                send(bot, message.encode('utf-8'))
+        else:
+                message = randomBall()
+                send(bot, message.encode('utf-8'))
 
 # tag
 
