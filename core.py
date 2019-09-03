@@ -13,7 +13,8 @@ admins = [
           "jntn7",
           "Doomgoat",
           "Tom_veldhuis",
-          "FkinTag"
+          "FkinTag",
+          "R1OBRAV0"
           ]
 
 # time
