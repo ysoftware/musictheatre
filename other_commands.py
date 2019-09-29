@@ -153,9 +153,8 @@ def update(bot, update):
         return
     if update.message.from_user.username == "ysoftware":
         bot.sendMessage(101193334, "Running...")
-        out = subprocess.check_output(["/usr/local/tgbots/musictheatrebot/update.sh"])
-        bot.sendMessage(101193334, out)
-        bot.sendMessage(101193334, "Done")
+        subprocess.call(["/usr/local/tgbots/musictheatrebot/update.sh"])
+        bot.sendMessage(101193334, "Done!")
 
 def test(bot, update):
     if not isNewCommand(update):
