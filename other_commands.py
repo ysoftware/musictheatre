@@ -1,4 +1,4 @@
-from core import isNewCommand, checkAccess, isNewSeeds, getTime, admins, newseeds
+from core import isNewCommand, checkAccess, isNewSeeds, getTime, admins, newseeds, checkDevAccess
 from session import saveConfig, loadConfig, send, reply, auth
 from utility import fValue, fNonEmpty, fLower
 import numpy, subprocess, random
