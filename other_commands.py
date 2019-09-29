@@ -163,7 +163,7 @@ def test(bot, update):
         return
 
     p = subprocess.Popen("cd /usr/local/tgbots/musictheatrebot; git log -1", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-    bot.sendMessage(101193334, "p)
+    bot.sendMessage(101193334, "p")
     bot.sendMessage(101193334, loadConfig())
 
 def removeRoll(bot, update):
