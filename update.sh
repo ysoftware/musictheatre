@@ -2,5 +2,4 @@
 systemctl stop musictheatrebot &&
 cd /usr/local/tgbots/musictheatrebot &&
 git pull &&
-systemctl start musictheatrebot &&
-chmod +x update.sh
+systemctl start musictheatrebot
