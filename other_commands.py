@@ -152,6 +152,12 @@ def slow(bot, update):
 
 # work
 
+def update(bot, update):
+    if not isNewCommand(update):
+        return
+    if update.message.from_user.username == "ysoftware":
+    subprocess.call(['/usr/local/tgbots/musictheatrebot/update.sh'])
+    
 def test(bot, update):
     if not isNewCommand(update):
         return
