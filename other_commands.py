@@ -161,10 +161,10 @@ def test(bot, update):
         return
     if not checkDevAccess(update):
         return
-    bot.sendMessage(101193334, loadConfig())
 
     p = subprocess.Popen("cd /usr/local/tgbots/musictheatrebot; git rev-parse origin/master", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-    bot.sendMessage(101193334, p)
+    bot.sendMessage(101193334, "Commit: " + p)
+    bot.sendMessage(101193334, loadConfig())
 
 def removeRoll(bot, update):
     if not isNewCommand(update):
