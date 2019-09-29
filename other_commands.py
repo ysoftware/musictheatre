@@ -153,7 +153,7 @@ def update(bot, update):
         return
     if update.message.from_user.username == "ysoftware":
         bot.sendMessage(101193334, "Running...")
-        subprocess.call(["/usr/local/tgbots/musictheatrebot/update.sh"])
+        subprocess.call(["sudo /usr/local/tgbots/musictheatrebot/update.sh"])
         bot.sendMessage(101193334, "Done!")
 
 def test(bot, update):
