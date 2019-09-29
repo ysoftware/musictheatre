@@ -1,4 +1,4 @@
-
+.DS_Store
 session.pk
 credentials.json
 *.pyc
