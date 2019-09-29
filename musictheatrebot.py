@@ -43,13 +43,16 @@ updater.dispatcher.add_handler(CommandHandler('fuckoff', other_commands.dontTagM
 updater.dispatcher.add_handler(CommandHandler('unsub', other_commands.dontTagMe))
 updater.dispatcher.add_handler(CommandHandler('taginfo', other_commands.taginfo))
 
-# # admin 
+# developer commands
 updater.dispatcher.add_handler(CommandHandler('test', other_commands.test))
+updater.dispatcher.add_handler(CommandHandler('update', core.update))
+
+# admin 
 updater.dispatcher.add_handler(CommandHandler('s', other_commands.sticker))
 updater.dispatcher.add_handler(CommandHandler('b', other_commands.say))
 updater.dispatcher.add_handler(CommandHandler('removeRoll', other_commands.removeRoll))
 
-# # admin session 
+# admin session 
 updater.dispatcher.add_handler(CommandHandler('roll', start_commands.roll))
 updater.dispatcher.add_handler(CommandHandler('cunt', start_commands.cunt))
 updater.dispatcher.add_handler(CommandHandler('archive', sheet_commands.archive))

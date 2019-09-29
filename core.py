@@ -1,4 +1,5 @@
 import datetime
+import subprocess
 import numpy
 
 watb = -1001049406492
@@ -45,3 +46,6 @@ def getWeights(count):
     weights = numpy.array(weights)
     weights /= weights.sum()
     return weights
+
+def update():
+    subprocess.call(['/usr/local/tgbots/musictheatrebot/update.sh'])
