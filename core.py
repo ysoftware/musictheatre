@@ -3,6 +3,8 @@ import datetime, numpy
 watb = -1001049406492
 newseeds = -1001138132564
 
+devs = ["R1OBRAV0", "ysoftware"]
+
 admins = [
           "Xanes",
           "ysoftware",
@@ -28,6 +30,9 @@ def unix_time_millis(dt):
 
 def checkAccess(update):
     return update.message.from_user.username in admins
+
+def checkDevAccess(update):
+    return update.message.from_user.username in devs
 
 def isNewCommand(update):
     timenow = unix_time_millis(datetime.datetime.now())

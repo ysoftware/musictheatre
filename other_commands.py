@@ -151,15 +151,17 @@ def slow(bot, update):
 def update(bot, update):
     if not isNewCommand(update):
         return
-    if update.message.from_user.username == "ysoftware":
-        bot.sendMessage(101193334, "Running the update...")
-        subprocess.call("sudo /usr/local/tgbots/musictheatrebot/update.sh", shell=True)
+    if not checkDevAccess(update):
+        return
+    bot.sendMessage(101193334, "Running the update...")
+    subprocess.call("sudo /usr/local/tgbots/musictheatrebot/update.sh", shell=True)
 
 def test(bot, update):
     if not isNewCommand(update):
         return
-    if update.message.from_user.username == "ysoftware":
-        bot.sendMessage(101193334, loadConfig())
+    if not checkDevAccess(update):
+        return
+    bot.sendMessage(101193334, loadConfig())
 
 def removeRoll(bot, update):
     if not isNewCommand(update):
