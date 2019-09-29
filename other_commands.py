@@ -162,7 +162,7 @@ def test(bot, update):
     if not checkDevAccess(update):
         return
     bot.sendMessage(101193334, loadConfig())
-    bot.sendMessage(101193334, subprocess.check_output(['ls', '-l']))
+    bot.sendMessage(101193334, subprocess.check_output(['git', 'rev-parse', 'origin/master']))
 
 def removeRoll(bot, update):
     if not isNewCommand(update):
