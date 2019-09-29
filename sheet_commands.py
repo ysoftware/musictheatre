@@ -113,22 +113,15 @@ def addSuggestion(bot, update):
     album = array[2].strip()
     year = int(array[3].strip())
 
-    if year > 2019:
-        reply(update, "What kind of future bullshit is that?")
+    if year > 2020 or year < 1900:
+        reply(update, "Wrong year")
         return
-        
-    if year < 999:
-        reply(update, "Music of the generation before smartphones? Nah!")
-        return
-
-    if year < 1900:
-        reply(update, "Let's hear the cavemen music...")
-
+    
     suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
     foundRows = filter(lambda value: value.lower() == name.lower(), suggestionNames)
 
-    if len(foundRows) >= 3:
-        reply(update, "This one already has enough 3 suggestions.")
+    if len(foundRows) >= 5:
+        reply(update, "This one already has enough suggestions.")
         return
 
     newSuggestion = len(suggestionNames) + 4
