@@ -1,2 +1,3 @@
 git pull &&
-systemctl restart musictheatrebot
+systemctl restart musictheatrebot &&
+echo "DONE"
