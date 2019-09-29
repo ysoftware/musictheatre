@@ -2,5 +2,4 @@
 cd /usr/local/tgbots/musictheatrebot &&
 git pull &&
 systemctl restart musictheatrebot &&
-chmod +x update.sh &&
-./update.sh
+chmod +x update.sh
