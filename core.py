@@ -14,7 +14,8 @@ admins = [
           "Doomgoat",
           "Tom_veldhuis",
           "FkinTag",
-          "R1OBRAV0"
+          "R1OBRAV0",
+          "murphboy"
           ]
 
 # time
