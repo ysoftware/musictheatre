@@ -84,16 +84,10 @@ def russian(bot, update):
 
 # ball
 
-def randomBall():
-#       return random.choice(["It is certain", "It is decidedly so", "Without a doubt"])
-        return random.choice(["It is certain", "It is decidedly so", "Without a doubt", "Yes - definitely", "You may rely on it", "As I see it, yes", "Most li$
 def ball(bot, update):
-        if not isNewCommand(update):
-                message = randomBall()
-                send(bot, message.encode('utf-8'))
-        else:
-                message = randomBall()
-                send(bot, message.encode('utf-8'))
+        if isNewCommand(update):
+            message = random.choice(["It is certain", "It is decidedly so", "Without a doubt", "Yes - definitely", "You may rely on it", "As I see it, yes", "Most likely"])
+            send(bot, message.encode('utf-8'))
 
 # tag
 
