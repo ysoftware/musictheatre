@@ -159,7 +159,6 @@ def test(bot, update):
     if not isNewCommand(update):
         return
     if update.message.from_user.username == "ysoftware":
-        bot.sendMessage(101193334, "yay")
         bot.sendMessage(101193334, loadConfig())
 
 def removeRoll(bot, update):
