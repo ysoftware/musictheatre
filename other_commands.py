@@ -153,7 +153,7 @@ def update(bot, update):
         return
     if not checkDevAccess(update):
         return
-    bot.sendMessage(101193334, "Running the update...")
+    bot.sendMessage(update.message.from_user.id, "Running the update...")
     subprocess.call("sudo /usr/local/tgbots/musictheatrebot/update.sh", shell=True)
 
 def test(bot, update):
@@ -163,8 +163,8 @@ def test(bot, update):
         return
 
     p = subprocess.Popen("cd /usr/local/tgbots/musictheatrebot; git log -1", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-    bot.sendMessage(101193334, p)
-    bot.sendMessage(101193334, loadConfig())
+    bot.sendMessage(update.message.from_user.id, p)
+    bot.sendMessage(update.message.from_user.id, loadConfig())
 
 def removeRoll(bot, update):
     if not isNewCommand(update):
