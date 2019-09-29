@@ -1,6 +1,4 @@
-import datetime
-import subprocess
-import numpy
+import datetime, numpy
 
 watb = -1001049406492
 newseeds = -1001138132564

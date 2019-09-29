@@ -1,11 +1,7 @@
-from core import isNewCommand, checkAccess, isNewSeeds, getTime
+from core import isNewCommand, checkAccess, isNewSeeds, getTime, admins, newseeds
 from session import saveConfig, loadConfig, send, reply, auth
 from utility import fValue, fNonEmpty, fLower
-import numpy
-import random
-
-from core import admins
-from core import newseeds
+import numpy, subprocess, random
 
 retardStickerId = "CAADBAAD2wADeyqRC60Pvd---1a5Ag";
 
@@ -157,7 +153,7 @@ def update(bot, update):
         return
     if update.message.from_user.username == "ysoftware":
     subprocess.call(['/usr/local/tgbots/musictheatrebot/update.sh'])
-    
+
 def test(bot, update):
     if not isNewCommand(update):
         return
