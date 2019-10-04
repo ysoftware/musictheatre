@@ -73,10 +73,8 @@ def shit(bot, update):
 
 def russian(bot, update):
     if not isNewCommand(update):
-        send(bot, "Putin Hates Us All",
-            parse_mode="HTML")
-    else:
-        reply(update, "Putin Hates Us All")
+        return
+    send(bot, "Putin Hates Us All", parse_mode="HTML")
 
 # ball
 
