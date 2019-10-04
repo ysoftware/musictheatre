@@ -96,8 +96,6 @@ def countSuggestions(bot, update):
 def addSuggestion(bot, update):
     if not isNewCommand(update):
         return
-    if not checkAccess(update):
-        return
 
     array = re.split("[;\n]", update.message.text)
 
