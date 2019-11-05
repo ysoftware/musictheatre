@@ -14,13 +14,6 @@ import other_commands, start_commands, session_commands, sheet_commands
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 TOKEN = "337143431:AAH1TZLyqBTuHEKIIZ7OvEnmNL03I-EcHRM"
-REQUEST_KWARGS={
-    "proxy_url": "socks5://deimos.public.opennetwork.cc:1090",
-    "urllib3_proxy_kwargs": {
-        "username": "101193334",
-        "password": "q08N7BhM"
-    }
-}
 
 updater = Updater(token='337143431:AAH1TZLyqBTuHEKIIZ7OvEnmNL03I-EcHRM')
 
