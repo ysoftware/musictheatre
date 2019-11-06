@@ -6,7 +6,7 @@ from telegram.error import (TelegramError, Unauthorized, BadRequest,
 import logging
 
 # add files
-import core, session
+import core, session, today
 import other_commands, start_commands, session_commands, sheet_commands
 
 # setup bot
