@@ -15,8 +15,7 @@ def load_today():
 def renew():
 
 	today_json = load_today()
-
-	today_out = ('')
+	today_out = ''
 
 	# DAT WORKS
 
