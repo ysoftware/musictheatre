@@ -28,18 +28,18 @@ def renew():
 					today_out = today_out + ('In year '+event['year']+'-'+event['text']+'\n')
 
 	for birth in today_json['data']['Births']:
-			choice = random.randint(0,45)
-			if choice == 1:
-					if birth['year'] is not None:
-							if birth['text'] is not None:
-								today_out = today_out + (birth['text']+' was born in '+birth['year']+'\n')
+		choice = random.randint(0,45)
+		if choice == 1:
+			if birth['year'] is not None:
+				if birth['text'] is not None:
+					today_out = today_out + (birth['text']+' was born in '+birth['year']+'\n')
 
 	for death in today_json['data']['Deaths']:
-			choice = random.randint(0,25)
-			if choice == 1:
+		choice = random.randint(0,25)
+		if choice == 1:
 			if death['year'] is not None:
-						if death['text'] is not None:
-							today_out = today_out + ('In year '+death['year']+' died '+death['text']+'\n')
+				if death['text'] is not None:
+					today_out = today_out + ('In year '+death['year']+' died '+death['text']+'\n')
 
 	return today_out
 
