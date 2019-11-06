@@ -32,7 +32,7 @@ def renew():
 			if choice == 1:
 					if birth['year'] is not None:
 							if birth['text'] is not None:
-							today_out = today_out + (birth['text']+' was born in '+birth['year']+'\n')
+								today_out = today_out + (birth['text']+' was born in '+birth['year']+'\n')
 
 	for death in today_json['data']['Deaths']:
 			choice = random.randint(0,25)
