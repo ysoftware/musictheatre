@@ -44,7 +44,7 @@ def renew():
 	return today_out
 
 def today(bot, update):
-		if not isNewCommand(update):
+	if not isNewCommand(update):
 		return
 	message = renew()
 	send(bot, message.encode('utf-8'))
