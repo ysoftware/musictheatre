@@ -1,4 +1,4 @@
 #!/bin/sh
 cd /usr/local/tgbots/musictheatrebot &&
 git pull &&
-systemctl restart musictheatrebot
+systemctl restart musictheatre
