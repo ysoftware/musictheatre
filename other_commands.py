@@ -9,7 +9,7 @@ retardStickerId = "CAADBAAD2wADeyqRC60Pvd---1a5Ag";
 
 def start(bot, update):
     reply(update, 
-        "<b>Welcome to Music Theatre!</b>\nThis bot is designed to assist newseeds to discover music.\n", 
+        "<b>Welcome to Music Theatre!</b>\nThis bot is designed to assist newseeds with discovering music.\n", 
         parse_mode="HTML")
     help(bot, update)
 
