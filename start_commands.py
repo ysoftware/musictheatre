@@ -62,14 +62,14 @@ def roll(bot, update):
 
         values = []
         for i in range(len(suggestionNames)):
-            name = suggestionNames[i]
+            name = suggestionNames[i].lower()
             if name not in illegalNames:
                 values.append({"number": i+4, "name": name })       
 
         pr = ""
         for s in values:
             pr += str(s["number"]) + " " + s["name"] + "\n"
-        reply(update "\n".join(illegalNames))
+
         reply(update, pr)
 
         return
