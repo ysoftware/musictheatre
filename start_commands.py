@@ -54,22 +54,19 @@ def roll(bot, update):
     config = loadConfig()
 
     if config['isPlaying'] == False:
-        reply(update, "hi")
-        
+
         wks = auth()
         suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
         illegalNames = map(fLower, filter(fNonEmpty, map(fValue, wks.range('G4:G9'))))
         suggestionsCount = len(suggestionNames)
 
-        reply(update, "hi")
-
         values = []
         for i in range(4, len(suggestionNames)):
             name = suggestionNames[i]
             if not name in illegalNames:
-                values.append({"number": i+4, "name": suggestionNames })
+                values.append({"number": i+4, "name": suggestionNames })    
 
-        reply(update, values)
+        reply(update, "".join([str(s["number"]) + " " + s["name"] for s in values])
 
         return
 
