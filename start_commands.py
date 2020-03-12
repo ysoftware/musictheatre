@@ -67,10 +67,6 @@ def roll(bot, update):
         if name not in illegalNames:
             values.append({"number": i+4, "name": name })       
 
-    pr = ""
-    for s in values:
-        pr += str(s["number"]) + " " + s["name"] + "\n"
-
     validSuggestionsCount = len(values)
 
     if validSuggestionsCount == 0:
@@ -78,20 +74,20 @@ def roll(bot, update):
         return
 
     # get random (favor older suggestions)
-    result = getRandom(validSuggestionsCount-1)["number"]
+    rolled_from_valid = getRandom(validSuggestionsCount-1)
+    result = values[rolled_from_valid]["number"]
 
     spreadsheetNumber = result + 4
-    rolled = map(fValue, wks.range('A'+str(spreadsheetNumber)
-        +':E'+ str(spreadsheetNumber)))
-    if not rolled[1].lower() in illegalNames:
-        config['lastRoll'] = spreadsheetNumber
-        saveConfig(config)
+    rolled = map(fValue, wks.range('A'+str(spreadsheetNumber) +':E'+ str(spreadsheetNumber)))
+    
+    config['lastRoll'] = spreadsheetNumber
+    saveConfig(config)
 
-        send(bot,
-            "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(
-                spreadsheetNumber, rolled[2].encode('utf-8'), 
-                rolled[4].encode('utf-8'), rolled[3].encode('utf-8'), 
-                rolled[1].encode('utf-8')), parse_mode="HTML")
+    send(bot,
+        "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(
+            spreadsheetNumber, rolled[2].encode('utf-8'), 
+            rolled[4].encode('utf-8'), rolled[3].encode('utf-8'), 
+            rolled[1].encode('utf-8')), parse_mode="HTML")
 
 # suggest
 
