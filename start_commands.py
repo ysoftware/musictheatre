@@ -53,54 +53,45 @@ def roll(bot, update):
         return
     config = loadConfig()
 
-    if config['isPlaying'] == False:
-
-        wks = auth()
-        suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
-        illegalNames = map(fLower, filter(fNonEmpty, map(fValue, wks.range('G4:G9'))))
-        suggestionsCount = len(suggestionNames)
-
-        values = []
-        for i in range(len(suggestionNames)):
-            name = suggestionNames[i].lower()
-            if name not in illegalNames:
-                values.append({"number": i+4, "name": name })       
-
-        pr = ""
-        for s in values:
-            pr += str(s["number"]) + " " + s["name"] + "\n"
-
-        reply(update, pr)
-
+    if config['isPlaying'] == True:
+        reply(update, "Another session is still on. I'm afraid I can't do that.")
         return
 
-        if suggestionsCount > 0:
-            for _ in range(5):
+    wks = auth()
+    suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
+    illegalNames = map(fLower, filter(fNonEmpty, map(fValue, wks.range('G4:G9'))))
 
-                # get random (favor older suggestions)
-                result = getRandom(suggestionsCount-1)
+    values = []
+    for i in range(len(suggestionNames)):
+        name = suggestionNames[i].lower()
+        if name not in illegalNames:
+            values.append({"number": i+4, "name": name })       
 
-                spreadsheetNumber = result + 4
-                rolled = map(fValue, wks.range('A'+str(spreadsheetNumber)
-                    +':E'+ str(spreadsheetNumber)))
-                if not rolled[1].lower() in illegalNames:
-                    config['lastRoll'] = spreadsheetNumber
-                    saveConfig(config)
+    pr = ""
+    for s in values:
+        pr += str(s["number"]) + " " + s["name"] + "\n"
 
-                    send(bot,
-                        "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(
-                            spreadsheetNumber, rolled[2].encode('utf-8'), 
-                            rolled[4].encode('utf-8'), rolled[3].encode('utf-8'), 
-                            rolled[1].encode('utf-8')), parse_mode="HTML")
-                    return
-                else:
-                    send(bot,
-                        "Rolled {}. {} - illegal.".format(
-                            spreadsheetNumber, rolled[1].encode('utf-8')))
-        else:
-            reply(update, "No suggestions found.")
-    else:
-        reply(update, "Another session is still on. I'm afraid I can't do that.")
+    validSuggestionsCount = len(values)
+
+    if validSuggestionsCount == 0:
+        reply(update, "No suggestions found.")
+        return
+
+    # get random (favor older suggestions)
+    result = getRandom(validSuggestionsCount-1)["number"]
+
+    spreadsheetNumber = result + 4
+    rolled = map(fValue, wks.range('A'+str(spreadsheetNumber)
+        +':E'+ str(spreadsheetNumber)))
+    if not rolled[1].lower() in illegalNames:
+        config['lastRoll'] = spreadsheetNumber
+        saveConfig(config)
+
+        send(bot,
+            "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(
+                spreadsheetNumber, rolled[2].encode('utf-8'), 
+                rolled[4].encode('utf-8'), rolled[3].encode('utf-8'), 
+                rolled[1].encode('utf-8')), parse_mode="HTML")
 
 # suggest
 
