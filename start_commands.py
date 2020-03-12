@@ -60,8 +60,6 @@ def roll(bot, update):
         illegalNames = map(fLower, filter(fNonEmpty, map(fValue, wks.range('G4:G9'))))
         suggestionsCount = len(suggestionNames)
 
-        reply(update, "".join(suggestionNames))
-
         values = []
         for i in range(len(suggestionNames)):
             name = suggestionNames[i]
@@ -71,6 +69,7 @@ def roll(bot, update):
         pr = ""
         for s in values:
             pr += str(s["number"]) + " " + s["name"] + "\n"
+        reply(update "\n".join(illegalNames))
         reply(update, pr)
 
         return
