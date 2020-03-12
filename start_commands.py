@@ -59,6 +59,16 @@ def roll(bot, update):
         illegalNames = map(fLower, filter(fNonEmpty, map(fValue, wks.range('G4:G9'))))
         suggestionsCount = len(suggestionNames)
 
+        values = []
+        for i in range(4, len(suggestionNames)):
+            name = suggestionNames[i]
+            if not name in illegalNames:
+                values.append({"number": i+4, "name": suggestionNames })
+
+        reply(update, values)
+
+        return
+
         if suggestionsCount > 0:
             for _ in range(5):
 
