@@ -83,11 +83,6 @@ def roll(bot, update):
     config['lastRoll'] = spreadsheetNumber
     saveConfig(config)
 
-    reply(update, "\n".join(values))
-    reply(update, rolled_from_valid)
-    reply(update, "\n".join(values))
-    return
-
     send(bot,
         "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(
             spreadsheetNumber, rolled[2].encode('utf-8'), 
