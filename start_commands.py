@@ -77,11 +77,16 @@ def roll(bot, update):
     rolled_from_valid = getRandom(validSuggestionsCount-1)
     result = values[rolled_from_valid]["number"]
 
-    spreadsheetNumber = result + 4
+    spreadsheetNumber = result
     rolled = map(fValue, wks.range('A'+str(spreadsheetNumber) +':E'+ str(spreadsheetNumber)))
     
     config['lastRoll'] = spreadsheetNumber
     saveConfig(config)
+
+    reply(update, "\n".join(values))
+    reply(update, rolled_from_valid)
+    reply(update, "\n".join(values))
+    return
 
     send(bot,
         "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(
