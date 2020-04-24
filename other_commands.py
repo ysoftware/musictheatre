@@ -34,7 +34,7 @@ def say(bot, update):
     if isNewSeeds(update):
         return
     message = update.message.text.split(" ", 1)[1].strip()
-    send(bot, message.encode('utf-8'), parse_mode="HTML")
+    send(bot, message, parse_mode="HTML")
 
 def sticker(bot, update):
     if not isNewCommand(update):
