@@ -146,14 +146,6 @@ def slow(bot, update):
 
 # work
 
-def update(bot, update):
-    if not isNewCommand(update):
-        return
-    if not checkDevAccess(update):
-        return
-    bot.sendMessage(update.message.from_user.id, "Running the update...")
-    subprocess.call("sudo /usr/local/tgbots/musictheatrebot/update.sh", shell=True)
-
 def test(bot, update):
     if not isNewCommand(update):
         return

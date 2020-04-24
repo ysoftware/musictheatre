@@ -36,7 +36,6 @@ updater.dispatcher.add_handler(CommandHandler('taginfo', other_commands.taginfo)
 
 # developer commands
 updater.dispatcher.add_handler(CommandHandler('test', other_commands.test))
-updater.dispatcher.add_handler(CommandHandler('update', other_commands.update))
 
 # admin 
 updater.dispatcher.add_handler(CommandHandler('s', other_commands.sticker))
