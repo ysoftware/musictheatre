@@ -3,3 +3,5 @@ session.pk
 credentials.json
 *.pyc
 sheet_id.txt
+admins_names.txt
+devs_names.txt

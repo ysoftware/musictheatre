@@ -3,21 +3,9 @@ import datetime, numpy
 watb = -1001049406492
 newseeds = -1001138132564
 
-devs = ["R1OBRAV0", "ysoftware"]
+devs = open('devs_names.txt', 'r').readlines()
 
-admins = [
-          "Xanes",
-          "ysoftware",
-          "tbshfmn",
-          "sexy_nutella_69",
-          "amobishoproden",
-          "jntn7",
-          "Doomgoat",
-          "Tom_veldhuis",
-          "FkinTag",
-          "R1OBRAV0",
-          "murphboy"
-          ]
+admins = open('admins_names.txt', 'r').readlines()
 
 # time
 
