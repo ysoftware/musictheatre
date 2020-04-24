@@ -24,6 +24,7 @@ def send(bot, message, parse_mode="Markdown"):
 
 def reply(update, message):
     update.message.reply_text(message)
+    print("sending reply", message)
 
 # session persistence
 
