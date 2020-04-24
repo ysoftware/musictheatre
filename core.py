@@ -17,7 +17,6 @@ def unix_time_millis(dt):
 
 def checkAccess(update):
     value = update.message.from_user.username in admins
-    print("checkAccess", value)
     return value
 
 def checkDevAccess(update):
@@ -28,7 +27,6 @@ def isNewCommand(update):
     messageTime = unix_time_millis(update.message.date)
     dt = timenow - messageTime
     value = dt < (20000)
-    print("isNewCommand", value)
     return value
 
 def isNewSeeds(update):

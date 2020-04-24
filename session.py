@@ -23,8 +23,7 @@ def send(bot, message, parse_mode="Markdown"):
     bot.sendMessage(newseeds, message, parse_mode)
 
 def reply(update, message):
-    print("sending reply", message)
-    update.message.reply_html(message)
+    update.message.reply_text(message)
 
 # session persistence
 
