@@ -26,7 +26,7 @@ def archiveDo(bot, position):
     archiveLastPosition = len(archiveNames) + 4
 
     rolledCells = wks.range('B'+str(position)+':E'+ str(position))
-    rolled = map(fValue, rolledCells)
+    rolled = list(map(fValue, rolledCells))
 
     # move archive cells down 1 row
     archiveOldCells = wks.range('F4:L'+str(archiveLastPosition+1))
@@ -72,11 +72,11 @@ def countSuggestions(bot, update):
     name = update.message.text.split(" ")[1]
     wks = auth()
 
-    originalRows = map(fValue, wks.range('B4:B100'))
+    originalRows = list(map(fValue, wks.range('B4:B100')))
     foundRows = list(filter(lambda value: value.lower() == name.lower(), originalRows))
     suggestionsCount = len(foundRows)
 
-    originalArchive = map(fValue, wks.range('G4:G1000'))
+    originalArchive = list(map(fValue, wks.range('G4:G1000')))
     foundArchive = list(filter(lambda value: value.lower() == name.lower(), originalArchive))
     archiveCount = len(foundArchive)
 

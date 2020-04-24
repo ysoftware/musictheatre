@@ -59,7 +59,7 @@ def roll(bot, update):
 
     wks = auth()
     suggestionNames = list(filter(fNonEmpty, map(fValue, wks.range('B4:B100'))))
-    illegalNames = map(fLower, list(filter(fNonEmpty, map(fValue, wks.range('G4:G9')))))
+    illegalNames = list(map(fLower, list(filter(fNonEmpty, map(fValue, wks.range('G4:G9'))))))
 
     values = []
     for i in range(len(suggestionNames)):
@@ -78,7 +78,7 @@ def roll(bot, update):
     result = values[rolled_from_valid]["number"]
 
     spreadsheetNumber = result
-    rolled = map(fValue, wks.range('A'+str(spreadsheetNumber) +':E'+ str(spreadsheetNumber)))
+    rolled = list(map(fValue, wks.range('A'+str(spreadsheetNumber) +':E'+ str(spreadsheetNumber))))
     
     config['lastRoll'] = spreadsheetNumber
     saveConfig(config)

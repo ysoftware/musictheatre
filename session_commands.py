@@ -59,7 +59,7 @@ def newAlbumSetPosition(bot, position):
     if config['isPlaying'] == False:
        if int(position) >= 4:
             wks = auth()
-            info = map(fValue, wks.range("B{0}:E{0}".format(position, position)))
+            info = list(map(fValue, wks.range("B{0}:E{0}".format(position, position))))
             newAlbumSet(bot, config, info[1], info[3], info[2], info[0])
             
             # archive as well
