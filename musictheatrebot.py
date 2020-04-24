@@ -13,7 +13,8 @@ import other_commands, start_commands, session_commands, sheet_commands
 
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-updater = Updater(token='337143431:AAH1TZLyqBTuHEKIIZ7OvEnmNL03I-EcHRM')
+telegram_token = open('telegram_token.txt', 'r').read()
+updater = Updater(token=telegram_token)
 
 # sheet
 updater.dispatcher.add_handler(CommandHandler('shit', other_commands.shit))
