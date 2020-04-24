@@ -11,7 +11,9 @@ def auth():
              'https://www.googleapis.com/auth/drive']
     credentials = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
     gc = gspread.authorize(credentials)
-    return gc.open_by_key("1ExwdtbLUBpWZ12fg2faURtZLf7T8VZa0tndEX4SYkck").get_worksheet(0)
+
+    spreadsheet_key = open('sheet_id.txt', 'r').read()
+    return gc.open_by_key(spreadsheet_key).get_worksheet(0)
 
 configFile = "./session.pk"
 

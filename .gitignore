@@ -2,3 +2,4 @@
 session.pk
 credentials.json
 *.pyc
+sheet_id.txt
