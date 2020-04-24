@@ -9,8 +9,7 @@ retardStickerId = "CAADBAAD2wADeyqRC60Pvd---1a5Ag";
 
 def start(bot, update):
     reply(update, 
-        "<b>Welcome to Music Theatre!</b>\nThis bot is designed to assist newseeds with discovering music.\n", 
-        parse_mode="HTML")
+        "<b>Welcome to Music Theatre!</b>\nThis bot is designed to assist newseeds with discovering music.\n")
     help(bot, update)
 
 def help(bot, update):
@@ -18,14 +17,12 @@ def help(bot, update):
         return
     if not checkAccess(update):
         return
-    reply(update, "Here's the list of commands:\n<b>/sheet</b> gives you the link to our spreadsheet\n<b>/tagme</b> to subscribe to session notifications [private message only]\n<b>/suggest</b> will ask if anyone wants to start a session\n<b>/admins</b> for the list of people who have admin access\n\nUse these while in session:\n<b>/song</b> or <b>/album</b> to find out what's playing".encode('utf-8'), 
-        parse_mode="HTML")
+    reply(update, "Here's the list of commands:\n<b>/sheet</b> gives you the link to our spreadsheet\n<b>/tagme</b> to subscribe to session notifications [private message only]\n<b>/suggest</b> will ask if anyone wants to start a session\n<b>/admins</b> for the list of people who have admin access\n\nUse these while in session:\n<b>/song</b> or <b>/album</b> to find out what's playing".encode('utf-8'))
 
 def adminHelp(bot, update):
     if not isNewCommand(update):
         return
-    reply(update, "Here's the list of admin commands:\n<b>/roll</b> to randomly pick a suggestion\n<b>/cunt</b> to initiate the countdown\n<b>/archive [roll]</b> to archive a suggestion\n<b>/new [roll]</b> will set current album playing and archive the suggestion\n\nUse these while in session:\n<b>/n</b> to set current song playing\n<b>/over or /abort</b> to end the session".encode('utf-8'), 
-        parse_mode="HTML")
+    reply(update, "Here's the list of admin commands:\n<b>/roll</b> to randomly pick a suggestion\n<b>/cunt</b> to initiate the countdown\n<b>/archive [roll]</b> to archive a suggestion\n<b>/new [roll]</b> will set current album playing and archive the suggestion\n\nUse these while in session:\n<b>/n</b> to set current song playing\n<b>/over or /abort</b> to end the session".encode('utf-8'))
 
 # say something
 
@@ -58,7 +55,7 @@ def adminList(bot, update):
     for name in admins:
         text += "- " + name + "\n"
     text += "If they are not around, God help you."
-    reply(update, text.encode('utf-8'), parse_mode="HTML")
+    reply(update, text.encode('utf-8'))
 
 # spreadshit link
 
