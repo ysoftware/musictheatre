@@ -20,8 +20,8 @@ def archiveDo(bot, position):
     wks = auth()
     now = getTime()
 
-    archiveNames = filter(fNonEmpty, map(fValue, wks.range('G4:G1000')))
-    suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
+    archiveNames = list(filter(fNonEmpty, map(fValue, wks.range('G4:G1000'))))
+    suggestionNames = list(filter(fNonEmpty, map(fValue, wks.range('B4:B100'))))
     lastSuggestion = len(suggestionNames) + 4
     archiveLastPosition = len(archiveNames) + 4
 
@@ -73,11 +73,11 @@ def countSuggestions(bot, update):
     wks = auth()
 
     originalRows = map(fValue, wks.range('B4:B100'))
-    foundRows = filter(lambda value: value.lower() == name.lower(), originalRows)
+    foundRows = list(filter(lambda value: value.lower() == name.lower(), originalRows))
     suggestionsCount = len(foundRows)
 
     originalArchive = map(fValue, wks.range('G4:G1000'))
-    foundArchive = filter(lambda value: value.lower() == name.lower(), originalArchive)
+    foundArchive = list(filter(lambda value: value.lower() == name.lower(), originalArchive))
     archiveCount = len(foundArchive)
 
     if suggestionsCount > 0:
@@ -115,8 +115,8 @@ def addSuggestion(bot, update):
         reply(update, "Wrong year")
         return
     
-    suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
-    foundRows = filter(lambda value: value.lower() == name.lower(), suggestionNames)
+    suggestionNames = list(filter(fNonEmpty, map(fValue, wks.range('B4:B100'))))
+    foundRows = list(filter(lambda value: value.lower() == name.lower(), suggestionNames))
 
     if len(foundRows) >= 5:
         reply(update, "This one already has enough suggestions.")
@@ -143,7 +143,7 @@ def rollInfo(bot, update):
 
     wks = auth()
 
-    suggestions = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
+    suggestions = list(filter(fNonEmpty, map(fValue, wks.range('B4:B100'))))
     count = len(suggestions)
 
     if count < 2:

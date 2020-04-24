@@ -58,8 +58,8 @@ def roll(bot, update):
         return
 
     wks = auth()
-    suggestionNames = filter(fNonEmpty, map(fValue, wks.range('B4:B100')))
-    illegalNames = map(fLower, filter(fNonEmpty, map(fValue, wks.range('G4:G9'))))
+    suggestionNames = list(filter(fNonEmpty, map(fValue, wks.range('B4:B100'))))
+    illegalNames = map(fLower, list(filter(fNonEmpty, map(fValue, wks.range('G4:G9')))))
 
     values = []
     for i in range(len(suggestionNames)):
