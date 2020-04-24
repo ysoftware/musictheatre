@@ -16,7 +16,9 @@ def unix_time_millis(dt):
     return (dt - epoch).total_seconds() * 1000.0
 
 def checkAccess(update):
-    return update.message.from_user.username in admins
+    value = update.message.from_user.username in admins
+    print("checkAccess", value)
+    return value
 
 def checkDevAccess(update):
     return update.message.from_user.username in devs
@@ -25,7 +27,9 @@ def isNewCommand(update):
     timenow = unix_time_millis(datetime.datetime.now())
     messageTime = unix_time_millis(update.message.date)
     dt = timenow - messageTime
-    return dt < (20000)
+    value = dt < (20000)
+    print("isNewCommand", value)
+    return value
 
 def isNewSeeds(update):
     return update.message.chat_id == newseeds
