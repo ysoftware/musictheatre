@@ -46,4 +46,4 @@ def today(bot, update):
 	if not isNewCommand(update):
 		return
 	message = renew()
-	send(bot, message.encode('utf-8'))
+	send(bot, message)

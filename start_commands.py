@@ -22,7 +22,7 @@ def cunt(bot, update):
             message = update.message.text.split(" ", 1)[1].strip()
         else:
             message = randomCunt()
-        send(bot, message.encode('utf-8'))
+        send(bot, message)
 
         count = 5
         while count:
@@ -85,9 +85,9 @@ def roll(bot, update):
 
     send(bot,
         "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(
-            spreadsheetNumber, rolled[2].encode('utf-8'), 
-            rolled[4].encode('utf-8'), rolled[3].encode('utf-8'), 
-            rolled[1].encode('utf-8')), parse_mode="HTML")
+            spreadsheetNumber, rolled[2], 
+            rolled[4], rolled[3], 
+            rolled[1]), parse_mode="HTML")
 
 # suggest
 

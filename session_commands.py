@@ -31,7 +31,7 @@ def abort(bot, update):
             # add 'aborted'
             wks = auth()
             archiveCells = wks.range('F4:L4')
-            if archiveCells[4].value.encode('utf-8') == config['album']:
+            if archiveCells[4].value == config['album']:
                 archiveCells[6].value = "aborted"
                 wks.update_cells(archiveCells)
     else:
@@ -69,14 +69,14 @@ def newAlbumSetPosition(bot, position):
 
 def newAlbumSet(bot, config, artistName, albumName, year, suggested):
     config['isPlaying'] = True
-    config['artist'] = artistName.encode('utf-8')
-    config['album'] = albumName.encode('utf-8')
+    config['artist'] = artistName
+    config['album'] = albumName
     config['track'] = ""
 
     text = ""
     if year is not None and suggested is not None:
-        config['year'] = year.encode('utf-8')
-        config['suggested'] = suggested.encode('utf-8')
+        config['year'] = year
+        config['suggested'] = suggested
 
         text = "#musictheatre New Album: {0} - {1} ({2}) [Suggested by: {3}]".format(
             config['artist'], config['album'], config['year'], config['suggested'])
@@ -98,7 +98,7 @@ def nextSong(bot, update):
         if len(trackName) > 0 and len(config['artist']) > 0 and trackName != config['track']:
             config['track'] = trackName
             text = "#musictheatre {0} - {1}".format(
-                config['artist'].encode('utf-8'), config['track'].encode('utf-8'))
+                config['artist'], config['track'])
             send(bot, text)
             saveConfig(config)
     else:
@@ -123,12 +123,12 @@ def currentAlbum(bot, update):
     if config['isPlaying'] == True:
         if len(config['artist']) > 0 and len(config['album']) > 0:
             text = "{0} by {1}".format(
-                config['album'].encode('utf-8'), config['artist'].encode('utf-8'))
+                config['album'], config['artist'])
             if config['year'] is not None:
-                text += " ({})".format(config['year'].encode('utf-8'))
+                text += " ({})".format(config['year'])
             if config['suggested'] is not None:
                 text += " [Suggested by: {}]".format(
-                    config['suggested'].encode('utf-8'))
+                    config['suggested'])
             reply(update, text)
     else:
         reply(update, "Nothing is playing.")
@@ -141,8 +141,8 @@ def currentTrack(bot, update):
     if config['isPlaying'] == True:
         if len(config['artist']) > 0 and len(config['album']) > 0 and len(config['track']) > 0:
             text = "Now playing: {0} - {1} (from {2})".format(
-                config['artist'].encode('utf-8'), config['track'].encode('utf-8'), 
-                config['album'].encode('utf-8'))
+                config['artist'], config['track'], 
+                config['album'])
             reply(update, text)
     else:
         reply(update, "Nothing is playing.")

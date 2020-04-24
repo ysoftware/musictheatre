@@ -134,7 +134,7 @@ def addSuggestion(bot, update):
     wks.update_cells(newCells)
 
     reply(update, "{} by {} ({}) is now suggested by {}.".format(
-        album.encode('utf-8'), artist.encode('utf-8'), year, name.encode('utf-8')))
+        album, artist, year, name))
 
 
 def rollInfo(bot, update):
