@@ -30,7 +30,7 @@ def say(bot, update):
 
     message = update.message.text.split(" ", 1)[1].strip()
     log(bot, message)
-    send(bot, message.encode('utf-8'), parse_mode="HTML")
+    send(bot, message, "HTML")
 
 def sticker(bot, update):
     if not isNewCommand(update): return
@@ -55,8 +55,7 @@ def adminList(bot, update):
 
 def shit(bot, update):
     if not isNewCommand(update):
-        send(bot, "Hey folks, our spreadshit is here: http://bit.ly/mtheatre", 
-            parse_mode="HTML")
+        send(bot, "Hey fags! Our spreadshit is here: http://bit.ly/mtheatre", parse_mode="HTML")
     else:
         reply(update, "Here's the link to our spreadshit: http://bit.ly/mtheatre")
 
@@ -70,7 +69,13 @@ def russian(bot, update):
 
 def ball(bot, update):
     if not isNewCommand(update): return
-    message = random.choice(["It is certain", "It is decidedly so", "Without a doubt", "Yes - definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Signs point to yes", "Yes", "Reply hazy, try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"])
+
+    message = random.choice(["It is certain", "It is decidedly so", "Without a doubt", "Yes - definitely", 
+    "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Signs point to yes", "Yes", 
+    "Reply hazy, try again", "Ask again later", "Better not tell you now", "Cannot predict now", 
+    "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", 
+    "Outlook not so good", "Very doubtful"])
+
     send(bot, message)
 
 # tag

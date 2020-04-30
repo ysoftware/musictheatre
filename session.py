@@ -18,8 +18,6 @@ def auth():
 # wrappers
 
 def send(bot, message, parse_mode="Markdown"):
-    log(bot, main_channel())
-    log(bot, message)
     bot.sendMessage(main_channel(), message, parse_mode)
 
 def reply(update, message):
