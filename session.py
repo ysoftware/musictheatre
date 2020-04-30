@@ -1,21 +1,19 @@
 import pickle
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-
 from core import main_channel
+
+configFile = "./session.pk"
 
 # spreadsheet
 
 def auth():
-    scope = ['https://spreadsheets.google.com/feeds',
-             'https://www.googleapis.com/auth/drive']
+    scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
     credentials = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
     gc = gspread.authorize(credentials)
 
     spreadsheet_key = open('sheet_id.txt', 'r').read()
     return gc.open_by_key(spreadsheet_key).get_worksheet(0)
-
-configFile = "./session.pk"
 
 # wrappers
 
