@@ -149,8 +149,6 @@ def test(bot, update):
     if not checkDevAccess(update):
         return
 
-    p = subprocess.Popen("cd /usr/local/tgbots/musictheatrebot; git log -1", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-    bot.sendMessage(update.message.from_user.id, p)
     bot.sendMessage(update.message.from_user.id, loadConfig())
 
 def removeRoll(bot, update):
