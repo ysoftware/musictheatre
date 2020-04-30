@@ -24,6 +24,7 @@ def adminHelp(bot, update):
 # say something
 
 def say(bot, update):
+    log(bot, "text.. trying")
     log(bot, "text: " + update.message.text)
 
     if not isNewCommand(update): return
