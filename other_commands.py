@@ -24,9 +24,13 @@ def adminHelp(bot, update):
 # say something
 
 def say(bot, update):
+    log(bot, "text.. trying")
+    log(bot, "text: " + update.message.text)
+
     if not isNewCommand(update): return
     if not checkAccess(update): return
     if isNewSeeds(update): return
+    log(bot, "text.. trying")
 
     message = update.message.text.split(" ", 1)[1].strip()
     send(bot, message)
@@ -154,5 +158,5 @@ def removeRoll(bot, update):
         saveConfig(config)
 
 def error_callback(bot, update, error):
-    log(bot, error)
+    log(bot, error.message)
     print(error)
