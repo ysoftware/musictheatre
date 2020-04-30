@@ -13,31 +13,31 @@ def randomCunt():
         "Come to Daddy", "Oh boy, here I go killin' again!"])
 
 def cunt(bot, update):
-    if not isNewCommand(update):
-        return
-    if checkAccess(update):
-        message = [1]
+    if not isNewCommand(update): return
+    if not checkAccess(update): return 
 
-        if len(update.message.text.split(" ", 1)) > 1:
-            message = update.message.text.split(" ", 1)[1].strip()
-        else:
-            message = randomCunt()
-        send(bot, message)
+    message = [1]
 
-        count = 5
-        while count:
-            send(bot, "{}".format(count))
-            time.sleep(1)
-            count -= 1
+    if len(update.message.text.split(" ", 1)) > 1:
+        message = update.message.text.split(" ", 1)[1].strip()
+    else:
+        message = randomCunt()
+    send(bot, message)
 
-        send(bot, "PLAY!")
+    count = 5
+    while count:
+        send(bot, "{}".format(count))
+        time.sleep(1)
+        count -= 1
 
-        # also call /new
-        config = loadConfig()
-        if config['lastRoll'] is not None:
-            newAlbumSetPosition(bot, config['lastRoll'])
-            config['lastRoll'] = None 
-            saveConfig(config)
+    send(bot, "PLAY!")
+
+    # also call /new
+    config = loadConfig()
+    if config['lastRoll'] is not None:
+        newAlbumSetPosition(bot, config['lastRoll'])
+        config['lastRoll'] = None 
+        saveConfig(config)
 
 # roll
 
@@ -47,12 +47,10 @@ def getRandom(count):
     return numpy.random.choice(values, p=weights)
 
 def roll(bot, update):
-    if not isNewCommand(update):
-        return
-    if not checkAccess(update):
-        return
-    config = loadConfig()
+    if not isNewCommand(update): return
+    if not checkAccess(update): return
 
+    config = loadConfig()
     if config['isPlaying'] == True:
         reply(update, "Another session is still on. I'm afraid I can't do that.")
         return
@@ -92,8 +90,8 @@ def roll(bot, update):
 # suggest
 
 def suggest(bot, update):
-    if not isNewCommand(update):
-        return
+    if not isNewCommand(update): return
+    
     config = loadConfig()
     if config['isPlaying'] == False:
         send(bot, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", parse_mode="HTML")

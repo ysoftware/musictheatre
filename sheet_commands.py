@@ -8,10 +8,9 @@ import numpy, re
 # archive
 
 def archive(bot, update):
-    if not isNewCommand(update):
-        return
-    if not checkAccess(update):
-        return
+    if not isNewCommand(update): return
+    if not checkAccess(update): return
+
     position = int(update.message.text.split(" ")[1])
     archiveDo(bot, position)
     send(bot, "Suggestion moved to the archive.")
@@ -61,8 +60,7 @@ def archiveDo(bot, position):
 # manage suggestions
 
 def countSuggestions(bot, update):
-    if not isNewCommand(update):
-        return
+    if not isNewCommand(update): return
 
     array = update.message.text.split(" ")
     if len(array) < 2:
@@ -94,8 +92,7 @@ def countSuggestions(bot, update):
         reply(update, "No such thing.")
 
 def addSuggestion(bot, update):
-    if not isNewCommand(update):
-        return
+    if not isNewCommand(update): return
 
     array = re.split("[;\n]", update.message.text)
 
@@ -138,16 +135,14 @@ def addSuggestion(bot, update):
 
 
 def rollInfo(bot, update):
-    if not isNewCommand(update):
-        return
+    if not isNewCommand(update): return
 
     wks = auth()
 
     suggestions = list(filter(fNonEmpty, map(fValue, wks.range('B4:B100'))))
     count = len(suggestions)
 
-    if count < 2:
-        return
+    if count < 2: return
 
     values = getWeights(count)
 

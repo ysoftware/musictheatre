@@ -13,44 +13,37 @@ def start(bot, update):
     help(bot, update)
 
 def help(bot, update):
-    if not isNewCommand(update):
-        return
-    if not checkAccess(update):
-        return
+    if not isNewCommand(update): return
+    if not checkAccess(update): return
     reply(update, "Here's the list of commands:\n<b>/sheet</b> gives you the link to our spreadsheet\n<b>/tagme</b> to subscribe to session notifications [private message only]\n<b>/suggest</b> will ask if anyone wants to start a session\n<b>/admins</b> for the list of people who have admin access\n\nUse these while in session:\n<b>/song</b> or <b>/album</b> to find out what's playing")
 
 def adminHelp(bot, update):
-    if not isNewCommand(update):
-        return
+    if not isNewCommand(update): return
     reply(update, "Here's the list of admin commands:\n<b>/roll</b> to randomly pick a suggestion\n<b>/cunt</b> to initiate the countdown\n<b>/archive [roll]</b> to archive a suggestion\n<b>/new [roll]</b> will set current album playing and archive the suggestion\n\nUse these while in session:\n<b>/n</b> to set current song playing\n<b>/over or /abort</b> to end the session")
 
 # say something
 
 def say(bot, update):
-    if not isNewCommand(update):
-        return
-    if not checkAccess(update):
-        return
-    if isNewSeeds(update):
-        return
+    if not isNewCommand(update): return
+    if not checkAccess(update): return
+    if isNewSeeds(update): return
+
     message = update.message.text.split(" ", 1)[1].strip()
     send(bot, message.encode('utf-8'), parse_mode="HTML")
 
 def sticker(bot, update):
-    if not isNewCommand(update):
-        return
-    if not checkAccess(update):
-        return
-    if isNewSeeds(update):
-        return
+    if not isNewCommand(update): return
+    if not checkAccess(update): return
+    if isNewSeeds(update): return
+
     message = update.message.text.split(" ", 1)[1].strip()
     bot.sendSticker(newseeds, message)
 
 # admins
 
 def adminList(bot, update):
-    if not isNewCommand(update):
-        return
+    if not isNewCommand(update): return
+
     text = "These <i>(%username%)</i>s have access to the bot's #musictheatre session commands:\n"
     for name in admins:
         text += "- " + name + "\n"
@@ -83,12 +76,10 @@ def ball(bot, update):
 # tag
 
 def tagPeople(bot, update):
-    if not isNewCommand(update):
-        return
-    if not checkAccess(update):
-        return
-    if not isNewCommand(update):
-        return
+    if not isNewCommand(update): return
+    if not checkAccess(update): return
+    if not isNewCommand(update): return
+
     config = loadConfig()
     if 'tagList' in config and len(config['tagList']) > 0:
         send(bot, "Notifying {} people... (/taginfo to learn).".format(
@@ -105,8 +96,8 @@ def tagPeople(bot, update):
         send(bot, "No one is subscribed for /tag updates.")
 
 def tagMe(bot, update):
-    if not isNewCommand(update):
-        return
+    if not isNewCommand(update): return
+
     if isNewSeeds(update):
         reply(update, 
             "You have to private message me this command, because I am forbidden to initiate a chat with you.")
@@ -139,15 +130,14 @@ def taginfo(bot, update):
 # retarded
 
 def slow(bot, update):
+    if not isNewCommand(update): return
     bot.sendSticker(newseeds, retardStickerId)
 
 # work
 
 def test(bot, update):
-    if not isNewCommand(update):
-        return
-    if not checkDevAccess(update):
-        return
+    if not isNewCommand(update): return
+    if not checkDevAccess(update): return
 
     bot.sendMessage(update.message.from_user.id, loadConfig())
 

@@ -8,8 +8,8 @@ import numpy
 # session
 
 def over(bot, update):
-    if not checkAccess(update):
-        return
+    if not checkAccess(update): return
+
     config = loadConfig()
     if config['isPlaying'] == True:
         if isNewCommand(update):
@@ -19,8 +19,8 @@ def over(bot, update):
         reply(update, "You betcha it is.")
 
 def abort(bot, update):
-    if not checkAccess(update):
-        return
+    if not checkAccess(update): return
+
     config = loadConfig()
     if config['isPlaying'] == True:
         endSession()
@@ -38,10 +38,8 @@ def abort(bot, update):
         reply(update, "I'll abort you, you fucking bitch.")
 
 def newAlbum(bot, update):
-    if not isNewCommand(update):
-        return
-    if not checkAccess(update):
-        return
+    if not isNewCommand(update): return
+    if not checkAccess(update): return
 
     message = update.message.text.split(" ", 1)[1].strip()
 
@@ -88,10 +86,9 @@ def newAlbumSet(bot, config, artistName, albumName, year, suggested):
     saveConfig(config)
 
 def nextSong(bot, update):
-    if not isNewCommand(update):
-        return
-    if not checkAccess(update):
-        return
+    if not isNewCommand(update): return
+    if not checkAccess(update): return
+
     config = loadConfig()
     if config['isPlaying'] == True:
         trackName = update.message.text.split(" ", 1)[1].strip()
@@ -117,8 +114,8 @@ def endSession():
 # current
 
 def currentAlbum(bot, update):
-    if not isNewCommand(update):
-        return
+    if not isNewCommand(update): return
+
     config = loadConfig()
     if config['isPlaying'] == True:
         if len(config['artist']) > 0 and len(config['album']) > 0:
@@ -135,8 +132,8 @@ def currentAlbum(bot, update):
 
 
 def currentTrack(bot, update):
-    if not isNewCommand(update):
-        return
+    if not isNewCommand(update): return
+    
     config = loadConfig()
     if config['isPlaying'] == True:
         if len(config['artist']) > 0 and len(config['album']) > 0 and len(config['track']) > 0:
