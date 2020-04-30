@@ -66,7 +66,7 @@ def shit(bot, update):
 
 def russian(bot, update):
     if not isNewCommand(update): return
-    send(bot, "Putin Hates Us All", "", "", parse_mode="HTML")
+    send(bot, "Putin Hates Us All", parse_mode="HTML")
 
 # ball
 
@@ -158,5 +158,5 @@ def removeRoll(bot, update):
         saveConfig(config)
 
 def error_callback(bot, update, error):
-    log(bot, error.message)
+    # log(bot, error.message) TODO: make it work
     print(error)
