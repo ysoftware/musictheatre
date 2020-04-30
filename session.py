@@ -2,7 +2,7 @@ import pickle
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-from core import newseeds
+from core import main_channel
 
 # spreadsheet
 
@@ -20,7 +20,7 @@ configFile = "./session.pk"
 # wrappers
 
 def send(bot, message, parse_mode="Markdown"):
-    bot.sendMessage(newseeds, message, parse_mode)
+    bot.sendMessage(main_channel(), message, parse_mode)
 
 def reply(update, message):
     update.message.reply_html(message)

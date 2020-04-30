@@ -1,4 +1,4 @@
-from core import isNewCommand, checkAccess, isNewSeeds, getTime, admins, newseeds, checkDevAccess
+from core import isNewCommand, checkAccess, isNewSeeds, getTime, admins, main_channel, checkDevAccess
 from session import saveConfig, loadConfig, send, reply, auth
 from utility import fValue, fNonEmpty, fLower
 import numpy, subprocess, random
@@ -37,7 +37,7 @@ def sticker(bot, update):
     if isNewSeeds(update): return
 
     message = update.message.text.split(" ", 1)[1].strip()
-    bot.sendSticker(newseeds, message)
+    bot.sendSticker(main_channel(), message)
 
 # admins
 
@@ -131,7 +131,7 @@ def taginfo(bot, update):
 
 def slow(bot, update):
     if not isNewCommand(update): return
-    bot.sendSticker(newseeds, retardStickerId)
+    bot.sendSticker(main_channel(), retardStickerId)
 
 # work
 
