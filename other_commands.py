@@ -30,7 +30,7 @@ def say(bot, update):
 
     message = update.message.text.split(" ", 1)[1].strip()
     log(bot, message)
-    send(bot, message, "HTML")
+    send(bot, message)
 
 def sticker(bot, update):
     if not isNewCommand(update): return
