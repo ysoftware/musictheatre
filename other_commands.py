@@ -139,7 +139,6 @@ def test(bot, update):
     if not isNewCommand(update): return
     if not checkDevAccess(update): return
 
-    bot.sendMessage(update.message.chat.id, update.message.chat.id)
     bot.sendMessage(update.message.from_user.id, loadConfig())
 
 def removeRoll(bot, update):
