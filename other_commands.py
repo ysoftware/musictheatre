@@ -24,9 +24,13 @@ def adminHelp(bot, update):
 # say something
 
 def say(bot, update):
+    log(bot, "trying to SPEAK")
     if not isNewCommand(update): return
+    log(bot, "1...")
     if not checkAccess(update): return
+    log(bot, "2...")
     if isNewSeeds(update): return
+    log(bot, "eh... fuck this shit")
 
     message = update.message.text.split(" ", 1)[1].strip()
     send(bot, message.encode('utf-8'), parse_mode="HTML")
@@ -139,7 +143,6 @@ def test(bot, update):
     if not isNewCommand(update): return
     if not checkDevAccess(update): return
 
-    log(bot, "testing log...")
     bot.sendMessage(update.message.from_user.id, loadConfig())
 
 def removeRoll(bot, update):
