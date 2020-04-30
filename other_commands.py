@@ -24,13 +24,9 @@ def adminHelp(bot, update):
 # say something
 
 def say(bot, update):
-    log(bot, "text.. trying")
-    log(bot, "text: " + update.message.text)
-
     if not isNewCommand(update): return
     if not checkAccess(update): return
     if isNewSeeds(update): return
-    log(bot, "text.. trying")
 
     message = update.message.text.split(" ", 1)[1].strip()
     send(bot, message)
@@ -66,7 +62,7 @@ def shit(bot, update):
 
 def russian(bot, update):
     if not isNewCommand(update): return
-    send(bot, "Putin Hates Us All", parse_mode="HTML")
+    send(bot, "Putin Hates Us All", "", "", parse_mode="HTML")
 
 # ball
 
