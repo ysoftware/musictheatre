@@ -20,6 +20,8 @@ configFile = "./session.pk"
 # wrappers
 
 def send(bot, message, parse_mode="Markdown"):
+    log(bot, main_channel())
+    log(bot, message)
     bot.sendMessage(main_channel(), message, parse_mode)
 
 def reply(update, message):
@@ -46,3 +48,8 @@ def loadConfig():
         config = emptyConfig()
         saveConfig(config)
         return config
+
+# debug
+
+def log(bot, message):
+    bot.sendMessage(bot_test, "DEBUG: " + message)

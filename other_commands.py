@@ -1,5 +1,5 @@
 from core import isNewCommand, checkAccess, isNewSeeds, getTime, admins, main_channel, checkDevAccess, bot_test
-from session import saveConfig, loadConfig, send, reply, auth
+from session import saveConfig, loadConfig, send, reply, auth, log
 from utility import fValue, fNonEmpty, fLower
 import numpy, subprocess, random
 
@@ -24,15 +24,12 @@ def adminHelp(bot, update):
 # say something
 
 def say(bot, update):
-    log(bot, "trying to SPEAK")
     if not isNewCommand(update): return
-    log(bot, "1...")
     if not checkAccess(update): return
-    log(bot, "2...")
     if isNewSeeds(update): return
-    log(bot, "eh... fuck this shit")
 
     message = update.message.text.split(" ", 1)[1].strip()
+    log(bot, message)
     send(bot, message.encode('utf-8'), parse_mode="HTML")
 
 def sticker(bot, update):
@@ -155,8 +152,3 @@ def removeRoll(bot, update):
 
 def error_callback(bot, update, error):
     print(error)
-
-# debug
-
-def log(bot, message):
-    bot.sendMessage(bot_test, "DEBUG: " + message)
