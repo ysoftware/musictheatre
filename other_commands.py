@@ -28,6 +28,8 @@ def say(bot, update):
     if not checkAccess(update): return
     if isNewSeeds(update): return
 
+    log(bot, update.message.text)
+    
     message = update.message.text.split(" ", 1)[1].strip()
     log(bot, message)
     send(bot, message)
@@ -144,7 +146,6 @@ def test(bot, update):
     if not isNewCommand(update): return
     if not checkDevAccess(update): return
 
-    send(bot, "hello")
     bot.sendMessage(update.message.from_user.id, loadConfig())
 
 def removeRoll(bot, update):
