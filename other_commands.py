@@ -29,7 +29,7 @@ def say(bot, update):
     if isNewSeeds(update): return
 
     log(bot, update.message.text)
-    
+
     message = update.message.text.split(" ", 1)[1].strip()
     log(bot, message)
     send(bot, message)
@@ -157,4 +157,5 @@ def removeRoll(bot, update):
         saveConfig(config)
 
 def error_callback(bot, update, error):
+    log(bot, error)
     print(error)
