@@ -68,6 +68,12 @@ def russian(bot, update):
     if not isNewCommand(update): return
     send(bot, "Putin Hates Us All", parse_mode="HTML")
 
+# toast
+
+def toast(bot, update):
+    if not isNewCommand(update): return
+    send(bot, "https://www.youtube.com/watch?v=beVRw_TnWsE", parse_mode="HTML")
+
 # ball
 
 def ball(bot, update):

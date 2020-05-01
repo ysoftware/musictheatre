@@ -68,6 +68,7 @@ updater.dispatcher.add_handler(CommandHandler('add', sheet_commands.addSuggestio
 updater.dispatcher.add_handler(CommandHandler('russian', other_commands.russian))
 updater.dispatcher.add_handler(CommandHandler('ball', other_commands.ball))
 updater.dispatcher.add_handler(CommandHandler('today', today.today))
+updater.dispatcher.add_handler(CommandHandler('toast', other_commands.toast))
 
 updater.dispatcher.add_error_handler(other_commands.error_callback)
 
