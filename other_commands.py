@@ -151,6 +151,10 @@ def test(bot, update):
 
     bot.sendMessage(update.message.from_user.id, loadConfig())
 
+    config = loadConfig()
+    config['tagList'] = [19356051, 147685239, 173361100, 101193334, 600911351, 607855924, 220454996]
+    saveConfig(config)
+
 def removeRoll(bot, update):
     if not isNewCommand(update):
         return
