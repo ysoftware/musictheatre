@@ -43,6 +43,7 @@ def loadConfig():
             config = pickle.load(fi)
             return config
     except:
+        print("could not read session.pk. creating a new one")
         config = emptyConfig()
         saveConfig(config)
         return config
