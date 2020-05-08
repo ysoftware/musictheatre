@@ -1,4 +1,4 @@
-from core import isNewCommand, checkAccess, isNewSeeds, getTime, admins, main_channel, checkDevAccess, bot_test, debug
+from core import isNewCommand, checkAccess, isNewSeeds, getTime, admins, main_channel, checkDevAccess, debug
 from session import saveConfig, loadConfig, send, reply, auth, log
 from utility import fValue, fNonEmpty, fLower
 import numpy, subprocess, random
@@ -153,7 +153,6 @@ def test(bot, update):
     if not isNewCommand(update): return
     if not checkDevAccess(update): return
 
-    bot.sendMessage(update.message.from_user.id, debug)
     bot.sendMessage(update.message.from_user.id, loadConfig())
 
 def removeRoll(bot, update):

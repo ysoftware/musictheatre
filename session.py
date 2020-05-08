@@ -1,7 +1,7 @@
 import pickle
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from core import main_channel
+from core import main_channel, bot_test, debug
 
 configFile = "./session.pk"
 
@@ -50,4 +50,5 @@ def loadConfig():
 # debug
 
 def log(bot, message):
-    bot.sendMessage(bot_test, "DEBUG: " + message)
+    if debug:
+        bot.sendMessage(bot_test, "DEBUG: " + message)
