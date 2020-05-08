@@ -21,9 +21,9 @@ def archive(bot, update):
     
 def archiveDo(bot, position):
     
-   if debug: 
-       send(bot, "Suggestion moved to the archive. (not really)")
-       return # todo move bot to a test sheet
+    if debug: 
+        send(bot, "Suggestion moved to the archive. (not really)")
+        return # todo move bot to a test sheet
 
     wks = auth()
     now = getTime()
