@@ -38,6 +38,9 @@ def cunt(bot, update):
     # also call /new
     if config['lastRoll'] is not None:
         newAlbumSetPosition(bot, config['lastRoll'])
+
+        # newAlbumSetPosition updates config, need to reload it from disk
+        config = loadConfig() 
         config['lastRoll'] = None 
         saveConfig(config)
 
