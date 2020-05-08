@@ -34,12 +34,13 @@ def emptyConfig():
 def saveConfig(config):
     with open(configFile, "wb") as fi:
         pickle.dump(config, fi)
-        print("- {}".format(config))
+        print("saving {}".format(config))
 
 def loadConfig():
     try:
         with open(configFile, "rb") as fi:
             config = pickle.load(fi)
+            print("loaded {}".format(config))
             return config
     except Exception as e:
         print("could not read session.pk. creating a new one")
