@@ -10,12 +10,15 @@ import numpy, re
 def archive(bot, update):
     if not isNewCommand(update): return
     if not checkAccess(update): return
+    if debug: return # todo move bot to a test sheet
 
     position = int(update.message.text.split(" ")[1])
     archiveDo(bot, position)
     send(bot, "Suggestion moved to the archive.")
     
 def archiveDo(bot, position):
+    if debug: return # todo move bot to a test sheet
+
     wks = auth()
     now = getTime()
 
@@ -92,6 +95,8 @@ def countSuggestions(bot, update):
         reply(update, "No such thing.")
 
 def addSuggestion(bot, update):
+    if debug: return # todo move bot to a test sheet
+    
     if not isNewCommand(update): return
 
     array = re.split("[;\n]", update.message.text)
