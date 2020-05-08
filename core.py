@@ -1,14 +1,18 @@
-import datetime, numpy
+import datetime, numpy, sys
 
 watb = -1001049406492
 newseeds = -1001138132564
 bot_test = -329730756
-debug = True # DEBUG ONLY # TODO: PARSE FROM ARGUMENT
+debug = checkIfDebug()
 
 devs = list(map(lambda x: x.rstrip('\n'), open('devs_names.txt', 'r').readlines()))
 admins = list(map(lambda x: x.rstrip('\n'), open('admins_names.txt', 'r').readlines()))
 
-# time
+def checkIfDebug():
+    for arg in sys.argv:
+        if arg == "-debug":
+            return True
+    return False
 
 def getTime():
     return datetime.datetime.now()
