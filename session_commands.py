@@ -1,4 +1,4 @@
-from core import isNewCommand, checkAccess, isNewSeeds, getTime
+from core import isNewCommand, checkAccess, isNewSeeds, getTime, debug
 from session import saveConfig, loadConfig, send, reply, auth
 from utility import fValue, fNonEmpty, fLower
 
@@ -26,6 +26,11 @@ def abort(bot, update):
         endSession()
 
         if isNewCommand(update):
+
+            if debug: 
+                send(bot, "#musictheatre it's ABORTED. (not really)")
+                return # todo move bot to a test sheet
+
             send(bot, "#musictheatre it's ABORTED.")
 
             # add 'aborted'
