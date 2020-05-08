@@ -10,14 +10,16 @@ import numpy, re
 def archive(bot, update):
     if not isNewCommand(update): return
     if not checkAccess(update): return
-    if debug: return # todo move bot to a test sheet
-
+    
     position = int(update.message.text.split(" ")[1])
     archiveDo(bot, position)
     send(bot, "Suggestion moved to the archive.")
     
 def archiveDo(bot, position):
-    if debug: return # todo move bot to a test sheet
+    
+    if debug: 
+        send(bot, "Suggestion moved to the archive. (not really)")
+        return # todo move bot to a test sheet
 
     wks = auth()
     now = getTime()
@@ -95,7 +97,6 @@ def countSuggestions(bot, update):
         reply(update, "No such thing.")
 
 def addSuggestion(bot, update):
-    if debug: return # todo move bot to a test sheet
     
     if not isNewCommand(update): return
 
@@ -133,10 +134,14 @@ def addSuggestion(bot, update):
     newCells[2].value = year
     newCells[3].value = album
 
-    wks.update_cells(newCells)
+    message = "{} by {} ({}) is now suggested by {}.".format(album, artist, year, name)
 
-    reply(update, "{} by {} ({}) is now suggested by {}.".format(
-        album, artist, year, name))
+    if debug: 
+        reply(update, message + " (not really)")
+        return # todo move bot to a test sheet
+
+    wks.update_cells(newCells)
+    reply(update, message)
 
 
 def rollInfo(bot, update):
