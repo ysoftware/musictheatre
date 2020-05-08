@@ -26,6 +26,7 @@ def reply(update, message):
 # session persistence
 
 def emptyConfig():
+    print("emptying config...")
     obj = dict()
     obj['isPlaying'] = False
     return obj
