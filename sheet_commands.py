@@ -17,9 +17,11 @@ def archive(bot, update):
     
 def archiveDo(bot, position):
     
-    if debug: 
-        send(bot, "Suggestion moved to the archive. (not really)")
-        return # todo move bot to a test sheet
+    # UNCOMMENT THIS
+
+#    if debug: 
+    #    send(bot, "Suggestion moved to the archive. (not really)")
+    #    return # todo move bot to a test sheet
 
     wks = auth()
     now = getTime()
@@ -35,6 +37,7 @@ def archiveDo(bot, position):
     # move archive cells down 1 row
     archiveOldCells = wks.range('F4:L'+str(archiveLastPosition+1))
     lenArchiveOld = len(archiveOldCells)
+
     for i in reversed(range(len(archiveOldCells))):
         if lenArchiveOld > i + 7:
             archiveOldCells[i+7].value = archiveOldCells[i].value
