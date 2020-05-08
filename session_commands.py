@@ -107,7 +107,6 @@ def nextSong(bot, update):
         send(bot, "What album was that again?")
 
 def endSession():
-    print("ending session...")
     config = loadConfig()
     config.pop('artist', None)
     config.pop('track', None)
