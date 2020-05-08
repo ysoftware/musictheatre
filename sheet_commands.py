@@ -13,15 +13,17 @@ def archive(bot, update):
     
     position = int(update.message.text.split(" ")[1])
     archiveDo(bot, position)
-    send(bot, "Suggestion moved to the archive.")
+
+    if debug:
+        send(bot, "Suggestion moved to the archive. (not really)")
+    else:
+        send(bot, "Suggestion moved to the archive.")
     
 def archiveDo(bot, position):
     
-    # UNCOMMENT THIS
-
-#    if debug: 
-    #    send(bot, "Suggestion moved to the archive. (not really)")
-    #    return # todo move bot to a test sheet
+   if debug: 
+       send(bot, "Suggestion moved to the archive. (not really)")
+       return # todo move bot to a test sheet
 
     wks = auth()
     now = getTime()
