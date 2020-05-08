@@ -1,4 +1,4 @@
-from core import isNewCommand, checkAccess, isNewSeeds, getTime
+from core import isNewCommand, checkAccess, isNewSeeds, getTime, debug
 from session import saveConfig, loadConfig, send, reply, auth
 from utility import fValue, fNonEmpty, fLower
 

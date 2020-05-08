@@ -32,8 +32,10 @@ def cunt(bot, update):
 
     send(bot, "PLAY!")
 
-    # also call /new
     config = loadConfig()
+    if config['isPlaying'] == True: return
+
+    # also call /new
     if config['lastRoll'] is not None:
         newAlbumSetPosition(bot, config['lastRoll'])
         config['lastRoll'] = None 
