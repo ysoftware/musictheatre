@@ -13,15 +13,10 @@ def archive(bot, update):
     
     position = int(update.message.text.split(" ")[1])
     archiveDo(bot, position)
-
-    if debug:
-        send(bot, "Suggestion moved to the archive. (not really)")
-    else:
-        send(bot, "Suggestion moved to the archive.")
     
 def archiveDo(bot, position):
     
-    if debug: 
+    if debug:
         send(bot, "Suggestion moved to the archive. (not really)")
         return # todo move bot to a test sheet
 
@@ -66,6 +61,7 @@ def archiveDo(bot, position):
             suggestionCells[i].value = suggestionCells[i+4].value
 
     wks.update_cells(suggestionCells)
+    send(bot, "Suggestion moved to the archive.")
 
 # manage suggestions
 
