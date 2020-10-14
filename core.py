@@ -44,7 +44,7 @@ def isNewSeeds(update):
 
 def getWeights(count):
     values = list(range(0, count))
-    best_change = float(2.9)
+    best_change = float(10)
     step = best_change / count
     weights = list(map(lambda x: (count-x) * step, values))
     weights = numpy.array(weights)
