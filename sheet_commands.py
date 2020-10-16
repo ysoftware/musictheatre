@@ -168,4 +168,4 @@ def rollInfo(bot, update):
 
     first = values[0] * 100
     last = values[-1] * 100
-    reply(update, "Probability of getting rolled:\nOldest suggestion has: {0:.1f}% chance\nNewest suggestion has: {1:.1f}% chance".format(first, last))
+    reply(update, "Probability of getting rolled:\nOldest suggestion has: {:.1f}% chance\nNewest suggestion has: {:.9f}% chance".format(first, last))
