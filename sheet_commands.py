@@ -23,7 +23,7 @@ def archiveDo(bot, position):
     wks = auth()
     now = getTime()
 
-    archiveNames = list(filter(fNonEmpty, map(fValue, wks.range('G4:G1000'))))
+    archiveNames = list(filter(fNonEmpty, map(fValue, wks.range('G4:G'))))
     suggestionNames = list(filter(fNonEmpty, map(fValue, wks.range('B4:B100'))))
     lastSuggestion = len(suggestionNames) + 4
     archiveLastPosition = len(archiveNames) + 4
@@ -80,7 +80,7 @@ def countSuggestions(bot, update):
     foundRows = list(filter(lambda value: value.lower() == name.lower(), originalRows))
     suggestionsCount = len(foundRows)
 
-    originalArchive = list(map(fValue, wks.range('G4:G1000')))
+    originalArchive = list(map(fValue, wks.range('G4:G')))
     foundArchive = list(filter(lambda value: value.lower() == name.lower(), originalArchive))
     archiveCount = len(foundArchive)
 
