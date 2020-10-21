@@ -9,7 +9,7 @@ retardStickerId = "CAADBAAD2wADeyqRC60Pvd---1a5Ag";
 
 def start(bot, update):
     reply(update, 
-        "<b>Welcome to Music Theatre!</b>\nThis bot is designed to assist newseeds with discovering music. \nUse /tagme to subscribe for notifications.\n")
+        "<b>Welcome to Music Theatre!</b>\nThis bot is designed to assist newseeds with discovering music.\n")
     help(bot, update)
 
 def help(bot, update):
@@ -135,7 +135,7 @@ def dontTagMe(bot, update):
     saveConfig(config)
 
 def taginfo(bot, update):
-    reply(update, "Message the bot directly @MusicTheatreBot.\nStart the chat and say \"/tagme\" to get notified.")
+    reply(update, "Message the bot directly @MusicTheatreBot.\nStart the chat and say /tagme to get notified.")
 
 # retarded
 
