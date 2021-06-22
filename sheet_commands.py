@@ -1,6 +1,7 @@
 from core import isNewCommand, checkAccess, isNewSeeds, getTime, debug
 from session import saveConfig, loadConfig, send, reply, auth
 from utility import fValue, fNonEmpty, fLower
+from datetime import date
 
 from core import getWeights
 import numpy, re
@@ -115,7 +116,9 @@ def addSuggestion(bot, update):
     album = array[2].strip()
     year = int(array[3].strip())
 
-    if year > 2020 or year < 1900:
+    currentYear = date.today().year
+
+    if year > currentYear or year < 1900:
         reply(update, "Wrong year")
         return
     
