@@ -58,6 +58,7 @@ updater.dispatcher.add_handler(CommandHandler('start', other_commands.start))
 updater.dispatcher.add_handler(CommandHandler('help', other_commands.help))
 updater.dispatcher.add_handler(CommandHandler('adminHelp', other_commands.adminHelp))
 updater.dispatcher.add_handler(CommandHandler('admins', other_commands.adminList))
+updater.dispatcher.add_handler(CommandHandler('identify', other_commands.identify))
 
 # manage suggestions
 updater.dispatcher.add_handler(CommandHandler('rollinfo', sheet_commands.rollInfo))

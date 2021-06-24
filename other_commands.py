@@ -137,6 +137,10 @@ def dontTagMe(bot, update):
 def taginfo(bot, update):
     reply(update, "Message the bot directly @MusicTheatreBot.\nStart the chat and say /tagme to get notified.")
 
+def identify(bot, update):
+    id = update.effective_user.id
+    reply(update, "Your telegram id is: {}".format(id))
+
 # retarded
 
 def slow(bot, update):
