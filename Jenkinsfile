@@ -13,7 +13,7 @@ pipeline {
       stage("Build image") {
             steps {
                 script {
-                    myapp = docker.build("atm-srv-02:32002/repository/bot-musictheatre/bot-musictheatre:${env.BUILD_ID}")
+                    myapp = docker.build("atm-srv-02:32003/repository/bot-musictheatre/bot-musictheatre:${env.BUILD_ID}")
                 }
             }
         }
@@ -21,8 +21,8 @@ pipeline {
       stage("Push image to nexus") {
             steps {
                 script {
-                    docker.withRegistry('http://atm-srv-02:32002', 'nexus') {
-                            myapp = docker.build("atm-srv-02:32002/repository/bot-musictheatre/bot-musictheatre:${env.BUILD_ID}")
+                    docker.withRegistry('http://atm-srv-02:32003', 'nexus') {
+                            myapp = docker.build("atm-srv-02:32003/repository/bot-musictheatre/bot-musictheatre:${env.BUILD_ID}")
                             myapp.push("latest")
                             myapp.push("${env.BUILD_ID}")
                     }

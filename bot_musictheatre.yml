@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: bot-musictheatre
-        image: atm-srv-02:32002/repository/bot-musictheatre/bot-musictheatre:latest
+        image: atm-srv-02:32003/repository/bot-musictheatre/bot-musictheatre:latest
         imagePullPolicy: Always
       imagePullSecrets:
       - name: nexus-sizov
