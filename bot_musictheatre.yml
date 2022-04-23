@@ -18,7 +18,7 @@ spec:
         image: atm-srv-02:32003/repository/bot-musictheatre/bot-musictheatre:latest
         imagePullPolicy: Always
       imagePullSecrets:
-      - name: nexus-sizov
+      - name: nexus-musictheatre
       dnsConfig:
        options:
           - name: ndots
