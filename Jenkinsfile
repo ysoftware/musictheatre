@@ -32,7 +32,7 @@ pipeline {
 
     stage('Deploy/Rollout Musictheatre bot') {
       steps {
-        withKubeConfig([credentialsId: 'k8s']){
+        withKubeConfig([credentialsId: 'jenkins-robot', serverUrl: 'https://k8s-cluster:6443']){
           sh 'echo "Starting Musictheatre bot Deployment"'
                       sh '''
                           if kubectl get deployments -n prod | grep musictheatre
