@@ -31,7 +31,7 @@ pipeline {
         }
 
     stage('Deploy/Rollout Musictheatre bot') {
-      steps {
+      withKubeConfig([credentialsId: 'k8s', serverUrl: 'https://k8s-cluster:6443']){
         sh 'echo "Starting Musictheatre bot Deployment"'
                     sh '''
                         if kubectl get deployments -n prod | grep musictheatre
@@ -41,11 +41,8 @@ pipeline {
                             kubectl apply -f bot_musictheatre.yml -n prod
                         fi
                     '''
-
-        script {
-          kubernetesDeploy(configs: "bot_musictheatre.yml", kubeconfigId: "k8s")
-        }
       }
+
     }
 
   }
