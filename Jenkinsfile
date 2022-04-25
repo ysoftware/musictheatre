@@ -4,18 +4,9 @@ pipeline {
 
   stages {
      
-    stage('Checkout necessary files ') {
-      steps {
-	      fileExists 'telegram_token.txt'
-        fileExists 'sessions.pk'
-        fileExists 'devs_names.txt'
-        fileExists 'admins_names.txt'
-      }
-    }
-
     stage('Checkout Source') {
       steps {
-	      checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'riodevelop_token', url: 'https://github.com/ysoftware/musictheatre.git']]])
+	    checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'riodevelop_token', url: 'https://github.com/ysoftware/musictheatre.git']]])
       }
     }
 
@@ -39,8 +30,18 @@ pipeline {
             }
         }
 
-    stage('Deploy App') {
+    stage('Deploy/Rollout Musictheatre bot') {
       steps {
+        sh 'echo "Starting Musictheatre bot Deployment"'
+                    sh '''
+                        if kubectl get deployments -n prod | grep musictheatre
+                        then
+                            kubectl rollout restart deployment bot-musictheatre -n prod
+                        else
+                            kubectl apply -f bot_musictheatre.yml -n prod
+                        fi
+                    '''
+
         script {
           kubernetesDeploy(configs: "bot_musictheatre.yml", kubeconfigId: "k8s")
         }
