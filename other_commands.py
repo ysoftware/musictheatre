@@ -159,5 +159,8 @@ def removeRoll(bot, update):
         config['lastRoll'] = None 
         saveConfig(config)
 
-def error_callback(bot, update, error):
-    print(error)
+def error_callback(bot, context):
+    print("\n\n")
+    print("Error occured!")
+    print(context.error)
+    print("\n\n")
