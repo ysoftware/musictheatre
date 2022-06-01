@@ -8,21 +8,22 @@ import numpy, re
 # archive
 
 def archive(update, context):
+    print("> archive")
     if not isNewCommand(update): return
     if not checkAccess(update): return
-    
+
     position = int(update.message.text.split(" ")[1])
     archiveDo(context.bot, position)
 
     if debug:
-        send(bot, "Suggestion moved to the archive. (not really)")
+        send(context.bot, "Suggestion moved to the archive. (not really)")
     else:
-        send(bot, "Suggestion moved to the archive.")
+        send(context.bot, "Suggestion moved to the archive.")
     
 def archiveDo(bot, position):
     
     if debug: 
-        send(bot, "Suggestion moved to the archive. (not really)")
+        send(context.bot, "Suggestion moved to the archive. (not really)")
         return # todo move bot to a test sheet
 
     wks = auth()
@@ -102,7 +103,7 @@ def countSuggestions(update, context):
         reply(update, "No such thing.")
 
 def addSuggestion(update, context):
-    
+    print("> addSuggestion")
     if not isNewCommand(update): return
 
     array = re.split("[;\n]", update.message.text)
@@ -150,14 +151,13 @@ def addSuggestion(update, context):
 
 
 def rollInfo(update, context):
+    print("> rollInfo")
     if not isNewCommand(update): return
 
     wks = auth()
 
     suggestions = list(filter(fNonEmpty, map(fValue, wks.range('B4:B100'))))
     count = len(suggestions)
-
-    print(count)
 
     if count < 2: return
 
