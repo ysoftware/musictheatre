@@ -71,6 +71,7 @@ def archiveDo(bot, position):
 # manage suggestions
 
 def countSuggestions(update, context):
+    print("> countSuggestions")
     if not isNewCommand(update): return
 
     array = update.message.text.split(" ")
