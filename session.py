@@ -13,7 +13,15 @@ def auth():
     gc = gspread.authorize(credentials)
 
     spreadsheet_key = open('./env/sheet_id.txt', 'r').read()
-    return gc.open_by_key(spreadsheet_key).get_worksheet(0)
+    print(spreadsheet_key)
+
+    sheet = gc.open_by_key(spreadsheet_key)
+    print(sheet)
+
+    worksheet = sheet.get_worksheet(0)
+    print(worksheet)
+    
+    return worksheet
 
 # wrappers
 
