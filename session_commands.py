@@ -7,18 +7,18 @@ import numpy
 
 # session
 
-def over(bot, update):
+def over(update, context):
     if not checkAccess(update): return
 
     config = loadConfig()
     if config['isPlaying'] == True:
         if isNewCommand(update):
-            send(bot, "#musictheatre it's OVER.")
+            send(context.bot, "#musictheatre it's OVER.")
         endSession()
     else:
         reply(update, "You betcha it is.")
 
-def abort(bot, update):
+def abort(update, context):
     if not checkAccess(update): return
 
     config = loadConfig()
@@ -28,10 +28,10 @@ def abort(bot, update):
         if isNewCommand(update):
 
             if debug: 
-                send(bot, "#musictheatre it's ABORTED. (not really)")
+                send(context.bot, "#musictheatre it's ABORTED. (not really)")
                 return # todo move bot to a test sheet
 
-            send(bot, "#musictheatre it's ABORTED.")
+            send(context.bot, "#musictheatre it's ABORTED.")
 
             # add 'aborted'
             wks = auth()
@@ -42,20 +42,21 @@ def abort(bot, update):
     else:
         reply(update, "I'll abort you, you fucking bitch.")
 
-def newAlbum(bot, update):
+def newAlbum(update, context):
     if not isNewCommand(update): return
     if not checkAccess(update): return
 
+    config = loadConfig()
     message = update.message.text.split(" ", 1)[1].strip()
 
     # new artist - album
     if " - " in message:
         artistName = message.split(" - ", 1)[0].strip()
         albumName = message.split(" - ", 1)[1].strip()
-        newAlbumSet(bot, config, artistName, albumName, None, None)
+        newAlbumSet(context.bot, config, artistName, albumName, None, None)
     # new {number}
     else:
-        newAlbumSetPosition(bot, message)
+        newAlbumSetPosition(context.bot, message)
 
 def newAlbumSetPosition(bot, position):
     config = loadConfig()
@@ -90,7 +91,7 @@ def newAlbumSet(bot, config, artistName, albumName, year, suggested):
     send(bot, text)
     saveConfig(config)
 
-def nextSong(bot, update):
+def nextSong(update, context):
     if not isNewCommand(update): return
     if not checkAccess(update): return
 
@@ -101,10 +102,10 @@ def nextSong(bot, update):
             config['track'] = trackName
             text = "#musictheatre {0} - {1}".format(
                 config['artist'], config['track'])
-            send(bot, text)
+            send(context.bot, text)
             saveConfig(config)
     else:
-        send(bot, "What album was that again?")
+        send(context.bot, "What album was that again?")
 
 def endSession():
     config = loadConfig()
@@ -118,7 +119,7 @@ def endSession():
 
 # current
 
-def currentAlbum(bot, update):
+def currentAlbum(update, context):
     if not isNewCommand(update): return
 
     config = loadConfig()
@@ -136,7 +137,7 @@ def currentAlbum(bot, update):
         reply(update, "Nothing is playing.")
 
 
-def currentTrack(bot, update):
+def currentTrack(update, context):
     if not isNewCommand(update): return
     
     config = loadConfig()

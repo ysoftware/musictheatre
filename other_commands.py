@@ -7,41 +7,41 @@ retardStickerId = "CAADBAAD2wADeyqRC60Pvd---1a5Ag";
 
 # help
 
-def start(bot, update):
+def start(update, context):
     reply(update, 
         "<b>Welcome to Music Theatre!</b>\nThis bot is designed to assist newseeds with discovering music.\n")
-    help(bot, update)
+    help(update, update)
 
-def help(bot, update):
+def help(update, context):
     if not isNewCommand(update): return
     if not checkAccess(update): return
     reply(update, "Here's the list of commands:\n<b>/sheet</b> gives you the link to our spreadsheet\n<b>/tagme</b> to subscribe to session notifications [private message only]\n<b>/suggest</b> will ask if anyone wants to start a session\n<b>/admins</b> for the list of people who have admin access\n\nUse these while in session:\n<b>/song</b> or <b>/album</b> to find out what's playing")
 
-def adminHelp(bot, update):
+def adminHelp(update, context):
     if not isNewCommand(update): return
     reply(update, "Here's the list of admin commands:\n<b>/roll</b> to randomly pick a suggestion\n<b>/cunt</b> to initiate the countdown\n<b>/archive [roll]</b> to archive a suggestion\n<b>/new [roll]</b> will set current album playing and archive the suggestion\n\nUse these while in session:\n<b>/n</b> to set current song playing\n<b>/over or /abort</b> to end the session")
 
 # say something
 
-def say(bot, update):
+def say(update, context):
     if not isNewCommand(update): return
     if not checkAccess(update): return
     if isNewSeeds(update): return
 
     message = update.message.text.split(" ", 1)[1].strip()
-    send(bot, message)
+    send(context.bot, message)
 
-def sticker(bot, update):
+def sticker(update, context):
     if not isNewCommand(update): return
     if not checkAccess(update): return
     if isNewSeeds(update): return
 
     message = update.message.text.split(" ", 1)[1].strip()
-    bot.sendSticker(main_channel(), message)
+    context.bot.sendSticker(main_channel(), message)
 
 # admins
 
-def adminList(bot, update):
+def adminList(update, context):
     if not isNewCommand(update): return
 
     text = "These <i>(%username%)</i>s have access to the bot's #musictheatre session commands:\n"
@@ -52,27 +52,27 @@ def adminList(bot, update):
 
 # spreadshit link
 
-def shit(bot, update):
+def shit(update, context):
     if not isNewCommand(update):
-        send(bot, "Hey fags! Our spreadshit is here: http://bit.ly/mtheatre", parse_mode="HTML")
+        send(context.bot, "Hey fags! Our spreadshit is here: http://bit.ly/mtheatre", parse_mode="HTML")
     else:
         reply(update, "Here's the link to our spreadshit: http://bit.ly/mtheatre")
 
 # russian
 
-def russian(bot, update):
+def russian(update, context):
     if not isNewCommand(update): return
-    send(bot, "Putin Hates Us All", parse_mode="HTML")
+    send(context.bot, "Putin Hates Us All", parse_mode="HTML")
 
 # toast
 
-def toast(bot, update):
+def toast(update, context):
     if not isNewCommand(update): return
-    send(bot, "https://www.youtube.com/watch?v=beVRw_TnWsE", parse_mode="HTML")
+    send(context.bot, "https://www.youtube.com/watch?v=beVRw_TnWsE", parse_mode="HTML")
 
 # ball
 
-def ball(bot, update):
+def ball(update, context):
     if not isNewCommand(update): return
 
     message = random.choice(["It is certain", "It is decidedly so", "Without a doubt", "Yes - definitely", 
@@ -81,31 +81,31 @@ def ball(bot, update):
     "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", 
     "Outlook not so good", "Very doubtful"])
 
-    send(bot, message)
+    send(context.bot, message)
 
 # tag
 
-def tagPeople(bot, update):
+def tagPeople(update, context):
     if not isNewCommand(update): return
     if not checkAccess(update): return
     if not isNewCommand(update): return
 
     config = loadConfig()
     if 'tagList' in config and len(config['tagList']) > 0:
-        send(bot, "Notifying {} people... (/taginfo to learn).".format(
+        send(context.bot, "Notifying {} people... (/taginfo to learn).".format(
             len(config['tagList'])))
-        send(bot, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", 
+        send(context.bot, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", 
             parse_mode="HTML")
         for id in config['tagList']:
             if id != update.effective_user.id:
                 try:
-                    bot.sendMessage(id, "#musictheatre How about some music?")
+                    context.bot.sendMessage(id, "#musictheatre How about some music?")
                 except:
                     print("{} blocked the bot.".format(id))
     else:
-        send(bot, "No one is subscribed for /tag updates.")
+        send(context.bot, "No one is subscribed for /tag updates.")
 
-def tagMe(bot, update):
+def tagMe(update, context):
     if not isNewCommand(update): return
 
     if isNewSeeds(update):
@@ -118,44 +118,44 @@ def tagMe(bot, update):
             config['tagList'] = []
         if id not in config['tagList']:
             config['tagList'].append(id)
-            bot.sendMessage(id, "You are now subscribed to /tag updates. Use /stop to unsubscribe.")
+            context.bot.sendMessage(id, "You are now subscribed to /tag updates. Use /stop to unsubscribe.")
         else:
-            bot.sendMessage(id, "You are already subscribed to /tag updates.")
+            context.bot.sendMessage(id, "You are already subscribed to /tag updates.")
         saveConfig(config)
 
-def dontTagMe(bot, update):
+def dontTagMe(update, context):
     id = update.effective_user.id
     config = loadConfig()
     if 'tagList' not in config and id not in config['tagList']:
         config['tagList'] = []
-        bot.sendMessage(id, "You are not subscribed to /tag updates.")
+        context.bot.sendMessage(id, "You are not subscribed to /tag updates.")
     else:
         config['tagList'].remove(id)
-        bot.sendMessage(id, "You are now unsubscribed from /tag updates.")
+        context.bot.sendMessage(id, "You are now unsubscribed from /tag updates.")
     saveConfig(config)
 
-def taginfo(bot, update):
+def taginfo(update, context):
     reply(update, "Message the bot directly @MusicTheatreBot.\nStart the chat and say /tagme to get notified.")
 
-def identify(bot, update):
+def identify(update, context):
     id = update.effective_user.id
     reply(update, "Your telegram id is: {}".format(id))
 
 # retarded
 
-def slow(bot, update):
+def slow(update, context):
     if not isNewCommand(update): return
-    bot.sendSticker(main_channel(), retardStickerId)
+    context.bot.sendSticker(main_channel(), retardStickerId)
 
 # work
 
-def test(bot, update):
+def test(update, context):
     if not isNewCommand(update): return
     if not checkDevAccess(update): return
 
-    bot.sendMessage(update.message.from_user.id, loadConfig())
+    context.bot.sendMessage(update.message.from_user.id, loadConfig())
 
-def removeRoll(bot, update):
+def removeRoll(update, context):
     if not isNewCommand(update):
         return
     if update.message.from_user.username == "ysoftware":
@@ -163,5 +163,8 @@ def removeRoll(bot, update):
         config['lastRoll'] = None 
         saveConfig(config)
 
-def error_callback(bot, update, error):
-    print(error)
+def error_callback(update, context):
+    print("\n\n")
+    print("Error occured!")
+    print(context.error)
+    print("\n\n")

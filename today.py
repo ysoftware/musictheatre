@@ -42,8 +42,8 @@ def renew():
 
 	return today_out
 
-def today(bot, update):
+def today(update, context):
 	if not isNewCommand(update):
 		return
 	message = renew()
-	send(bot, message)
+	send(context.bot, message)

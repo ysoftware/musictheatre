@@ -12,7 +12,7 @@ def randomCunt():
     return random.choice(["Ready Lets Go", "Here we go…", 
         "Come to Daddy", "Oh boy, here I go killin' again!", "Prepare your diapers…"])
 
-def cunt(bot, update):
+def cunt(update, context):
     if not isNewCommand(update): return
     if not checkAccess(update): return 
 
@@ -22,22 +22,22 @@ def cunt(bot, update):
         message = update.message.text.split(" ", 1)[1].strip()
     else:
         message = randomCunt()
-    send(bot, message)
+    send(context.bot, message)
 
     count = 5
     while count:
-        send(bot, "{}".format(count))
+        send(context.bot, "{}".format(count))
         time.sleep(1)
         count -= 1
 
-    send(bot, "PLAY!")
+    send(context.bot, "PLAY!")
 
     config = loadConfig()
     if config['isPlaying'] == True: return
 
     # also call /new
     if config['lastRoll'] is not None:
-        newAlbumSetPosition(bot, config['lastRoll'])
+        newAlbumSetPosition(context.bot, config['lastRoll'])
 
         # newAlbumSetPosition updates config, need to reload it from disk
         config = loadConfig() 
@@ -51,7 +51,7 @@ def getRandom(count):
     weights = getWeights(count)
     return numpy.random.choice(values, p=weights)
 
-def roll(bot, update):
+def roll(update, context):
     if not isNewCommand(update): return
     if not checkAccess(update): return
 
@@ -86,7 +86,7 @@ def roll(bot, update):
     config['lastRoll'] = spreadsheetNumber
     saveConfig(config)
 
-    send(bot,
+    send(context.bot,
         "<b>Rolled {}</b>\n{} - {} ({})\nSuggested by: {}" .format(
             spreadsheetNumber, rolled[2], 
             rolled[4], rolled[3], 
@@ -94,11 +94,11 @@ def roll(bot, update):
 
 # suggest
 
-def suggest(bot, update):
+def suggest(update, context):
     if not isNewCommand(update): return
     
     config = loadConfig()
     if config['isPlaying'] == False:
-        send(bot, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", parse_mode="HTML")
+        send(context.bot, "<b>Anyone in for a </b>#musictheatre<b> session?</b>", parse_mode="HTML")
     else:
-        send(bot, "Another session is still in place.")
+        send(context.bot, "Another session is still in place.")

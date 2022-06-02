@@ -1,4 +1,5 @@
-import datetime, numpy, sys
+import numpy, sys
+from datetime import datetime, timezone
 
 watb = -1001049406492
 newseeds = -1001138132564
@@ -15,22 +16,26 @@ def checkIfDebug():
 debug = checkIfDebug()
 
 def getTime():
-    return datetime.datetime.now()
+    return datetime.now()
 
 def unix_time_millis(dt):
-    epoch = datetime.datetime.utcfromtimestamp(0)
-    return (dt - epoch).total_seconds() * 1000.0
+    epoch = datetime.utcfromtimestamp(0)
+    diff = dt.replace(tzinfo=None) - epoch
+    return diff.total_seconds() * 1000.0
 
 def checkAccess(update):
     value = update.message.from_user.username in admins
     return value
 
+def utc_to_local(utc_dt):
+    return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
+
 def checkDevAccess(update):
     return update.message.from_user.username in devs
 
 def isNewCommand(update):
-    timenow = unix_time_millis(datetime.datetime.now())
-    messageTime = unix_time_millis(update.message.date)
+    timenow = unix_time_millis(getTime())
+    messageTime = unix_time_millis(utc_to_local(update.message.date))
     dt = timenow - messageTime
     value = dt < (20000)
     return value
