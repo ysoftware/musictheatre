@@ -48,8 +48,8 @@ def isNewSeeds(update):
     return update.message.chat_id == main_channel()
 
 def getWeights(count):
-    values = list(range(0, count))
-    weights = list(map(lambda x: count - x/1.05, values))
+    values = list(numpy.arange(0.0, count))
+    weights = list(map(lambda x: (count-x) ** 5, values))
     weights = numpy.array(weights)
     weights /= weights.sum()
     return weights

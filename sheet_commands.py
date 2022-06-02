@@ -1,6 +1,7 @@
 from core import isNewCommand, checkAccess, isNewSeeds, getTime, debug
 from session import saveConfig, loadConfig, send, reply, auth
 from utility import fValue, fNonEmpty, fLower
+from datetime import date
 
 from core import getWeights
 import numpy, re
@@ -14,22 +15,17 @@ def archive(update, context):
 
     position = int(update.message.text.split(" ")[1])
     archiveDo(context.bot, position)
-
+    
+def archiveDo(context.bot, position):
+    
     if debug:
-        send(context.bot, "Suggestion moved to the archive. (not really)")
-    else:
-        send(context.bot, "Suggestion moved to the archive.")
-    
-def archiveDo(bot, position):
-    
-    if debug: 
-        send(context.bot, "Suggestion moved to the archive. (not really)")
+        send(bot, "Suggestion moved to the archive. (not really)")
         return # todo move bot to a test sheet
 
     wks = auth()
     now = getTime()
 
-    archiveNames = list(filter(fNonEmpty, map(fValue, wks.range('G4:G1000'))))
+    archiveNames = list(filter(fNonEmpty, map(fValue, wks.range('G4:G1300'))))
     suggestionNames = list(filter(fNonEmpty, map(fValue, wks.range('B4:B100'))))
     lastSuggestion = len(suggestionNames) + 4
     archiveLastPosition = len(archiveNames) + 4
@@ -67,6 +63,7 @@ def archiveDo(bot, position):
             suggestionCells[i].value = suggestionCells[i+4].value
 
     wks.update_cells(suggestionCells)
+    send(bot, "Suggestion moved to the archive.")
 
 # manage suggestions
 
@@ -86,7 +83,7 @@ def countSuggestions(update, context):
     foundRows = list(filter(lambda value: value.lower() == name.lower(), originalRows))
     suggestionsCount = len(foundRows)
 
-    originalArchive = list(map(fValue, wks.range('G4:G1000')))
+    originalArchive = list(map(fValue, wks.range('G4:G1300')))
     foundArchive = list(filter(lambda value: value.lower() == name.lower(), originalArchive))
     archiveCount = len(foundArchive)
 
@@ -121,7 +118,9 @@ def addSuggestion(update, context):
     album = array[2].strip()
     year = int(array[3].strip())
 
-    if year > 2020 or year < 1900:
+    currentYear = date.today().year
+
+    if year > currentYear or year < 1900:
         reply(update, "Wrong year")
         return
     
@@ -175,4 +174,4 @@ def rollInfo(update, context):
 
     first = values[0] * 100
     last = values[-1] * 100
-    reply(update, "Roll probability (linear distribution):\nOldest: {0:.1f}%\nNewest: {1:.1f}%".format(first, last))
+    reply(update, "Probability of getting rolled:\nOldest suggestion has: {:.1f}% chance\nNewest suggestion has: {:.9f}% chance".format(first, last))

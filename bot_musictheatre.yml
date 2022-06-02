@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bot-musictheatre
+  namespace: prod
+spec:
+  selector:
+    matchLabels:
+      app: bot-musictheatre
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bot-musictheatre
+    spec:
+      containers:
+      - name: bot-musictheatre
+        image: atm-srv-02:32003/repository/bot-musictheatre/bot-musictheatre:latest
+        imagePullPolicy: Always
+      imagePullSecrets:
+      - name: nexus-musictheatre
+      dnsConfig:
+       options:
+          - name: ndots
+            value: "1"

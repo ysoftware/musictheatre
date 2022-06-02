@@ -1,0 +1,5 @@
+version: '3.0'
+services: 
+  bot_musictheatre:
+    build: .
+    container_name: bot_musictheatre

@@ -9,8 +9,8 @@ import numpy, random, time
 # countdown
 
 def randomCunt():
-    return random.choice(["Ready Lets Go", "Here we go...", 
-        "Come to Daddy", "Oh boy, here I go killin' again!"])
+    return random.choice(["Ready Lets Go", "Here we go…", 
+        "Come to Daddy", "Oh boy, here I go killin' again!", "Prepare your diapers…"])
 
 def cunt(update, context):
     if not isNewCommand(update): return
