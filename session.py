@@ -12,6 +12,8 @@ def auth():
     credentials = ServiceAccountCredentials.from_json_keyfile_name('./env/credentials.json', scope)
     gc = gspread.authorize(credentials)
 
+    print(gc)
+
     spreadsheet_key = open('./env/sheet_id.txt', 'r').read()
     print(spreadsheet_key)
 
@@ -20,7 +22,7 @@ def auth():
 
     worksheet = sheet.get_worksheet(0)
     print(worksheet)
-    
+
     return worksheet
 
 # wrappers
