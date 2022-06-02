@@ -9,10 +9,10 @@ configFile = "./session.pk"
 
 def auth():
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-    credentials = ServiceAccountCredentials.from_json_keyfile_name('/env/credentials.json', scope)
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('./env/credentials.json', scope)
     gc = gspread.authorize(credentials)
 
-    spreadsheet_key = open('/env/sheet_id.txt', 'r').read()
+    spreadsheet_key = open('./env/sheet_id.txt', 'r').read()
     return gc.open_by_key(spreadsheet_key).get_worksheet(0)
 
 # wrappers

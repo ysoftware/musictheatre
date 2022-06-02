@@ -16,7 +16,7 @@ def archive(update, context):
     position = int(update.message.text.split(" ")[1])
     archiveDo(context.bot, position)
     
-def archiveDo(context.bot, position):
+def archiveDo(bot, position):
     
     if debug:
         send(bot, "Suggestion moved to the archive. (not really)")
