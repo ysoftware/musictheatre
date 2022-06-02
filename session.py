@@ -12,6 +12,7 @@ def auth():
     credentials = ServiceAccountCredentials.from_json_keyfile_name('./env/credentials.json', scope)
     gc = gspread.authorize(credentials)
 
+    print(credentials)
     print(gc)
 
     spreadsheet_key = open('./env/sheet_id.txt', 'r').read()
