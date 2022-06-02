@@ -15,7 +15,7 @@ def auth():
     print(credentials)
     print(gc)
 
-    spreadsheet_key = open('./env/sheet_id.txt', 'r').read()
+    spreadsheet_key = open('./env/sheet_id.txt', 'r').read().strip()
     print(spreadsheet_key)
 
     sheet = gc.open_by_key(spreadsheet_key)
