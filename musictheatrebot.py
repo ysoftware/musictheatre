@@ -5,11 +5,11 @@ from telegram.error import (TelegramError, Unauthorized, BadRequest,
 import os
 import logging
 
+print(os.getcwd())
+
 # add files
 import core, session, today
 import other_commands, start_commands, session_commands, sheet_commands
-
-print(os.getcwd())
 
 # setup bot
 
