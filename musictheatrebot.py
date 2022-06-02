@@ -13,7 +13,7 @@ import other_commands, start_commands, session_commands, sheet_commands
 
 logging.basicConfig(level=logging.WARN, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-telegram_token = open('telegram_token.txt', 'r').read()
+telegram_token = open('/env/telegram_token.txt', 'r').read()
 updater = Updater(token=telegram_token)
 
 # sheet

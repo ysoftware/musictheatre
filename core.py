@@ -5,8 +5,8 @@ watb = -1001049406492
 newseeds = -1001138132564
 bot_test = -329730756
 
-devs = list(map(lambda x: x.rstrip('\n'), open('devs_names.txt', 'r').readlines()))
-admins = list(map(lambda x: x.rstrip('\n'), open('admins_names.txt', 'r').readlines()))
+devs = list(map(lambda x: x.rstrip('\n'), open('/env/devs_names.txt', 'r').readlines()))
+admins = list(map(lambda x: x.rstrip('\n'), open('/env/admins_names.txt', 'r').readlines()))
 
 def checkIfDebug():
     for arg in sys.argv:
