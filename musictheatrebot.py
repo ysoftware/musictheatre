@@ -2,12 +2,14 @@
 from telegram.ext import Updater, CommandHandler
 from telegram.error import (TelegramError, Unauthorized, BadRequest, 
                             TimedOut, ChatMigrated, NetworkError)
-
+import os
 import logging
 
 # add files
 import core, session, today
 import other_commands, start_commands, session_commands, sheet_commands
+
+print(os.getcwd())
 
 # setup bot
 
