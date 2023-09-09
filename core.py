@@ -49,7 +49,7 @@ def isNewSeeds(update):
 
 def getWeights(count):
     values = list(numpy.arange(0.0, count))
-    weights = list(map(lambda x: (count-x) ** 5, values))
+    weights = list(map(lambda x: (count-x) ** 2, values))
     weights = numpy.array(weights)
     weights /= weights.sum()
     return weights
