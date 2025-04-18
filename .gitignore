@@ -2,3 +2,4 @@
 session.pk
 *.pyc
 env/*
+venv/
