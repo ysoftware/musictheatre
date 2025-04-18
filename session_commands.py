@@ -3,7 +3,6 @@ from session import saveConfig, loadConfig, send, reply, auth
 from utility import fValue, fNonEmpty, fLower
 
 from sheet_commands import archiveDo
-import numpy
 
 # session
 

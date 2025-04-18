@@ -4,7 +4,7 @@ from utility import fValue, fNonEmpty, fLower
 from datetime import date
 
 from core import getWeights
-import numpy, re
+import re
 
 # archive
 

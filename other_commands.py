@@ -1,7 +1,7 @@
 from core import isNewCommand, checkAccess, isNewSeeds, getTime, admins, main_channel, checkDevAccess, debug
 from session import saveConfig, loadConfig, send, reply, auth, log
 from utility import fValue, fNonEmpty, fLower
-import numpy, subprocess, random
+import subprocess, random
 
 retardStickerId = "CAADBAAD2wADeyqRC60Pvd---1a5Ag";
 

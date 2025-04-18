@@ -4,7 +4,7 @@ from utility import fValue, fNonEmpty, fLower
 
 from session_commands import newAlbumSetPosition
 from core import getWeights
-import numpy, random, time
+import random, time
 
 # countdown
 
@@ -47,9 +47,9 @@ def cunt(update, context):
 # roll
 
 def getRandom(count):
-    values = list(range(0, count))
+    values = list(range(count))
     weights = getWeights(count)
-    return numpy.random.choice(values, p=weights)
+    return random.choices(values, weights=weights, k=1)[0]
 
 def roll(update, context):
     if not isNewCommand(update): return

@@ -1,4 +1,4 @@
-import numpy, sys
+import sys
 from datetime import datetime, timezone
 
 watb = -1001049406492
@@ -48,8 +48,8 @@ def isNewSeeds(update):
     return update.message.chat_id == main_channel()
 
 def getWeights(count):
-    values = list(numpy.arange(0.0, count))
-    weights = list(map(lambda x: (count-x) ** 2, values))
-    weights = numpy.array(weights)
-    weights /= weights.sum()
+    values = list(range(count))
+    weights = [(count - x) ** 2 for x in values]
+    total = sum(weights)
+    weights = [w / total for w in weights]
     return weights
